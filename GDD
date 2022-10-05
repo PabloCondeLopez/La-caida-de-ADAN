@@ -6,18 +6,30 @@ Game Elements:
 En este juego cooperativo los jugadores deberán defender una base de hordas de enemigos que vendrán por dos carriles. 
 Los recursos que los jugadores tendrán para comprar estructuras nuevas serán los que el otro jugador obtenga matando enemigos.
 Las estructuras requerirán de un recurso para funcionar (maná/energía)
+Las estructuras pueden ser mejoradas con dinero
 Los jugadores además podrán obtener habilidades que podrán usar en el campo del otro jugador.
-(Modo competitivo 2vs2 donde cada pareja defiende una base y puede influir en el mapa de la otra pareja)
+
+Modo competitivo 2vs2 donde cada pareja defiende una base y puede influir en el mapa de la otra pareja
+
+Modo endless donde puedes jugar en cada uno de los niveles del modo historia con oleadas de enemigos ilimitadas. Para desbloquear cada nivel del modo endless se debe
+superar ese nivel en el modo historia
 
 Player:
 2/4 (coop obligatorio)
 
+Monetización: 
+- Donaciones opcionales
+- Anuncios ingame (al perder para tener una segunda oportunidad o en ciertos momentos del juego)
+- Pago opcional para eliminar los anuncios
+
+
 TECHNICAL SPECS
 Technical Form:
 Graficos 2D pixelart
+Programado en Phaser JS
 
 View:
-vista cenital
+vista cenital (personajes y estructuras perspectiva frontal lateral TBOI-style)
 
 Platform:
 PC
@@ -31,7 +43,7 @@ PC, mobile
 GAME PLAY
 Los jugadores podrán construir, con un coste de dinero (recurso ingame), diferentes estructuras como torres láser o cañones que atacarán a los androides enemigos.
 Estos enemigos serán de diferentes tipos, con diferentes habilidades y puntos de vida. Las estructuras creadas por los jugadores tendrán un coste adicional de 
-energía para funcionar. La energía se obtendrá mediante generadores comprados con dinero. Los jugadores además podrán obtener habilidades según avanzan 
+energía para funcionar. La energía se obtendrá mediante estructuras (generadores) comprados con dinero. Los jugadores además podrán obtener habilidades según avanzan 
 los niveles que podrán utilizar en el campo del otro jugador. (Modo competitivo 2vs2 donde cada pareja defiende una base y puede influir en el mapa de la otra pareja)
 El juego se podrá controlar tanto con teclado y ratón, como solo con uno de los dos.
 
@@ -39,43 +51,90 @@ El juego se podrá controlar tanto con teclado y ratón, como solo con uno de lo
 Game Play Outline
 This outline will vary depending on the type of game.
 • Opening the game application
+  - Pantalla con arte del juego representativo. Menú con opciones:
+    1. Jugar (historia, endless, ranked)
+    2. Login
+    3. Opciones
+    
+    Botones abajo con redes sociales, patreon/kofi/paypal/donaciones whatever.
+    
 • Game options
 • Story synopsis
 • Modes
+  - Historia: Modo historia con setting y narrativa, 10 niveles con 10 escenarios diferentes y "cinemáticas" entre niveles.
+  - Endless: Modo de oleadas infinitas donde eliges un nivel del modo historia. Para desbloquear cada nivel debes superarlo
+  en el modo historia
+  - Competitivo: Nivel aleatorio, igual para cada equipo, juego 2vs2
 • Game elements
-• Game levels
+• Game levels:
+  0 (tutorial). mismo escenario que nivel 1. 
+  1.
+  2.
+  3.
+  4.
+  5.
+  6.
+  7.
+  8.
+  9.
+  10.
+  
 • Player’s controls
+  - KBM. Se desbloquean, mejoran y seleccionan las estructuras haciendo click con ratón o con shortcut de teclado 1-9
+  Se colocan en el mapa seleccionandolas y colocandolas con el ratón en el mapa. Si se hace click en una estructura colocada
+  se selecciona esa estructura. Las estructuras se mejoran de manera individual. 
 • Winning
 • Losing
 • End
 • Why is all this fun?
 Key Features
 Key features are a list of game elements that are attractive to the player.
+
 DESIGN DOCUMENT
 This document describes how GameObjects behave, how they’re controlled and their properties. This is often referred to as
 the “mechanics” of the game. This documentation is primarily concerned with
 the game itself. This part of the document is meant to be modular, meaning you could have
 several different Game Design Documents attached to the Concept Document.
+
 Design Guidelines
 This is an important statement about any creative restrictions that need to be considered and includes brief statements
 about the general (i.e., overall) goal of the design.
+
 Game Design Definitions
 This section established the definition of the game play. Definitions should include how a player wins, loses, transitions
 between levels, and the main focus of the gameplay.
+
 Game Flowchart
 The game flowchart provides a visual of how the different game elements and their properties interact. Game flowcharts
 should represent Objects, Properties, and Actions present in the game. Each of these items should have a number reference
 to where they exist within the game mechanics document.
+
 • Menu
 • Synopsis
 • Game Play
 • Player Control
 • Game Over (Winning and Losing
+
 Player Definition
 ● Use this section for quick descriptions that define the player
 ● Use the Player Properties section (below) to define the properties for each player. Player Properties can be
 affected by the player’s action or interaction with other game elements. Define the properties and how they affect
 the player’s current game.
+Estructuras de defensa: en general se colocan fuera de los caminos de los enemigos pero (opcional a partir de aqui) existe una estructura (muro) que 
+tapa el camino hasta que es destruida (tiene hp)
+Las estructuras tiene los siguientes atributos básicos:
+  - Tipo de proyectil (láser, balístico, pem)
+  - Coste de compra (dinero)
+  - Coste de uso (energía)
+  - Coste de mejora
+  - Velocidad de ataque
+  - Rango de Ataque
+  - Daño de Ataque
+  - (opcional) Modo de ataque: aéreo/terrestre
+
+Lista de estructuras:
+  - 
+
 ● Use the Player Rewards section to make a list of all objects that affect the player in a positive way. Define these
 objects by describing what affect they cause and how the player can use the object.
 Player Definitions
