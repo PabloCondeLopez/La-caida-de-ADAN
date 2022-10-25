@@ -16,7 +16,5 @@ Como jugador controlamos a las fuerzas de resistencia ante la rebelión robótic
 - Marta Ayamonte: Jefa de la unidad militar encargada de proteger el lugar. 
 - Javier Rosales: Miembro importante de MOR, conoce muchas de las debilidades de los robots y es el diseñador de muchas de las armas que se usarán en el juego. 
 
-
-Carpeta de drive: https://drive.google.com/drive/folders/1GptIGi9Sj1N98ig8uNcvnSdj-xgUDyXk?usp=sharing
-
 Tablero HacknPlan: https://app.hacknplan.com/p/173818/kanban?boardId=477013
+
