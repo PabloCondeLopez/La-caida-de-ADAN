@@ -9,7 +9,7 @@ El estudio está conformado por 6 miembros, cada uno encargado de una determinad
 - Almudena Sánchez Encinas: Visuales del juego y artista principal. Correo: a.sanchez.2020@alumnos.urjc.es Github: 
 - David Antonio Vélez Rebollo: Apartado técnico y programador principal. Correo: da.velez.2020@alumnos.urjc.es Github: DavidVelezRebollo
 
-# Cyberpañita
+# La caída de ADAN
 La historia se ambienta en una España alternativa donde en el año 2000, tal como fue profetizado por diferentes gurús de la informática, cayeron todos los sistemas de comunicación a nivel global. Esta situación de caos derivó en unos determinados acontecimientos que sacudieron el orden mundial.
 
 Como jugador controlamos a las fuerzas de resistencia ante la rebelión robótica de la armada española. Nuestro papel es defender la prisión de máxima seguridad donde está encerrado ADAN (Androide de Defensa del Armamento Nacional) de la rebelión de las máquinas. En concreto cada uno de los jugadores controlan a: 
