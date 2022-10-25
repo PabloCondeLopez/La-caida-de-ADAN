@@ -18,4 +18,5 @@ Como jugador controlamos a las fuerzas de resistencia ante la rebelión robótic
 
 
 Carpeta de drive: https://drive.google.com/drive/folders/1GptIGi9Sj1N98ig8uNcvnSdj-xgUDyXk?usp=sharing
+
 Tablero HacknPlan: https://app.hacknplan.com/p/173818/kanban?boardId=477013
