@@ -3,6 +3,7 @@ import Enemy from './enemy.js'
 class Level extends Phaser.Scene {
     preload() {
         this.load.atlas('sprites', 'assets/spritesheet.png', 'assets/spritesheet.json');
+        this.enemiesOnScene = new Array();
     }
 
     create() {
@@ -35,6 +36,13 @@ class Level extends Phaser.Scene {
                 enemy.startOnPath(this.path);
                 
                 this.nextEnemy = time + 2000;
+                this.enemiesOnScene.push(enemy);
+            }
+        }
+
+        for(i = 0; i < this.enemiesOnScene.length; i++){
+            if(this.enemiesOnScene[this.enemiesOnScene.length - 1].getHP <= 0){
+                
             }
         }
     }
