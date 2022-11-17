@@ -48,6 +48,8 @@ class Turret extends Phaser.GameObjects.Image {
         return false;
     }
 
+
+    
     update(time, delta)
     {
         if(time > this.nextTic) {
