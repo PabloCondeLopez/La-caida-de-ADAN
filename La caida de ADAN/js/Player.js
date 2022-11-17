@@ -6,4 +6,11 @@ class Player extends Phaser.GameObjects.Image {
         this.energy = 0;
         this.skills;
     }
+
+    onStart(){
+        for(i=0; i<this.skills.length; i++){
+            this.skills[0].onStart;
+        }
+    }
+
 }

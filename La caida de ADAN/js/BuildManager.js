@@ -49,8 +49,10 @@ class BuildManager extends Phaser.GameObjects.Image {
         cellOpen.cellToUpgrade.destroyBuilding();
     }
 
-    initializeCells(positions){
-
+    initializeBuildings(numCells){
+        for(i=0; i<numCells; i++){
+            buildings[i] = null;
+        }
         
     }
 

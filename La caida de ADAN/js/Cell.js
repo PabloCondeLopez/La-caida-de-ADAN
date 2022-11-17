@@ -5,7 +5,7 @@ class Cell extends Phaser.GameObjects.Image {
         this.posY = Y;
         this.building;
         this.full = false;
-        this.cellButton = game.add.button(game.world.centerX - 95, 400, 'button', cellButton_onClick(), this, 2, 1, 0);
+        this.cellButton = game.add.button(game.world.centerX - 95, 400, 'button', buildManager.cellButton_onClick(this), this, 2, 1, 0);
         this.buildMenu = document.getElementById("buildMenu");
     }
 
@@ -29,10 +29,7 @@ class Cell extends Phaser.GameObjects.Image {
         }
     }
 
-    cellButton_onClick(){                       // on click se habre el menu
-        if(this.buildMenu.hidden) this.buildMenu.hidden = false;
-        else this.buildMenu.hidden = true;
-    }
+
 }
 
 
