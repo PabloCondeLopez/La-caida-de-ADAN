@@ -16,6 +16,8 @@ class BuildManager extends Phaser.GameObjects.Image {
 
     
     buildButton_onClick(){                      // activa y desactiva el menu de seleccion de torretas
+        if(!cellOpen.full){
+        
         if(this.selectionMenu.visible) {
             this.selectionMenu.visible = false;
             this.turret1Button.visible = false;
@@ -28,25 +30,48 @@ class BuildManager extends Phaser.GameObjects.Image {
             this.turret3Button.visible = true;
         }
     }
+    }
 
     turret1Button_onClick(){                        // construir tipo de torre 1
-        
+        var damage = 30;
+        var range = 15;
+        var energy = 15;
+        //var sprite = "url del sprite";
+        var newTurret = new Turret(scene, damage, range, energy, player, cellOpen);
+        this.buildings.add(newTurret);
+        this.cellOpen.building = newTurret;
     }
 
     turret2Button_onClick(){                        // construir tipo de torre 2
-        
+        var damage = 15;
+        var range = 40;
+        var energy = 20;
+        //var sprite = "url del sprite";
+        var newTurret = new Turret(scene, damage, range, energy, player, cellOpen);
+        this.buildings.add(newTurret);
+        this.cellOpen.building = newTurret;
     }
 
     turret3Button_onClick(){                        // construir tipo de torre 3
-        
+        var damage = 50;
+        var range = 5;
+        var energy = 40;
+        //var sprite = "url del sprite";
+        var newTurret = new Turret(scene, damage, range, energy, player, cellOpen);
+        this.buildings.add(newTurret);
+        this.cellOpen.building = newTurret;
     }
 
-    upgradeButton_onClick(posX, posY){           // mejorar la torre 
+    upgradeButton_onClick(posX, posY){ 
+        if(cellOpen.full){          // mejorar la torre 
         cellOpen.updgradeBuilding();
+        }
     }
 
-    destroyButton_onClick(posX, posY){           // destruir la torre
+    destroyButton_onClick(posX, posY){  
+        if(cellOpen.full){           // destruir la torre
         cellOpen.cellToUpgrade.destroyBuilding();
+        }
     }
 
     initializeBuildings(numCells){
