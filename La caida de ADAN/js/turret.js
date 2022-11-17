@@ -1,20 +1,14 @@
 class Turret extends Phaser.GameObjects.Image {
     
     
-    constructor (scene, dmg, range, energy, player){
-        var damage = dmg;
+    constructor (scene, dmg, range, energy, player, cell){
         var enemy = null;
         var attackRange = range;
-        var position = null;
+        var position = [cell.posX, cell.posY];
         var energyRequired = energy
         var owner = player;
         Phaser.GameObjects.Image.call(this, scene, 0, 0, 'sprites', 'turret');
         this.nextTic = 0;
-    }
-    
-    place(i, j){
-        map[i][j] = 1;
-        this.position = [i*step,j*step];
     }
 
     fire (){
