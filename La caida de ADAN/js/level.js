@@ -1,51 +1,38 @@
-import Enemy from './enemy.js'
+class Level extends Phaser.GameObjects.Image {
 
-class Level extends Phaser.Scene {
-    preload() {
-        this.load.atlas('sprites', 'assets/spritesheet.png', 'assets/spritesheet.json');
-        this.enemiesOnScene = new Array();
+    constructor (num) {
+
+        this.level = 0;
+        Phaser.GameObjects.Image.call(this, scene, 0, 0, 'sprites', 'firstMap');
+
+        // interfaz general
+        Phaser.GameObjects.Image.call(this, scene, 0, 0, 'sprites', 'interface');
+
+        // skills
+        Phaser.GameObjects.Image.call(this, scene, 0, 0, 'sprites', 'skill1');
+        Phaser.GameObjects.Image.call(this, scene, 0, 0, 'sprites', 'skill2');
+        Phaser.GameObjects.Image.call(this, scene, 0, 0, 'sprites', 'skill3');
+
+        // texto
+        game.add.text(100,50,"Energia 1",{
+            font: 'Agency FB',
+            fontSize: 32,
+            fill: 'purple'
+        });
+
+        game.add.text(100,50,"Energia 2",{
+            font: 'Agency FB',
+            fontSize: 32,
+            fill: 'purple'
+        });
+
     }
 
-    create() {
-        this.graphics = this.add.graphics();
-
-        this.path = this.add.path(92, -32);
-        this.path.lineTo(96, 164);
-        this.path.lineTo(480, 164);
-        this.path.lineTo(480, 544);
-
-        this.graphics.lineStyle(3, 0xffffff, 1);
-        //path.draw(graphics);
-
-        this.enemies = this.add.group({
-            classType: Enemy,
-            runChildUpdate: true
-        })
-
-        this.nextEnemy = 0;
+    updateEnergy(){
+        
     }
 
-    update(time, delta) {
-        if(time > this.nextEnemy){
-            let enemy = this.enemies.get();
 
-            if(enemy){
-                enemy.setActive(true);
-                enemy.setVisible(true);
 
-                enemy.startOnPath(this.path);
-                
-                this.nextEnemy = time + 2000;
-                this.enemiesOnScene.push(enemy);
-            }
-        }
 
-        for(i = 0; i < this.enemiesOnScene.length; i++){
-            if(this.enemiesOnScene[this.enemiesOnScene.length - 1].getHP <= 0){
-                
-            }
-        }
-    }
 }
-
-export default Level;
