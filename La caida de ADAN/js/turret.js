@@ -7,6 +7,7 @@ class Turret extends Phaser.GameObjects.Image {
         var attackRange = attackRange;
         Phaser.GameObjects.Image.call(this, scene, 0, 0, 'sprites', 'turret');
         this.nextTic = 0;
+        var energyRequired;
     }
     
     place(i, j){
@@ -22,6 +23,7 @@ class Turret extends Phaser.GameObjects.Image {
             addBullet(this.x, this.y, angle);
             this.angle = (angle + Math.PI/2) * Phaser.Math.RAD_TO_DEG;
             enemy.damage(this.damage);
+            game.energy -= energyRequired;
         }
         else{
             enemy = getEnemy(enemyList);
@@ -47,7 +49,7 @@ class Turret extends Phaser.GameObjects.Image {
     update(time, delta)
     {
         if(time > this.nextTic) {
-            this.fire();
+            if(energyRequired<= energy) this.fire();
             this.nextTic = time + 1000;
         }
     }
