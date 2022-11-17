@@ -1,7 +1,8 @@
 class BuildManager extends Phaser.GameObjects.Image {
 
     constructor () {
-        this.cells;   
+        this.buildings;   
+        this.cellOpen;
         Phaser.GameObjects.Image.call(this, scene, 0, 0, 'sprites', 'buildMenu');
         Phaser.GameObjects.Image.call(this, scene, 0, 0, 'sprites', 'selectionMenu');
         
@@ -41,15 +42,24 @@ class BuildManager extends Phaser.GameObjects.Image {
     }
 
     upgradeButton_onClick(posX, posY){           // mejorar la torre 
-        cells[posX, posY].updgradeBuilding();
+        cellOpen.updgradeBuilding();
     }
 
     destroyButton_onClick(posX, posY){           // destruir la torre
-        cells[posX, posY].cellToUpgrade.destroyBuilding();
+        cellOpen.cellToUpgrade.destroyBuilding();
     }
 
     initializeCells(positions){
 
+        
+    }
+
+    cellButton_onClick(cell){                       // on click se habre el menu
+        if(this.buildMenu.hidden) {
+            this.buildMenu.hidden = false;
+            cellOpen = cell;
+        }
+        else this.buildMenu.hidden = true; 
         
     }
 
