@@ -28,15 +28,19 @@ class buildManager extends Phaser.GameObjects.Image {
         }
     }
 
-    turret1Button_onClick(){
-        // construir tipo de torre 1
+    turret1Button_onClick(posX, posY) //torreta tipo 1
+    {
+        var coords = [posX, posY];
+        new Turret(scene, 30, 15, 15, player, coords);
     }
 
-    turret2Button_onClick(){
+    turret2Button_onClick() //torreta tipo 2
+    {
         // construir tipo de torre 2
     }
 
-    turret3Button_onClick(){
+    turret3Button_onClick() //torreta tipo 3
+    {
         // construir tipo de torre 3
     }
 
