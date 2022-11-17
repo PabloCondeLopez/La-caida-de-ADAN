@@ -1,29 +1,29 @@
 class Turret extends Phaser.GameObjects.Image {
     
     
-    constructor (scene, damage, attackRange){
-        var damage = damage;
+    constructor (scene, dmg, range, energy, player){
+        var damage = dmg;
         var enemy = null;
-        var attackRange = attackRange;
+        var attackRange = range;
+        var position = null;
+        var energyRequired = energy
+        var owner = player;
         Phaser.GameObjects.Image.call(this, scene, 0, 0, 'sprites', 'turret');
         this.nextTic = 0;
-        var energyRequired;
     }
     
     place(i, j){
-        this.y = i*step;
-        this.x = j*step;
         map[i][j] = 1;
+        this.position = [i*step,j*step];
     }
 
     fire (){
         
-        if(enemy.isAlive() && (Math.abs(enemy.position - this.position) <= this.attackRange)) {
-            var angle = Phaser.Math.Angle.Between(this.x, this.y, enemy.x, enemy.y);
+        if(this.enemyValid(this.enemy)) {
+            var angle = Phaser.Math.Angle.Between(this.position[0], this.position[1], enemy.follower.vec.x, enemy.follower.vec.y);
             addBullet(this.x, this.y, angle);
             this.angle = (angle + Math.PI/2) * Phaser.Math.RAD_TO_DEG;
             enemy.damage(this.damage);
-            game.energy -= energyRequired;
         }
         else{
             enemy = getEnemy(enemyList);
@@ -31,15 +31,17 @@ class Turret extends Phaser.GameObjects.Image {
     }
 
     getEnemy(enemyList){
-       for(let i=0; i<enemyList.length; i++){
-        if(!this.enemyValid(this.enemy) && this.enemyValid(enemyList[i])){
+        var i = 0;
+       while(!this.enemyValid(this.enemy)){
+        if(this.enemyValid(enemyList[i])){
             enemy = enemyList[i];
         }
+        i++;
        }
     }
 
     enemyValid(enemy){
-        if(enemy.isAlive() && (Math.abs(enemy.position - this.position) <= this.attackRange)){
+        if(enemy.isAlive() && (Math.abs((enemy.follower.vec.y - this.position[0]) + (enemy.follower.vec.y - this.position[1])) <= this.attackRange)){
             return true;
         }
         else
@@ -49,12 +51,10 @@ class Turret extends Phaser.GameObjects.Image {
     update(time, delta)
     {
         if(time > this.nextTic) {
-            if(energyRequired<= energy) this.fire();
+            if(energyRequired<=energy)
+                this.fire();
+
             this.nextTic = time + 1000;
         }
     }
-    
-
-
-
 }
