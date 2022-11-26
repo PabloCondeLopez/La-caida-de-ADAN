@@ -16,8 +16,8 @@ class Enemy extends Phaser.GameObjects.Image {
      }
  
      update (time, delta) {
-         if(time >= 4000) this.die();
- 
+        if(this.currentHP <= 0) this.die();
+        
          this.follower.t += this.speed * delta;
  
          this.path.getPoint(this.follower.t, this.follower.vec);
@@ -53,6 +53,10 @@ class Enemy extends Phaser.GameObjects.Image {
  
      takeDamage(ammount){
          this.currentHP -= ammount;
+     }
+
+     die(){
+        this.destroy();
      }
  }
  
