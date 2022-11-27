@@ -51,12 +51,18 @@ class Enemy extends Phaser.GameObjects.Image {
          this.speed = newSpeed;
      }
  
-     takeDamage(ammount){
-         this.currentHP -= ammount;
+     takeDamage(bullet){
+        if(this.active && bullet.active === true){
+            bullet.setActive(false);
+            bullet.setVisible(false);
+
+            this.currentHP -= bullet.getDamageAmmount();
+        }
      }
 
      die(){
-        this.destroy();
+        this.setActive(false);
+        this.setVisible(false);
      }
  }
  
