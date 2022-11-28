@@ -20,7 +20,7 @@ class Enemy extends Phaser.GameObjects.Image {
         
          this.follower.t += this.speed * delta;
  
-         this.path.getPoint(this.follower.t, this.follower.vec);
+         this.scene.path.getPoint(this.follower.t, this.follower.vec);
  
          this.setPosition(this.follower.vec.x, this.follower.vec.y);
  
@@ -30,13 +30,11 @@ class Enemy extends Phaser.GameObjects.Image {
          }
      }
  
-     startOnPath(path) {
+     startOnPath() {
          this.follower.t = 0;
  
-         path.getPoint(this.follower.t, this.follower.vec);
+         this.scene.path.getPoint(this.follower.t, this.follower.vec);
          this.setPosition(this.follower.vec.x, this.follower.vec.y);
- 
-         this.path = path;
      }
  
      getSpeed(){
@@ -51,18 +49,19 @@ class Enemy extends Phaser.GameObjects.Image {
          this.speed = newSpeed;
      }
  
-     takeDamage(bullet){
+     takeDamage(damage, bullet){
         if(this.active && bullet.active === true){
-            bullet.setActive(false);
-            bullet.setVisible(false);
+            this.currentHP -= damage;
 
-            this.currentHP -= bullet.getDamageAmmount();
+            
+            if(this.currentHP <= 0)
+                this.die()
         }
      }
 
      die(){
-        this.setActive(false);
-        this.setVisible(false);
+        
+        this.destroy();
      }
  }
  

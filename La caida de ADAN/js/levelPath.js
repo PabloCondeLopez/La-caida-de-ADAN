@@ -12,10 +12,13 @@ var map =      [[ 0,-1, 0, 0, 0, 0, 0, 0, 0, 0],
                 [ 0, 0, 0, 0, 0, 0, 0,-1, 0, 0]];
 
 let turrets;
+let enemies;
+let bullets;
 
 class LevelPath extends Phaser.Scene {
     preload() {
         this.load.atlas('sprites', 'assets/spritesheet.png', 'assets/spritesheet.json');
+        this.load.image('bullet', 'assets/bullet.png');
     }
 
     create() {
@@ -30,7 +33,7 @@ class LevelPath extends Phaser.Scene {
         this.path.draw(this.graphics);
         this.drawGrid();
 
-        this.enemies = this.physics.add.group({
+        enemies = this.physics.add.group({
             classType: Enemy,
             runChildUpdate: true
         });
@@ -40,20 +43,28 @@ class LevelPath extends Phaser.Scene {
             runChildUpdate: true
         });
 
-        this.bullets = this.physics.add.group({
+        bullets = this.physics.add.group({
             classType: Bullet,
             runChildUpdate: true
         });
 
-        this.nextEnemy = 0;
-        this.enemyInScene = this.enemies.getChildren();
+        this.physics.add.overlap(enemies, bullets, damageEnemy);
 
+        this.nextEnemy = 0;
         this.input.on('pointerdown', this.placeTurret);
+    }
+
+    getEnemies(){
+        return enemies;
+    }
+
+    getBullets(){
+        return bullets;
     }
 
     update(time, delta) {
         if(time > this.nextEnemy){
-            let enemy = this.enemies.get();
+            let enemy = enemies.get();
 
             if(enemy){
                 enemy.setActive(true);
@@ -61,12 +72,7 @@ class LevelPath extends Phaser.Scene {
 
                 enemy.startOnPath(this.path);
                 this.nextEnemy = time + 2000;
-                this.enemyInScene.push(enemy);
             }
-        }
-
-        for(var i = 0; i < this.enemyInScene.length; i++){
-            this.enemyInScene[i].takeDamage(0.1);
         }
     }
 
@@ -96,11 +102,27 @@ class LevelPath extends Phaser.Scene {
                 turret.setActive(true);
                 turret.setVisible(true);
                 turret.place(i, j, map);
-                
-                turret.setBullets(this.bullets);
             }
         }
-    }    
+    }
+    
+    getEnemy(x, y, distance) {
+        var enemyUnits = enemies.getChildren();
+    
+        for(var i = 0; i < enemyUnits.length; i++){
+            if(enemyUnits[i].active && Phaser.Math.Distance.Between(x, y, enemyUnits[i].x, enemyUnits[i].y) <= distance)
+                return enemyUnits[i];
+        }
+    
+        return false;
+    }
+
+    addBullet(x, y, angle){
+        let bullet = bullets.get();
+        if(bullet){
+            bullet.fire(x, y, angle);
+        }
+    }
     
 }
 
@@ -108,6 +130,13 @@ function canPlaceTurret(i, j) {
     return map[i][j] === 0;
 }
 
+function damageEnemy(enemy, bullet){
+    if(enemy.active === true && bullet.active === true){
+        enemy.takeDamage(bullet.getDamage(), bullet);
 
+        bullet.setActive(false);
+        bullet.setVisible(false);
+    }
+}
 
 export default LevelPath;

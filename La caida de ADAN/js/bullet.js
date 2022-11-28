@@ -7,12 +7,12 @@ class Bullet extends Phaser.GameObjects.Image {
         this.dx = 0;
         this.dy = 0;
         this.lifeSpan = 0;
-        this.damage = 10;
+        this.damage = 50;
 
         this.speed = Phaser.Math.GetSpeed(600, 1);
     }
 
-    shoot(x, y, angle) {
+    fire(x, y, angle) {
         this.setActive(true);
         this.setVisible(true);
 
@@ -22,6 +22,10 @@ class Bullet extends Phaser.GameObjects.Image {
         this.dy = Math.sin(angle);
 
         this.lifeSpan = 300;
+    }
+
+    getDamage(){
+        return this.damage;
     }
 
     update(time, delta){
