@@ -1,6 +1,7 @@
 import Bullet from './bullet.js';
-import Enemy from './enemy.js'
-import Turret from './turret.js'
+import Enemy from './enemy.js';
+import Turret from './turret.js';
+import Player from './player.js';
 
 var map =      [[ 0,-1, 0, 0, 0, 0, 0, 0, 0, 0],
                 [ 0,-1, 0, 0, 0, 0, 0, 0, 0, 0],
@@ -14,21 +15,22 @@ var map =      [[ 0,-1, 0, 0, 0, 0, 0, 0, 0, 0],
 let turrets;
 let enemies;
 let bullets;
+let secondPlayer;
 
 class LevelPath extends Phaser.Scene {
     preload() {
         this.load.atlas('sprites', 'assets/spritesheet.png', 'assets/spritesheet.json');
         this.load.image('bullet', 'assets/bullet.png');
     }
-
+    
     create() {
         this.graphics = this.add.graphics();
-
+        
         this.path = this.add.path(92, -32);
         this.path.lineTo(96, 164);
         this.path.lineTo(480, 164);
         this.path.lineTo(480, 544);
-
+        
         this.graphics.lineStyle(3, 0xffffff, 1);
         this.path.draw(this.graphics);
         this.drawGrid();
@@ -37,16 +39,18 @@ class LevelPath extends Phaser.Scene {
             classType: Enemy,
             runChildUpdate: true
         });
-
+        
         turrets = this.add.group({
             classType: Turret,
             runChildUpdate: true
         });
-
+        
         bullets = this.physics.add.group({
             classType: Bullet,
             runChildUpdate: true
         });
+        
+        this.firstPlayer = new Player(100);
 
         this.physics.add.overlap(enemies, bullets, damageEnemy);
 
