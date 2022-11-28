@@ -2,7 +2,7 @@ class Player {
     constructor(maxHp){
         this.maxHp = maxHp;
 
-        this.money = 0;
+        this.money = 50;
         this.currentHp = this.maxHp;
     }
 

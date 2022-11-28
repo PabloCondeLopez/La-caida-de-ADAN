@@ -16,6 +16,8 @@ let turrets;
 let enemies;
 let bullets;
 let secondPlayer;
+let firstPlayer = new Player(100);
+var scoreText;
 
 class LevelPath extends Phaser.Scene {
     preload() {
@@ -36,6 +38,8 @@ class LevelPath extends Phaser.Scene {
         this.path.draw(this.graphics);
         this.drawGrid();
 
+        scoreText = this.add.text(440, 16, 'Money: 50', { fontSize: '32px', fill: '#fff' });
+
         enemies = this.physics.add.group({
             classType: Enemy,
             runChildUpdate: true
@@ -51,12 +55,15 @@ class LevelPath extends Phaser.Scene {
             runChildUpdate: true
         });
         
-        this.firstPlayer = new Player(100);
+       
 
         this.physics.add.overlap(enemies, bullets, damageEnemy);
 
         this.nextEnemy = 0;
         this.input.on('pointerdown', this.placeTurret);
+    }
+    getFirstPlayer(){
+        return firstPlayer;
     }
 
     getEnemies(){
@@ -68,6 +75,7 @@ class LevelPath extends Phaser.Scene {
     }
 
     update(time, delta) {
+        scoreText.setText('Money: ' + firstPlayer.getMoney());
         if(time > this.nextEnemy){
             let enemy = enemies.get();
 
@@ -94,19 +102,22 @@ class LevelPath extends Phaser.Scene {
             this.graphics.lineTo(j * 64, 512);
         }
         this.graphics.strokePath();
+
     }
 
     placeTurret(pointer) {
         let i = Math.floor(pointer.y/64);
         let j = Math.floor(pointer.x/64);
+        
 
-        if(canPlaceTurret(i, j)){
+        if(canPlaceTurret(i, j, 20)){
             let turret = turrets.get();
             
             if(turret){
                 turret.setActive(true);
                 turret.setVisible(true);
                 turret.place(i, j, map);
+                firstPlayer.addMoney(-(turret.getCost()));
             }
         }
     }
@@ -131,8 +142,14 @@ class LevelPath extends Phaser.Scene {
     
 }
 
-function canPlaceTurret(i, j) {
-    return map[i][j] === 0;
+function canPlaceTurret(i, j, turretcost) {
+    var sample = false;
+    if(firstPlayer.getMoney()>= turretcost && map[i][j] === 0 ){
+        sample = true;
+    }
+    return sample
+    
+    //return 
 }
 
 function damageEnemy(enemy, bullet){

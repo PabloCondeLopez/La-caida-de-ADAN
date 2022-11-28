@@ -21,7 +21,7 @@ class Bullet extends Phaser.GameObjects.Image {
         this.dx = Math.cos(angle);
         this.dy = Math.sin(angle);
 
-        this.lifeSpan = 300;
+        this.lifeSpan = 3000;
     }
 
     getDamage(){

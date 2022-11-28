@@ -53,7 +53,7 @@ class Enemy extends Phaser.GameObjects.Image {
      }
 
      die(){
-        this.scene.firstPlayer.addMoney(this.moneyGiven);
+        this.scene.getFirstPlayer().addMoney(this.moneyGiven);
         this.destroy();
      }
  }
