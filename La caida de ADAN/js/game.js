@@ -21,7 +21,7 @@ const config = {
 let game = new Phaser.Game(config);
 
 let mainMenu = new MainMenu(gameWidth, gameHeight, game);
-let level1 = new LevelPath();
+let level1 = new LevelPath(gameWidth, gameHeight);
 game.scene.add('MainMenu', mainMenu);
 game.scene.add('Level1', level1);
 game.scene.start('MainMenu');

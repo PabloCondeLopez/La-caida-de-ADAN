@@ -3,14 +3,22 @@ import Enemy from './enemy.js';
 import Turret from './turret.js';
 import Player from './player.js';
 
-var map =      [[ 0,-1, 0, 0, 0, 0, 0, 0, 0, 0],
-                [ 0,-1, 0, 0, 0, 0, 0, 0, 0, 0],
-                [ 0,-1,-1,-1,-1,-1,-1,-1, 0, 0],
-                [ 0, 0, 0, 0, 0, 0, 0,-1, 0, 0],
-                [ 0, 0, 0, 0, 0, 0, 0,-1, 0, 0],
-                [ 0, 0, 0, 0, 0, 0, 0,-1, 0, 0],
-                [ 0, 0, 0, 0, 0, 0, 0,-1, 0, 0],
-                [ 0, 0, 0, 0, 0, 0, 0,-1, 0, 0]];
+var leftMap =       [[-1,-1,-1,-1,-1,-1,-1,-1,-1,-1,-1],
+                    [ -1,-1,-1,-1,-1,-1,-1,-1,-1,-1,-1],
+                    [ -1,-1, 0,-1,-1,-1,-1,-1,-1,-1,-1],
+                    [ -1,-1,-1,-1,-1,-1,-1,-1,-1,-1,-1],
+                    [ -1,-1, 0,-1,-1,-1,-1,-1,-1,-1,-1],
+                    [ -1,-1,-1,-1,-1,-1,-1,-1,-1,-1,-1],
+                    [ -1,-1,-1,-1,-1,-1,-1,-1,-1,-1,-1],
+                    [ -1,-1,-1,-1,-1,-1,-1,-1,-1,-1, 0],
+                    [ -1,-1,-1,-1,-1,-1,-1,-1,-1,-1,-1],
+                    [ -1,-1,-1,-1, 0,-1,-1,-1,-1,-1, 0],
+                    [ -1,-1,-1,-1,-1,-1,-1,-1,-1,-1,-1],
+                    [ -1,-1,-1,-1,-1,-1,-1, 0,-1,-1,-1],
+                    [ -1,-1,-1,-1,-1,-1,-1,-1,-1,-1,-1],
+                    [ -1,-1,-1,-1, 0,-1,-1,-1,-1,-1,-1],
+                    [ -1,-1,-1,-1,-1,-1,-1,-1,-1,-1,-1],
+                    [ -1,-1,-1,-1,-1,-1,-1,-1,-1,-1,-1]];
 
 let turrets;
 let enemies;
@@ -19,29 +27,37 @@ let secondPlayer;
 let firstPlayer = new Player(100);
 
 class LevelPath extends Phaser.Scene {
-    constructor(){
+    constructor(screenWidht, screenHeight){
         super();
 
         Phaser.Scene.call(this, {key: 'Level'})
+
+        this.screenWidht = screenWidht;
+        this.screenHeight = screenHeight;
     }
 
     preload() {
         this.load.image('turret', 'assets/metralleta high-res.png');
         this.load.image('enemy', 'assets/pixil-frame-0.png');
         this.load.image('bullet', 'assets/bullet.png');
+        this.load.image('map', 'assets/Mapa1.png')
     }
     
     create() {
+        this.add.image(this.screenWidht / 2, this.screenHeight / 2, 'map').setScale(0.2);
+
         this.graphics = this.add.graphics();
         
-        this.path = this.add.path(92, -32);
-        this.path.lineTo(96, 164);
-        this.path.lineTo(480, 164);
-        this.path.lineTo(480, 544);
+        this.path = this.add.path(0, 228);
+        this.path.lineTo(225, 228);
+        this.path.lineTo(225, 804);
+        this.path.lineTo(545, 804);
+        this.path.lineTo(545, 548);
+        this.path.lineTo(705, 548);
         
-        this.graphics.lineStyle(3, 0xffffff, 1);
-        this.path.draw(this.graphics);
-        this.drawGrid();
+        //this.graphics.lineStyle(3, 0xffffff, 1);
+        //this.path.draw(this.graphics);
+        //this.drawLeftGrid();
 
         this.scoreText = this.add.text(440, 16, 'Money: 50', { fontSize: '32px', fill: '#fff' });
 
@@ -94,17 +110,17 @@ class LevelPath extends Phaser.Scene {
         }
     }
 
-    drawGrid() {
+    drawLeftGrid() {
         this.graphics.lineStyle(1, 0x0000ff, 0.8);
 
-        for(var i = 0; i < 8; i++){
+        for(var i = 0; i < 17; i++){
             this.graphics.moveTo(0, i * 64);
-            this.graphics.lineTo(640, i * 64);
+            this.graphics.lineTo(this.screenWidht / 2 - 64, i * 64);
         }
 
-        for(var j = 0; j < 10; j++) {
+        for(var j = 0; j < 12; j++) {
             this.graphics.moveTo(j * 64, 0);
-            this.graphics.lineTo(j * 64, 512);
+            this.graphics.lineTo(j * 64, this.screenHeight);
         }
         this.graphics.strokePath();
 
@@ -121,7 +137,7 @@ class LevelPath extends Phaser.Scene {
             if(turret){
                 turret.setActive(true);
                 turret.setVisible(true);
-                turret.place(i, j, map);
+                turret.place(i, j, leftMap);
                 firstPlayer.addMoney(-(turret.getCost()));
             }
         }
@@ -149,12 +165,10 @@ class LevelPath extends Phaser.Scene {
 
 function canPlaceTurret(i, j, turretcost) {
     var sample = false;
-    if(firstPlayer.getMoney()>= turretcost && map[i][j] === 0 ){
+    if(firstPlayer.getMoney()>= turretcost && leftMap[i][j] === 0 ){
         sample = true;
     }
     return sample
-    
-    //return 
 }
 
 function damageEnemy(enemy, bullet){
