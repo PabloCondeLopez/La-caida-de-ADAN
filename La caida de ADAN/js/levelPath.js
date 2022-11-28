@@ -19,7 +19,8 @@ let secondPlayer;
 
 class LevelPath extends Phaser.Scene {
     preload() {
-        this.load.atlas('sprites', 'assets/spritesheet.png', 'assets/spritesheet.json');
+        this.load.image('turret', 'assets/metralleta high-res.png');
+        this.load.image('enemy', 'assets/pixil-frame-0.png');
         this.load.image('bullet', 'assets/bullet.png');
     }
     

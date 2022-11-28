@@ -2,7 +2,7 @@ class Turret extends Phaser.GameObjects.Image {
     constructor(scene) {
         super(scene, 0, 0);
 
-        Phaser.GameObjects.Image.call(this, scene, 0, 0, 'sprites', 'turret');
+        Phaser.GameObjects.Image.call(this, scene, 0, 0, 'turret');
 
         this.nextTick = 0;
         this.bullets = this.scene.getBullets();
