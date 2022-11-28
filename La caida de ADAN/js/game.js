@@ -1,15 +1,12 @@
 import LevelPath from "./levelPath.js";
+import MainMenu from "./mainMenu.js";
 
-const gameWidth = 640;
-const gameHeight = 512;
+const gameWidth = 1536;
+const gameHeight = 1024;
 
 //var player1 = new Player(1);
 //var player2 = new Player(2);
 //var buildManager = new BuildManager();
-
-//let mainMenu = new MainMenu('MainMenu');
-
-let level1 = new LevelPath();
 
 const config = {
     type: Phaser.AUTO,
@@ -18,10 +15,13 @@ const config = {
     physics: {
         default: 'arcade'
     },
-    scene: [ level1 ]
-
 };
 
+
 let game = new Phaser.Game(config);
-//game.scene.add('MainMenu', mainMenu);
-//game.scene.start('MainMenu');
+
+let mainMenu = new MainMenu(gameWidth, gameHeight, game);
+let level1 = new LevelPath();
+game.scene.add('MainMenu', mainMenu);
+game.scene.add('Level1', level1);
+game.scene.start('MainMenu');

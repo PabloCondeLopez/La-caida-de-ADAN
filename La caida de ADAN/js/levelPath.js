@@ -17,9 +17,14 @@ let enemies;
 let bullets;
 let secondPlayer;
 let firstPlayer = new Player(100);
-var scoreText;
 
 class LevelPath extends Phaser.Scene {
+    constructor(){
+        super();
+
+        Phaser.Scene.call(this, {key: 'Level'})
+    }
+
     preload() {
         this.load.image('turret', 'assets/metralleta high-res.png');
         this.load.image('enemy', 'assets/pixil-frame-0.png');
@@ -38,7 +43,7 @@ class LevelPath extends Phaser.Scene {
         this.path.draw(this.graphics);
         this.drawGrid();
 
-        scoreText = this.add.text(440, 16, 'Money: 50', { fontSize: '32px', fill: '#fff' });
+        this.scoreText = this.add.text(440, 16, 'Money: 50', { fontSize: '32px', fill: '#fff' });
 
         enemies = this.physics.add.group({
             classType: Enemy,
@@ -75,7 +80,7 @@ class LevelPath extends Phaser.Scene {
     }
 
     update(time, delta) {
-        scoreText.setText('Money: ' + firstPlayer.getMoney());
+        this.scoreText.setText('Money: ' + firstPlayer.getMoney());
         if(time > this.nextEnemy){
             let enemy = enemies.get();
 
