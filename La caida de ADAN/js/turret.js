@@ -1,56 +1,69 @@
 class Turret extends Phaser.GameObjects.Image {
+    constructor(scene) {
+        super(scene, 0, 0);
+
+        Phaser.GameObjects.Image.call(this, scene, 0, 0, 'turret');
+
+        this.nextTick = 0;
+        this.bullets = this.scene.getBullets();
+        this.enemies = this.scene.getLeftEnemies();
+        this.cost = 20;
+        this.energy = 10;
+        this.side = undefined;
+    }
+
+    placeLeft(i, j, map){
+        this.y = i * 64 + 32;
+        this.x = j * 64 + 32;
+        map[i][j] = 1;
+    }
+
+    placeRight(i, j, map) {
+        this.y = i * 64 + 32;
+        this.x = (j + 13) * 64 + 32;
+        map[i][j] = 1;
+    }
+
+    getCost(){
+        return this.cost;
+    }
     
-    
-    constructor (scene, dmg, range, energy, player, cell){
-        var enemy = null;
-        var attackRange = range;
-        var position = [cell.posX, cell.posY];
-        var energyRequired = energy
-        var owner = player;
-        Phaser.GameObjects.Image.call(this, scene, 0, 0, 'sprites', 'turret');
-        this.nextTic = 0;
+    getEnergy(){
+        return this.energy;
     }
 
-    fire (){
-        
-        if(this.enemyValid(this.enemy)) {
-            var angle = Phaser.Math.Angle.Between(this.position[0], this.position[1], enemy.follower.vec.x, enemy.follower.vec.y);
-            addBullet(this.x, this.y, angle);
-            this.angle = (angle + Math.PI/2) * Phaser.Math.RAD_TO_DEG;
-            enemy.damage(this.damage);
-        }
-        else{
-            enemy = getEnemy(enemyList);
+    setBullets(bullets){
+        this.bullets = bullets;
+    }
+
+    setEnemies(enemies){
+        this.enemies = enemies;
+    }
+
+    getSide(){
+        return this.side;
+    }
+
+    setSide(side){
+        this.side = side;
+    }
+
+    update(time, delta){
+        if(time > this.nextTick){
+            this.fire();
+            this.nextTick = time + 1000;
         }
     }
 
-    getEnemy(enemyList){
-        var i = 0;
-       while(!this.enemyValid(this.enemy)){
-        if(this.enemyValid(enemyList[i])){
-            enemy = enemyList[i];
-        }
-        i++;
-       }
-    }
+    fire() {
+        var enemy = this.scene.getEnemy(this.x, this.y, 300, this.getSide());
 
-    enemyValid(enemy){
-        if(enemy.isAlive() && (Math.abs((enemy.follower.vec.y - this.position[0]) + (enemy.follower.vec.y - this.position[1])) <= this.attackRange)){
-            return true;
-        }
-        else
-        return false;
-    }
-
-
-    
-    update(time, delta)
-    {
-        if(time > this.nextTic) {
-            if(energyRequired<=energy)
-                this.fire();
-
-            this.nextTic = time + 1000;
+        if(enemy){
+            var angle = Phaser.Math.Angle.Between(this.x, this.y, enemy.x, enemy.y);
+            this.scene.addBullet(this.x, this.y, angle);
+            this.angle = (angle, Math.PI/2) * Phaser.Math.RAD_TO_DEG;
         }
     }
 }
+
+export default Turret;
