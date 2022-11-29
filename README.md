@@ -22,7 +22,7 @@ El inicio del juego se mostrará de la siguiente forma
 ![image](https://github.com/PabloCondeLopez/La-caida-de-ADAN/blob/main/IMG/Fondo%20Nuevo.png)
 Se ha diseñado la escena debido a la temática del juego, la cuadrícula de color neon. El fondo de color frío con un rayo, que representa una crisis se está acercando.
 
-Después de darle al botón historia, se inicia el juego.
+Después de darle al botón Endless, se inicia el juego.
 ![image](https://github.com/PabloCondeLopez/La-caida-de-ADAN/blob/main/IMG/Juego.png)
 ![image](https://github.com/PabloCondeLopez/La-caida-de-ADAN/blob/main/IMG/Pantalla%20con%20torretas.png)
 Los robots saldran por ambos lados, siguiendo un pathing que se ha predeterminado, una vez que se haya llegado al medio de la pantalla,resta la vida del jugador de 10 en 10, y si la vida del jugador llega a 0,pierde. En las casillas que contiene un enchufe gris y azul, es donde se podrán colocar las torretas para derrotar a los robots y defender la base.
