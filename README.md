@@ -20,3 +20,15 @@ Tablero HacknPlan: https://app.hacknplan.com/p/173818/kanban?boardId=477013
 
 El inicio del juego se mostrará de la siguiente forma
 ![image](https://github.com/PabloCondeLopez/La-caida-de-ADAN/blob/main/IMG/Inicio.png)
+Se ha diseñado la escena debido a la temática del juego, la cuadrícula de color neon. El fondo de color frío con un rayo, que representa una crisis se está acercando.
+
+Después de darle al botón historia, se inicia el juego.
+![image](https://github.com/PabloCondeLopez/La-caida-de-ADAN/blob/main/IMG/Juego.png)
+Los robots saldran por ambos lados, siguiendo un pathing que se ha predeterminado, una vez que se haya llegado al medio de la pantalla, el jugador pierde. En las casillas que contiene un enchufe gris y azul, es donde se podrán colocar las torretas para derrotar a los robots y defender la base.
+
+Los controles serán lo siguiente: El jugador 1 controla la parte izquierda de la pantalla, mediante teclas WASD como movimiento de la casilla, Q para poner torretas ofensivas, y E para poner torretas regeneradoras. El jugador 2, que controla el otro lado de la pantalla, usa el raton, dando un click izquierdo, y moviendo el raton permite navegar libremente su lado.
+
+Cuando el robot llega a la mitad de pantalla, aparece una pantalla de derrota.
+![image]https://github.com/PabloCondeLopez/La-caida-de-ADAN/blob/main/IMG/Derrota.png
+Solo se puede salir de la partida si se quiere reintentar pasar el nivel.
+
