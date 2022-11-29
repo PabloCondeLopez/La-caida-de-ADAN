@@ -46,7 +46,6 @@ class MainMenu extends Phaser.Scene {
 
     startLevel(){
         game.scene.start('Level')
-        game.scene.stop('MainMenu')
     }
 }
 

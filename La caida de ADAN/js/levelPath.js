@@ -145,6 +145,7 @@ class LevelPath extends Phaser.Scene {
         this.physics.add.overlap(rightEnemies, bullets, damageEnemy);
 
         this.nextEnemy = 0;
+        this.pauseOnScene = false;
 
         this.input.on('pointerdown', this.onClickHandler);
         this.input.keyboard.on('keydown', this.onKeyboardHandler);
@@ -168,7 +169,15 @@ class LevelPath extends Phaser.Scene {
         this.secondPlayerEnergyText.setText("Energy: " + secondPlayer.getEnergy());
 
         if(levelPaused) {
-            this.scene.launch('PauseMenu');
+            levelPaused = false;
+
+            if(!this.pauseOnScene) {
+                this.scene.launch('PauseMenu');
+                this.pauseOnScene = true;
+            } else {
+                this.scene.wake('PauseMenu');
+            }
+            
             this.scene.pause();
         }
 
@@ -309,8 +318,6 @@ class LevelPath extends Phaser.Scene {
         let i = Math.floor(pointer.y/64);
         let j = Math.floor((pointer.x / 64) % 13);
 
-        console.log(i + ', ' + j);
-
         if(canPlaceTurretRight(i, j, 20, 10)) {
             let turret = turrets.get();
 
@@ -330,17 +337,17 @@ class LevelPath extends Phaser.Scene {
         var rightEnemyUnits = rightEnemies.getChildren();
     
         if(side === 'left'){
-        for(var i = 0; i < leftEnemyUnits.length; i++){
-            if(leftEnemyUnits[i].active && Phaser.Math.Distance.Between(x, y, leftEnemyUnits[i].x, leftEnemyUnits[i].y) <= distance)
-                return leftEnemyUnits[i];
+            for(var i = 0; i < leftEnemyUnits.length; i++){
+                if(leftEnemyUnits[i].active && Phaser.Math.Distance.Between(x, y, leftEnemyUnits[i].x, leftEnemyUnits[i].y) <= distance)
+                    return leftEnemyUnits[i];
+            }
         }
-    }
         else if(side === 'right'){
-        for(var i = 0; i < rightEnemyUnits.length; i++){
-            if(rightEnemyUnits[i].active && Phaser.Math.Distance.Between(x, y, rightEnemyUnits[i].x, rightEnemyUnits[i].y) <= distance)
-                return rightEnemyUnits[i];
+            for(var i = 0; i < rightEnemyUnits.length; i++){
+                if(rightEnemyUnits[i].active && Phaser.Math.Distance.Between(x, y, rightEnemyUnits[i].x, rightEnemyUnits[i].y) <= distance)
+                    return rightEnemyUnits[i];
+            }
         }
-    }
     
         return false;
     }

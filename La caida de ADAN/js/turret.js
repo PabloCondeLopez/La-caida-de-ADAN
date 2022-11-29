@@ -38,7 +38,6 @@ class Turret extends Phaser.GameObjects.Image {
 
     setEnemies(enemies){
         this.enemies = enemies;
-        console.log(this.enemies);
     }
 
     getSide(){
