@@ -110,13 +110,13 @@ class LevelPath extends Phaser.Scene {
         //rightPath.draw(graphics);
         //this.drawRightGrid();
 
-        this.firstPlayerMoneyText = this.add.text(20, 16, 'Money: 50', { fontSize: '20px', fill: '#fff', fontFamily: 'Pixeled'}).setStroke('#000', 4);
-        this.firstPlayerHPText = this.add.text(560, 16, 'HP: ' + firstPlayer.getMaxHp(), {fontSize: '20px', fill: '#fff', fontFamily: 'Pixeled'}).setStroke('#000', 4);
-        this.firstPlayerEnergyText = this.add.text(20, 964, 'Energy: ' + firstPlayer.getEnergy(), {fontSize: '20px', fill: '#fff', fontFamily: 'Pixeled'}).setStroke('#000', 4);
+        this.firstPlayerMoneyText = this.add.text(20, 16, 'Peseta Coins: 50', { fontSize: '20px', fill: '#fff', fontFamily: 'Pixeled'}).setStroke('#000', 4);
+        this.firstPlayerHPText = this.add.text(520, 16, 'Vida: ' + firstPlayer.getMaxHp(), {fontSize: '20px', fill: '#fff', fontFamily: 'Pixeled'}).setStroke('#000', 4);
+        this.firstPlayerEnergyText = this.add.text(20, 964, 'Energía: ' + firstPlayer.getEnergy(), {fontSize: '20px', fill: '#fff', fontFamily: 'Pixeled'}).setStroke('#000', 4);
 
-        this.secondPlayerMoneyText = this.add.text(1350, 16, 'Money: 50', { fontSize: '20px', fill: '#fff', fontFamily: 'Pixeled'}).setStroke('#000', 4);
-        this.secondPlayerHPText = this.add.text(870, 16, 'HP: ' + firstPlayer.getMaxHp(), {fontSize: '20px', fill: '#fff', fontFamily: 'Pixeled'}).setStroke('#000', 4);
-        this.secondPlayerEnergyText = this.add.text(1350, 964, 'Energy: ' + secondPlayer.getEnergy(), {fontSize: '20px', fill: '#fff', fontFamily: 'Pixeled'}).setStroke('#000', 4);
+        this.secondPlayerMoneyText = this.add.text(1230, 16, 'Peseta Coins: 50', { fontSize: '20px', fill: '#fff', fontFamily: 'Pixeled'}).setStroke('#000', 4);
+        this.secondPlayerHPText = this.add.text(870, 16, 'Vida: ' + firstPlayer.getMaxHp(), {fontSize: '20px', fill: '#fff', fontFamily: 'Pixeled'}).setStroke('#000', 4);
+        this.secondPlayerEnergyText = this.add.text(1320, 964, 'Energía: ' + secondPlayer.getEnergy(), {fontSize: '20px', fill: '#fff', fontFamily: 'Pixeled'}).setStroke('#000', 4);
 
         leftEnemies = this.physics.add.group({
             classType: Enemy,
@@ -157,7 +157,7 @@ class LevelPath extends Phaser.Scene {
 
         firstPlayer.setEnergy(20);
         secondPlayer.setEnergy(20);
-        
+
         firstPlayer.setMoney(50);
         secondPlayer.setMoney(50);
     }
@@ -173,13 +173,13 @@ class LevelPath extends Phaser.Scene {
     update(time, delta) {
        
 
-        this.firstPlayerMoneyText.setText('Money: ' + firstPlayer.getMoney());
-        this.firstPlayerHPText.setText("HP: " + firstPlayer.getCurrentHP());
-        this.firstPlayerEnergyText.setText("Energy: " + firstPlayer.getEnergy());
+        this.firstPlayerMoneyText.setText('Peseta Coins: ' + firstPlayer.getMoney());
+        this.firstPlayerHPText.setText("Vida: " + firstPlayer.getCurrentHP());
+        this.firstPlayerEnergyText.setText("Energía: " + firstPlayer.getEnergy());
 
-        this.secondPlayerMoneyText.setText('Money: ' + secondPlayer.getMoney());
-        this.secondPlayerHPText.setText("HP: " + secondPlayer.getCurrentHP());
-        this.secondPlayerEnergyText.setText("Energy: " + secondPlayer.getEnergy());
+        this.secondPlayerMoneyText.setText('Peseta Coins: ' + secondPlayer.getMoney());
+        this.secondPlayerHPText.setText("Vida: " + secondPlayer.getCurrentHP());
+        this.secondPlayerEnergyText.setText("Energía: " + secondPlayer.getEnergy());
 
         if(levelPaused) {
             levelPaused = false;
