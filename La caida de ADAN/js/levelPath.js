@@ -49,6 +49,7 @@ let leftEnemies;
 let rightEnemies;
 let energyTurrets;
 
+
 let bullets;
 
 let firstPlayer = new Player(100);
@@ -79,6 +80,7 @@ class LevelPath extends Phaser.Scene {
         this.load.image('bullet', 'assets/bullet.png');
         this.load.image('map', 'assets/Mapa1.png');
         this.load.image('select', 'assets/select.png');
+       
     }
     
     create() {
@@ -160,6 +162,8 @@ class LevelPath extends Phaser.Scene {
     }
 
     update(time, delta) {
+       
+
         this.firstPlayerMoneyText.setText('Money: ' + firstPlayer.getMoney());
         this.firstPlayerHPText.setText("HP: " + firstPlayer.getCurrentHP());
         this.firstPlayerEnergyText.setText("Energy: " + firstPlayer.getEnergy());
@@ -181,9 +185,17 @@ class LevelPath extends Phaser.Scene {
             this.scene.pause();
         }
 
-        if(firstPlayer.getCurrentHP() <= 0 || secondPlayer.getCurrentHP() <= 0)
-            this.endGame();
+        if(firstPlayer.getCurrentHP() <= 0 || secondPlayer.getCurrentHP() <= 0){
 
+            firstPlayer.setHP(100);
+            secondPlayer.setHP(100);
+            firstPlayer.setEnergy(20);
+            secondPlayer.setEnergy(20);
+            firstPlayer.setMoney(50);
+            secondPlayer.setMoney(50);
+
+            this.endGame();
+        }
         if(time > this.nextEnemy){
             let leftEnemy = leftEnemies.get();
             let rightEnemy = rightEnemies.get();
@@ -240,7 +252,7 @@ class LevelPath extends Phaser.Scene {
 
     onKeyboardHandler(event) {
         switch(event.key) {
-            case('Enter'):
+            case('e' || 'E'):
                 let i = Math.floor(keyPosY);
                 let j = Math.floor(keyPosX);
 
@@ -259,7 +271,7 @@ class LevelPath extends Phaser.Scene {
 
                 break;
 
-            case('x' || 'X'):
+            case('q' || 'Q'):
                 let m = Math.floor(keyPosY);
                 let n = Math.floor(keyPosX);
 
@@ -314,9 +326,14 @@ class LevelPath extends Phaser.Scene {
 
     onClickHandler(pointer) {
         let i = Math.floor(pointer.y/64);
-        let j = Math.floor((pointer.x / 64) % 13);
+        let j;
+        if(pointer.x/64  >= 13){
+        j = Math.floor((pointer.x / 64) % 13);
+        }
+        else 
+            j=undefined;
 
-        if(pointer.button === 2){
+        if(pointer.button === 0){
 
         if(canPlaceTurretRight(i, j, 20, 10)) {
             let turret = turrets.get();
@@ -332,7 +349,7 @@ class LevelPath extends Phaser.Scene {
         }
     }
 
-        if (pointer.button===0){
+        if (pointer.button===1){
             
             if(canPlaceTurretRight(i, j, 20, 0)) {
                 let energyTurret = energyTurrets.get();
@@ -378,9 +395,12 @@ class LevelPath extends Phaser.Scene {
     }
 
     endGame(){
-        this.add.text(this.screenWidht / 2, this.screenHeight / 2, 'GAME OVER', { fontSize: '110px', fill: '#fff', fontFamily: 'Pixeled'}).setStroke('#000', 10).setOrigin(0.5, 0.5);
 
+    
+
+        this.scene.launch('GameOver');
         this.scene.pause();
+        
     }
     
 }

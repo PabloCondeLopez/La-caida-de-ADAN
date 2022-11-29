@@ -11,6 +11,10 @@ class Player {
         this.money += ammount;
     }
 
+    setMoney(money){
+        this.money = money
+    }
+
     getMoney() {
         return this.money;
     }
@@ -19,6 +23,9 @@ class Player {
         return this.maxHp;
     }
 
+    setHP(hp){
+        this.currentHp = hp;
+    }
     getCurrentHP() {
         return this.currentHp;
     }
@@ -29,6 +36,10 @@ class Player {
 
     addEnergy(amount){
         this.energy+=amount;
+    }
+
+    setEnergy(energy){
+        this.energy = energy;
     }
     
     getEnergy(){
