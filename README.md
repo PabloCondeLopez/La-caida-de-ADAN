@@ -24,10 +24,11 @@ Se ha diseñado la escena debido a la temática del juego, la cuadrícula de col
 
 Después de darle al botón Endless, se inicia el juego.
 ![image](https://github.com/PabloCondeLopez/La-caida-de-ADAN/blob/main/IMG/Juego.png)
-Los robots saldrán por ambos lados, siguiendo un pathing que se ha predeterminado, una vez que se haya llegado al medio de la pantalla, resta la vida del jugador de 10 en 10, y si la vida del jugador llega a 0, pierde. En las casillas que contiene un enchufe gris y azul, es donde se podrán colocar las torretas para derrotar a los robots y defender la base. 
+Los robots saldrán por ambos lados, siguiendo un pathing que se ha predeterminado, una vez que se haya llegado al medio de la pantalla, resta la vida del jugador de 10 en 10, y si la vida del jugador llega a 0, pierde. En las casillas que contiene un enchufe gris y azul, es donde se podrán colocar las torretas para derrotar a los robots y defender la base. Ejemplo de un estado del juego con un torretas colocadas. Se podrán colocar torretas de 2 tipos: generadoras de energía (verdes) o de ataque (naranjas).
 
+Al pulsar escape se accede al menú de pausa:
 ![image](https://github.com/PabloCondeLopez/La-caida-de-ADAN/blob/main/IMG/Menu%20Pausa.png)
-Ejemplo de un estado del juego con un torretas colocadas. Se podrán colocar torretas de 2 tipos: generadoras de energía (verdes) o de ataque (naranjas).
+Desde aquí puedes continuar o salir.
 
 ![image](https://github.com/PabloCondeLopez/La-caida-de-ADAN/blob/main/IMG/Pantalla%20con%20torretas.png)
 
