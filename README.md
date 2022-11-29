@@ -45,4 +45,12 @@ El diagrama del flujo serán lo siguiente
 
 El diseño de los niveles serán lo siguiente
 ![image](https://github.com/PabloCondeLopez/La-caida-de-ADAN/blob/main/IMG/dise%C3%B1o%400.25x.jpg)
+![image](https://github.com/PabloCondeLopez/La-caida-de-ADAN/blob/main/IMG/Armas.PNG)
+![image](https://github.com/PabloCondeLopez/La-caida-de-ADAN/blob/main/IMG/Armas2.PNG)
+![image](https://github.com/PabloCondeLopez/La-caida-de-ADAN/blob/main/IMG/Enemigos.PNG)
+![image](https://github.com/PabloCondeLopez/La-caida-de-ADAN/blob/main/IMG/Personajes.PNG)
+![image](https://github.com/PabloCondeLopez/La-caida-de-ADAN/blob/main/IMG/Interfaces.PNG)
+![image](https://github.com/PabloCondeLopez/La-caida-de-ADAN/blob/main/IMG/Niveles.PNG)
+
+
 
