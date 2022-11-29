@@ -48,7 +48,7 @@ let turrets;
 let leftEnemies;
 let rightEnemies;
 let energyTurrets;
-
+let enemyHP = 100;
 
 let bullets;
 
@@ -80,7 +80,7 @@ class LevelPath extends Phaser.Scene {
         this.load.image('bullet', 'assets/bullet.png');
         this.load.image('map', 'assets/Mapa1.png');
         this.load.image('select', 'assets/select.png');
-       
+        this.load.image('energyTurret', 'assets/energia.png');
     }
     
     create() {
@@ -197,10 +197,12 @@ class LevelPath extends Phaser.Scene {
             this.endGame();
         }
         if(time > this.nextEnemy){
+            enemyHP *= 1.05;
             let leftEnemy = leftEnemies.get();
             let rightEnemy = rightEnemies.get();
 
             if(leftEnemy){
+                leftEnemy.setHP(enemyHP);
                 leftEnemy.setActive(true);
                 leftEnemy.setVisible(true);
 
@@ -208,6 +210,7 @@ class LevelPath extends Phaser.Scene {
             }
 
             if(rightEnemy){
+                rightEnemy.setHP(enemyHP);
                 rightEnemy.setActive(true);
                 rightEnemy.setVisible(true);
 
