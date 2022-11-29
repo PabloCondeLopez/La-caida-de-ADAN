@@ -316,6 +316,8 @@ class LevelPath extends Phaser.Scene {
         let i = Math.floor(pointer.y/64);
         let j = Math.floor((pointer.x / 64) % 13);
 
+        if(pointer.button === 2){
+
         if(canPlaceTurretRight(i, j, 20, 10)) {
             let turret = turrets.get();
 
@@ -326,6 +328,23 @@ class LevelPath extends Phaser.Scene {
                 turret.placeRight(i, j, rightMap);
                 secondPlayer.addMoney(-turret.getCost());
                 secondPlayer.addEnergy(-turret.getEnergy());
+            }
+        }
+    }
+
+        if (pointer.button===0){
+            
+            if(canPlaceTurretRight(i, j, 20, 0)) {
+                let energyTurret = energyTurrets.get();
+
+                if(energyTurret) {
+                    energyTurret.setActive(true);
+                    energyTurret.setVisible(true);
+                    energyTurret.setSide('left');
+                    energyTurret.placeRight(i, j, rightMap);
+                    secondPlayer.addMoney(-energyTurret.getCost());
+                    secondPlayer.addEnergy(energyTurret.getEnergy());
+                }
             }
         }
     }
