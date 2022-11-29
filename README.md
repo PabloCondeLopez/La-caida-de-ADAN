@@ -24,6 +24,7 @@ Se ha diseñado la escena debido a la temática del juego, la cuadrícula de col
 
 Después de darle al botón historia, se inicia el juego.
 ![image](https://github.com/PabloCondeLopez/La-caida-de-ADAN/blob/main/IMG/Juego.png)
+![image](https://github.com/PabloCondeLopez/La-caida-de-ADAN/blob/main/IMG/Pantalla%20con%20torretas.png)
 Los robots saldran por ambos lados, siguiendo un pathing que se ha predeterminado, una vez que se haya llegado al medio de la pantalla, el jugador pierde. En las casillas que contiene un enchufe gris y azul, es donde se podrán colocar las torretas para derrotar a los robots y defender la base.
 
 Los controles serán lo siguiente: El jugador 1 controla la parte izquierda de la pantalla, mediante teclas WASD como movimiento de la casilla, Q para poner torretas ofensivas, y E para poner torretas regeneradoras. El jugador 2, que controla el otro lado de la pantalla, usa el raton, dando un click izquierdo para asignar una torreta y la rueda para asignar una regeneradora, y moviendo el raton permite navegar libremente su lado.
