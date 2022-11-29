@@ -40,3 +40,9 @@ Cuando el robot llega a la mitad de pantalla, aparece una pantalla de derrota.
 ![image](https://github.com/PabloCondeLopez/La-caida-de-ADAN/blob/main/IMG/Gameover.PNG)
 Solo se puede salir de la partida si se quiere reintentar pasar el nivel.
 
+El diagrama del flujo serán lo siguiente
+![image](https://github.com/PabloCondeLopez/La-caida-de-ADAN/blob/main/IMG/unknown.png)
+
+El diseño de los niveles serán lo siguiente
+![image](https://github.com/PabloCondeLopez/La-caida-de-ADAN/blob/main/IMG/dise%C3%B1o%400.25x.jpg)
+
