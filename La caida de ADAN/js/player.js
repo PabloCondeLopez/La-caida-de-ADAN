@@ -13,6 +13,18 @@ class Player {
     getMoney() {
         return this.money;
     }
+
+    getMaxHp(){
+        return this.maxHp;
+    }
+
+    getCurrentHP() {
+        return this.currentHp;
+    }
+
+    takeDamage(ammount) {
+        this.currentHp -= ammount;
+    }
 }
 
 export default Player;

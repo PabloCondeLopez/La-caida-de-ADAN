@@ -10,9 +10,10 @@ class Enemy extends Phaser.GameObjects.Image {
              vec: new Phaser.Math.Vector2()
          };
  
-         this.speed = 1/10000;
+         this.speed = 5/100000;
          this.maxHP = 100;
          this.currentHP = this.maxHP;
+         this.damageAmmount = 10;
          this.moneyGiven = 10;
      }
  
@@ -21,21 +22,27 @@ class Enemy extends Phaser.GameObjects.Image {
         
          this.follower.t += this.speed * delta;
  
-         this.scene.path.getPoint(this.follower.t, this.follower.vec);
+         this.path.getPoint(this.follower.t, this.follower.vec);
  
          this.setPosition(this.follower.vec.x, this.follower.vec.y);
  
          if(this.follower.t >= 1){
              this.setActive(false);
              this.setVisible(false);
+
+             this.damagedPlayer.takeDamage(this.damageAmmount);
          }
      }
  
-     startOnPath() {
+     startOnPath(path, moneyPlayer, damagedPlayer) {
          this.follower.t = 0;
  
-         this.scene.path.getPoint(this.follower.t, this.follower.vec);
+         path.getPoint(this.follower.t, this.follower.vec);
          this.setPosition(this.follower.vec.x, this.follower.vec.y);
+
+         this.path = path;
+         this.moneyPlayer = moneyPlayer;
+         this.damagedPlayer = damagedPlayer;
      }
  
      getHP(){
@@ -53,7 +60,7 @@ class Enemy extends Phaser.GameObjects.Image {
      }
 
      die(){
-        this.scene.getFirstPlayer().addMoney(this.moneyGiven);
+        this.moneyPlayer.addMoney(this.moneyGiven);
         this.destroy();
      }
  }
