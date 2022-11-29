@@ -24,4 +24,4 @@ let pauseMenu = new PauseMenu(gameWidth, gameHeight);
 game.scene.add('MainMenu', mainMenu);
 game.scene.add('Level', level1);
 game.scene.add('Pause', pauseMenu);
-game.scene.start('Level');
+game.scene.start('MainMenu');

@@ -23,8 +23,6 @@ class PauseMenu extends Phaser.Scene {
         graphics.alpha = 0.75;
         graphics.fillRectShape(rect);
 
-        this.pauseText = this.add.text(this.gameWidth / 2, this.gameHeigth / 2 - 250, 'PAUSE', { fontSize: '60px', color: '#fff', fontFamily: 'Pixeled'}).setStroke('#000', 10).setOrigin(0.5, 0.5);
-
         this.resumeButton = this.add.image(this.gameWidth / 2, this.gameHeigth / 2 - 70, 'resumeButton');
         this.resumeButton.setInteractive();
         this.resumeButton.on('pointerdown', this.onResumeGameHandler);
@@ -33,10 +31,10 @@ class PauseMenu extends Phaser.Scene {
         this.quitButton.setInteractive();
         this.quitButton.on('pointerdown', this.onQuitGameHandler);
 
-        this.pauseText = this.add.text(this.gameWidth / 2, this.gameHeigth / 2 - 250, 'PAUSE', { fontSize: '60px', color: '#fff', fontFamily: 'Pixeled'}).setStroke('#000', 10).setOrigin(0.5, 0.5);
+        this.pauseText = this.add.text(this.gameWidth / 2, this.gameHeigth / 2 - 250, 'PAUSA', { fontSize: '60px', color: '#fff', fontFamily: 'Pixeled'}).setStroke('#000', 10).setOrigin(0.5, 0.5);
 
-        this.resumeText = this.add.text(this.gameWidth / 2 + 30, this.gameHeigth / 2 - 75, 'Resume', { fontSize: '30px', color: '#fff', fontFamily: 'Pixeled'}).setStroke('#000', 4).setOrigin(0.5, 0.5);
-        this.quitText = this.add.text(this.gameWidth / 2 + 30, this.gameHeigth / 2 + 200, 'Quit', { fontSize: '30px', color: '#fff', fontFamily: 'Pixeled'}).setStroke('#000', 4).setOrigin(0.5, 0.5);
+        this.resumeText = this.add.text(this.gameWidth / 2 + 30, this.gameHeigth / 2 - 75, 'Continuar', { fontSize: '23px', color: '#fff', fontFamily: 'Pixeled'}).setStroke('#000', 5).setOrigin(0.5, 0.5);
+        this.quitText = this.add.text(this.gameWidth / 2 + 30, this.gameHeigth / 2 + 195, 'Salir', { fontSize: '30px', color: '#fff', fontFamily: 'Pixeled'}).setStroke('#000', 5).setOrigin(0.5, 0.5);
 
         this.input.keyboard.on('keydown-ESC', this.onResumeGameHandler)
     }

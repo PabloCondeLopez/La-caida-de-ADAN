@@ -244,8 +244,6 @@ class LevelPath extends Phaser.Scene {
                 let i = Math.floor(keyPosY);
                 let j = Math.floor(keyPosX);
 
-                console.log(leftMap[i][j]);
-
                 if(canPlaceTurretLeft(i, j, 20, 0)) {
                     let energyTurret = energyTurrets.get();
 
