@@ -10,7 +10,7 @@ class Enemy extends Phaser.GameObjects.Image {
              vec: new Phaser.Math.Vector2()
          };
  
-         this.speed = 15/100000;
+         this.speed = 8/100000;
          this.maxHP = 100;
          this.currentHP = this.maxHP;
          this.damageAmmount = 10;
@@ -45,6 +45,10 @@ class Enemy extends Phaser.GameObjects.Image {
  
      getHP(){
          return this.currentHP;
+     }
+
+     setHP(hp){
+        this.currentHP = hp;
      }
  
      takeDamage(damage, bullet){
