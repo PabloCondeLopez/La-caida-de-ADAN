@@ -22,7 +22,7 @@ El inicio del juego se mostrará de la siguiente forma
 ![image](https://github.com/PabloCondeLopez/La-caida-de-ADAN/blob/main/IMG/Fondo%20Nuevo.png)
 Se ha diseñado la escena debido a la temática del juego, la cuadrícula de color neon. El fondo de color frío con un rayo, que representa una crisis se está acercando.
 
-Después de darle al botón Endless, se inicia el juego.
+Después de darle al botón Infinito, se inicia el juego.
 ![image](https://github.com/PabloCondeLopez/La-caida-de-ADAN/blob/main/IMG/Juego.png)
 Durante el juego, el jugador tendrá la posibilidad de pausar el juego por cualquier razón.
 ![image](https://github.com/PabloCondeLopez/La-caida-de-ADAN/blob/main/IMG/Menu%20Pausa.png)
