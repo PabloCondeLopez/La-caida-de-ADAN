@@ -2,6 +2,7 @@ import Bullet from './bullet.js';
 import Enemy from './enemy.js';
 import Turret from './turret.js';
 import Player from './player.js';
+import EnergyTurret from './energyTurret.js';
 import BuyMenu from './buyMenu.js';
 
 var leftMap =       [[-1,-1,-1,-1,-1,-1,-1,-1,-1,-1,-1],
@@ -46,6 +47,7 @@ let rightPath;
 let turrets;
 let leftEnemies;
 let rightEnemies;
+let energyTurrets;
 
 let bullets;
 
@@ -124,6 +126,11 @@ class LevelPath extends Phaser.Scene {
             runChildUpdate: true
         });
         
+        energyTurrets = this.add.group({
+            classType: EnergyTurret,
+            runChildUpdate: true
+        })
+
         turrets = this.add.group({
             classType: Turret,
             runChildUpdate: true
@@ -228,16 +235,37 @@ class LevelPath extends Phaser.Scene {
                 let i = Math.floor(keyPosY);
                 let j = Math.floor(keyPosX);
 
-                console.log(rightMap[i][j]);
+                console.log(leftMap[i][j]);
 
-                if(canPlaceTurretLeft(i, j, 20, 10)) {
+                if(canPlaceTurretLeft(i, j, 20, 0)) {
+                    let energyTurret = energyTurrets.get();
+
+                    if(energyTurret) {
+                        energyTurret.setActive(true);
+                        energyTurret.setVisible(true);
+                        energyTurret.setSide('left');
+                        energyTurret.placeLeft(i, j, leftMap);
+                        firstPlayer.addMoney(-energyTurret.getCost());
+                        firstPlayer.addEnergy(energyTurret.getEnergy());
+                    }
+                }
+
+                break;
+
+            case('x' || 'X'):
+                let m = Math.floor(keyPosY);
+                let n = Math.floor(keyPosX);
+
+                console.log(leftMap[m][n]);
+
+                if(canPlaceTurretLeft(m, n, 20, 10)) {
                     let turret = turrets.get();
 
                     if(turret) {
                         turret.setActive(true);
                         turret.setVisible(true);
-                        turret.setSide('right');
-                        turret.placeLeft(i, j, rightMap);
+                        turret.setSide('left');
+                        turret.placeLeft(m, n, leftMap);
                         firstPlayer.addMoney(-turret.getCost());
                         firstPlayer.addEnergy(-turret.getEnergy());
                     }
@@ -289,14 +317,14 @@ class LevelPath extends Phaser.Scene {
             if(turret){
                 turret.setActive(true);
                 turret.setVisible(true);
-                turret.setSide('left');
-                turret.placeRight(i, j, leftMap);
+                turret.setSide('right');
+                turret.placeRight(i, j, rightMap);
                 secondPlayer.addMoney(-turret.getCost());
                 secondPlayer.addEnergy(-turret.getEnergy());
             }
         }
     }
-    
+
     getEnemy(x, y, distance, side) {
         var leftEnemyUnits = leftEnemies.getChildren();
         var rightEnemyUnits = rightEnemies.getChildren();
