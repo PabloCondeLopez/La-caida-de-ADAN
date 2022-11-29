@@ -52,10 +52,8 @@ let bullets;
 let firstPlayer = new Player(100);
 let secondPlayer = new Player(100);
 
-let keyPosX = 23;
+let keyPosX = 0;
 let keyPosY = 0;
-
-let normalizedKeyPosX = 10;
 
 let selectImage;
 
@@ -228,36 +226,34 @@ class LevelPath extends Phaser.Scene {
         switch(event.key) {
             case('Enter'):
                 let i = Math.floor(keyPosY);
-                let j = Math.floor(normalizedKeyPosX);
+                let j = Math.floor(keyPosX);
 
                 console.log(rightMap[i][j]);
 
-                if(canPlaceTurretRight(i, j, 20, 10)) {
+                if(canPlaceTurretLeft(i, j, 20, 10)) {
                     let turret = turrets.get();
 
                     if(turret) {
                         turret.setActive(true);
                         turret.setVisible(true);
                         turret.setSide('right');
-                        turret.placeRight(i, j, rightMap);
-                        secondPlayer.addMoney(-turret.getCost());
-                        secondPlayer.addEnergy(-turret.getEnergy());
+                        turret.placeLeft(i, j, rightMap);
+                        firstPlayer.addMoney(-turret.getCost());
+                        firstPlayer.addEnergy(-turret.getEnergy());
                     }
                 }
 
                 break;
 
             case('a' || 'A'):
-                if(keyPosX - 1 >= 13) { 
+                if(keyPosX - 1 >= 0) { 
                     keyPosX--;
-                    normalizedKeyPosX--;
                 }
                 break;
             
             case('d' || 'D'):
-                if(keyPosX + 1 < 24){
+                if(keyPosX + 1 < 11){
                     keyPosX++;
-                    normalizedKeyPosX++;
                 }
                 break;
             
@@ -278,24 +274,25 @@ class LevelPath extends Phaser.Scene {
                 break;
         }
 
-        console.log(normalizedKeyPosX + ', ' + keyPosY);
         selectImage.setPosition(keyPosX * 64 + 32, keyPosY * 64 + 32);
     }
 
     onClickHandler(pointer) {
         let i = Math.floor(pointer.y/64);
-        let j = Math.floor(pointer.x/64);
+        let j = Math.floor((pointer.x / 64) % 13);
 
-        if(canPlaceTurretLeft(i, j, 20, 10)) {
+        console.log(i + ', ' + j);
+
+        if(canPlaceTurretRight(i, j, 20, 10)) {
             let turret = turrets.get();
 
             if(turret){
                 turret.setActive(true);
                 turret.setVisible(true);
                 turret.setSide('left');
-                turret.placeLeft(i, j, leftMap);
-                firstPlayer.addMoney(-turret.getCost());
-                firstPlayer.addEnergy(-turret.getEnergy());
+                turret.placeRight(i, j, leftMap);
+                secondPlayer.addMoney(-turret.getCost());
+                secondPlayer.addEnergy(-turret.getEnergy());
             }
         }
     }

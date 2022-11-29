@@ -25,7 +25,9 @@ class PauseMenu extends Phaser.Scene {
         //this.settingsButton = this.add.image(this.gameWidth / 2, this.gameHeigth / 2 - 200, 'resumeButton').setScale(7);
         //this.quitButton = this.add.image(this.gameWidth / 2, this.gameHeigth / 2 - 200, 'resumeButton').setScale(7);
 
-        this.input.keyboard.on('keydown-Escape')
+        this.input.keyboard.on('keydown-ESCAPE', function(event) {
+            console.log(event);
+        })
     }
 }
 
