@@ -8,6 +8,8 @@ class Turret extends Phaser.GameObjects.Image {
         this.bullets = this.scene.getBullets();
         this.enemies = this.scene.getLeftEnemies();
         this.cost = 20;
+        this.energy = 10;
+        this.side = undefined;
     }
 
     placeLeft(i, j, map){
@@ -25,6 +27,11 @@ class Turret extends Phaser.GameObjects.Image {
     getCost(){
         return this.cost;
     }
+    
+    getEnergy(){
+        return this.energy;
+    }
+
     setBullets(bullets){
         this.bullets = bullets;
     }
@@ -32,6 +39,14 @@ class Turret extends Phaser.GameObjects.Image {
     setEnemies(enemies){
         this.enemies = enemies;
         console.log(this.enemies);
+    }
+
+    getSide(){
+        return this.side;
+    }
+
+    setSide(side){
+        this.side = side;
     }
 
     update(time, delta){
@@ -42,7 +57,7 @@ class Turret extends Phaser.GameObjects.Image {
     }
 
     fire() {
-        var enemy = this.scene.getEnemy(this.x, this.y, 300);
+        var enemy = this.scene.getEnemy(this.x, this.y, 300, this.getSide());
 
         if(enemy){
             var angle = Phaser.Math.Angle.Between(this.x, this.y, enemy.x, enemy.y);

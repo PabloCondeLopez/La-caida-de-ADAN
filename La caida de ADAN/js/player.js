@@ -3,6 +3,7 @@ class Player {
         this.maxHp = maxHp;
 
         this.money = 50;
+        this.energy = 20;
         this.currentHp = this.maxHp;
     }
 
@@ -24,6 +25,14 @@ class Player {
 
     takeDamage(ammount) {
         this.currentHp -= ammount;
+    }
+
+    addEnergy(amount){
+        this.energy+=amount;
+    }
+    
+    getEnergy(){
+        return this.energy;
     }
 }
 

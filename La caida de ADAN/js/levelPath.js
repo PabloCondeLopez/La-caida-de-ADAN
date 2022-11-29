@@ -105,11 +105,13 @@ class LevelPath extends Phaser.Scene {
         //rightPath.draw(graphics);
         //this.drawRightGrid();
 
-        this.firstPlayerMoneyText = this.add.text(500, 16, 'Money: 50', { fontSize: '20px', fill: '#fff', fontFamily: 'Pixeled'}).setStroke('#000', 4);
-        this.firstPlayerHPText = this.add.text(20, 16, 'HP: ' + firstPlayer.getMaxHp(), {fontSize: '20px', fill: '#fff', fontFamily: 'Pixeled'}).setStroke('#000', 4);
+        this.firstPlayerMoneyText = this.add.text(20, 16, 'Money: 50', { fontSize: '20px', fill: '#fff', fontFamily: 'Pixeled'}).setStroke('#000', 4);
+        this.firstPlayerHPText = this.add.text(500, 16, 'HP: ' + firstPlayer.getMaxHp(), {fontSize: '20px', fill: '#fff', fontFamily: 'Pixeled'}).setStroke('#000', 4);
+        this.firstPlayerEnergyText = this.add.text(20, 964, 'Energy: ' + firstPlayer.getEnergy(), {fontSize: '20px', fill: '#fff', fontFamily: 'Pixeled'}).setStroke('#000', 4);
 
         this.secondPlayerMoneyText = this.add.text(1350, 16, 'Money: 50', { fontSize: '20px', fill: '#fff', fontFamily: 'Pixeled'}).setStroke('#000', 4);
         this.secondPlayerHPText = this.add.text(870, 16, 'HP: ' + firstPlayer.getMaxHp(), {fontSize: '20px', fill: '#fff', fontFamily: 'Pixeled'}).setStroke('#000', 4);
+        this.secondPlayerEnergyText = this.add.text(1350, 964, 'Energy: ' + secondPlayer.getEnergy(), {fontSize: '20px', fill: '#fff', fontFamily: 'Pixeled'}).setStroke('#000', 4);
 
         leftEnemies = this.physics.add.group({
             classType: Enemy,
@@ -151,9 +153,11 @@ class LevelPath extends Phaser.Scene {
     update(time, delta) {
         this.firstPlayerMoneyText.setText('Money: ' + firstPlayer.getMoney());
         this.firstPlayerHPText.setText("HP: " + firstPlayer.getCurrentHP());
+        this.firstPlayerEnergyText.setText("Energy: " + firstPlayer.getEnergy());
 
         this.secondPlayerMoneyText.setText('Money: ' + secondPlayer.getMoney());
         this.secondPlayerHPText.setText("HP: " + secondPlayer.getCurrentHP());
+        this.secondPlayerEnergyText.setText("Energy: " + secondPlayer.getEnergy());
 
         if(firstPlayer.getCurrentHP() <= 0 || secondPlayer.getCurrentHP() <= 0)
             this.endGame();
@@ -220,14 +224,16 @@ class LevelPath extends Phaser.Scene {
 
                 console.log(rightMap[i][j]);
 
-                if(canPlaceTurretRight(i, j, 20)) {
+                if(canPlaceTurretRight(i, j, 20, 10)) {
                     let turret = turrets.get();
 
                     if(turret) {
                         turret.setActive(true);
                         turret.setVisible(true);
+                        turret.setSide('right');
                         turret.placeRight(i, j, rightMap);
                         secondPlayer.addMoney(-turret.getCost());
+                        secondPlayer.addEnergy(-turret.getEnergy());
                     }
                 }
 
@@ -268,32 +274,37 @@ class LevelPath extends Phaser.Scene {
         let i = Math.floor(pointer.y/64);
         let j = Math.floor(pointer.x/64);
 
-        if(canPlaceTurretLeft(i, j, 20)){
+        if(canPlaceTurretLeft(i, j, 20, 10)){
             let turret = turrets.get();
 
             if(turret){
                 turret.setActive(true);
                 turret.setVisible(true);
+                turret.setSide('left');
                 turret.placeLeft(i, j, leftMap);
                 firstPlayer.addMoney(-turret.getCost());
+                firstPlayer.addEnergy(-turret.getEnergy());
             }
         }
         
     }
     
-    getEnemy(x, y, distance) {
+    getEnemy(x, y, distance, side) {
         var leftEnemyUnits = leftEnemies.getChildren();
         var rightEnemyUnits = rightEnemies.getChildren();
     
+        if(side === 'left'){
         for(var i = 0; i < leftEnemyUnits.length; i++){
             if(leftEnemyUnits[i].active && Phaser.Math.Distance.Between(x, y, leftEnemyUnits[i].x, leftEnemyUnits[i].y) <= distance)
                 return leftEnemyUnits[i];
         }
-
+    }
+        else if(side === 'right'){
         for(var i = 0; i < rightEnemyUnits.length; i++){
-            if(rightEnemyUnits[i].active && Phaser.Math.Distance.Between(x, y, rightEnemyUnits[i].x, leftEnemyUnits[i].y) <= distance)
+            if(rightEnemyUnits[i].active && Phaser.Math.Distance.Between(x, y, rightEnemyUnits[i].x, rightEnemyUnits[i].y) <= distance)
                 return rightEnemyUnits[i];
         }
+    }
     
         return false;
     }
@@ -314,20 +325,20 @@ class LevelPath extends Phaser.Scene {
     
 }
 
-function canPlaceTurretLeft(i, j, turretcost) {
+function canPlaceTurretLeft(i, j, turretcost, turretEnergy) {
     var canPlace = false;
     
-    if(firstPlayer.getMoney() >= turretcost && leftMap[i][j] === 0 ){
+    if(firstPlayer.getMoney() >= turretcost && firstPlayer.getEnergy() >= turretEnergy && leftMap[i][j] === 0 ){
         canPlace = true;
     }
 
     return canPlace
 }
 
-function canPlaceTurretRight(i, j, turretcost) {
+function canPlaceTurretRight(i, j, turretcost, turretEnergy) {
     var canPlace = false;
 
-    if(secondPlayer.getMoney() >= turretcost && rightMap[i][j] === 0 ){
+    if(secondPlayer.getMoney() >= turretcost && secondPlayer.getEnergy() >= turretEnergy && rightMap[i][j] === 0 ){
         canPlace = true;
     }
 
