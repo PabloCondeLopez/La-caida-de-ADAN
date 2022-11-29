@@ -71,7 +71,7 @@ class LevelPath extends Phaser.Scene {
         this.screenWidht = screenWidht;
         this.screenHeight = screenHeight;
         
-        this.SPAWN_SPEED = 5000;
+        this.SPAWN_SPEED = 4000;
     }
 
     preload() {
