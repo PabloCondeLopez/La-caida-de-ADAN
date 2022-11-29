@@ -19,7 +19,7 @@ Como jugador controlamos a las fuerzas de resistencia ante la rebelión robótic
 Tablero HacknPlan: https://app.hacknplan.com/p/173818/kanban?boardId=477013
 
 El inicio del juego se mostrará de la siguiente forma
-![image](https://github.com/PabloCondeLopez/La-caida-de-ADAN/blob/main/IMG/image.png)
+![image](https://github.com/PabloCondeLopez/La-caida-de-ADAN/blob/main/IMG/Fondo%20Nuevo.png)
 Se ha diseñado la escena debido a la temática del juego, la cuadrícula de color neon. El fondo de color frío con un rayo, que representa una crisis se está acercando.
 
 Después de darle al botón historia, se inicia el juego.
