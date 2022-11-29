@@ -2,6 +2,7 @@ import Bullet from './bullet.js';
 import Enemy from './enemy.js';
 import Turret from './turret.js';
 import Player from './player.js';
+import BuyMenu from './buyMenu.js';
 
 var leftMap =       [[-1,-1,-1,-1,-1,-1,-1,-1,-1,-1,-1],
                     [ -1,-1,-1,-1,-1,-1,-1,-1,-1,-1,-1],
@@ -58,6 +59,8 @@ let normalizedKeyPosX = 10;
 
 let selectImage;
 
+let levelPaused = false;
+
 class LevelPath extends Phaser.Scene {
     constructor(screenWidht, screenHeight){
         super();
@@ -106,7 +109,7 @@ class LevelPath extends Phaser.Scene {
         //this.drawRightGrid();
 
         this.firstPlayerMoneyText = this.add.text(20, 16, 'Money: 50', { fontSize: '20px', fill: '#fff', fontFamily: 'Pixeled'}).setStroke('#000', 4);
-        this.firstPlayerHPText = this.add.text(500, 16, 'HP: ' + firstPlayer.getMaxHp(), {fontSize: '20px', fill: '#fff', fontFamily: 'Pixeled'}).setStroke('#000', 4);
+        this.firstPlayerHPText = this.add.text(560, 16, 'HP: ' + firstPlayer.getMaxHp(), {fontSize: '20px', fill: '#fff', fontFamily: 'Pixeled'}).setStroke('#000', 4);
         this.firstPlayerEnergyText = this.add.text(20, 964, 'Energy: ' + firstPlayer.getEnergy(), {fontSize: '20px', fill: '#fff', fontFamily: 'Pixeled'}).setStroke('#000', 4);
 
         this.secondPlayerMoneyText = this.add.text(1350, 16, 'Money: 50', { fontSize: '20px', fill: '#fff', fontFamily: 'Pixeled'}).setStroke('#000', 4);
@@ -138,8 +141,8 @@ class LevelPath extends Phaser.Scene {
 
         this.nextEnemy = 0;
 
-        this.input.on('pointerdown', this.placeTurret);
-        this.input.keyboard.on('keydown', this.placeTurretKeyboard);
+        this.input.on('pointerdown', this.onClickHandler);
+        this.input.keyboard.on('keydown', this.onKeyboardHandler);
     }
     
     getLeftEnemies(){
@@ -158,6 +161,11 @@ class LevelPath extends Phaser.Scene {
         this.secondPlayerMoneyText.setText('Money: ' + secondPlayer.getMoney());
         this.secondPlayerHPText.setText("HP: " + secondPlayer.getCurrentHP());
         this.secondPlayerEnergyText.setText("Energy: " + secondPlayer.getEnergy());
+
+        if(levelPaused) {
+            this.scene.launch('PauseMenu');
+            this.scene.pause();
+        }
 
         if(firstPlayer.getCurrentHP() <= 0 || secondPlayer.getCurrentHP() <= 0)
             this.endGame();
@@ -216,7 +224,7 @@ class LevelPath extends Phaser.Scene {
 
     }
 
-    placeTurretKeyboard(event) {
+    onKeyboardHandler(event) {
         switch(event.key) {
             case('Enter'):
                 let i = Math.floor(keyPosY);
@@ -264,17 +272,21 @@ class LevelPath extends Phaser.Scene {
                     keyPosY++;
                 }
                 break;
+
+            case('Escape'):
+                levelPaused = true;
+                break;
         }
 
         console.log(normalizedKeyPosX + ', ' + keyPosY);
         selectImage.setPosition(keyPosX * 64 + 32, keyPosY * 64 + 32);
     }
 
-    placeTurret(pointer) {
+    onClickHandler(pointer) {
         let i = Math.floor(pointer.y/64);
         let j = Math.floor(pointer.x/64);
 
-        if(canPlaceTurretLeft(i, j, 20, 10)){
+        if(canPlaceTurretLeft(i, j, 20, 10)) {
             let turret = turrets.get();
 
             if(turret){
@@ -286,7 +298,6 @@ class LevelPath extends Phaser.Scene {
                 firstPlayer.addEnergy(-turret.getEnergy());
             }
         }
-        
     }
     
     getEnemy(x, y, distance, side) {

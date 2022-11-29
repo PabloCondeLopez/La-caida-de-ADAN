@@ -27,10 +27,8 @@ class Enemy extends Phaser.GameObjects.Image {
          this.setPosition(this.follower.vec.x, this.follower.vec.y);
  
          if(this.follower.t >= 1){
-             this.setActive(false);
-             this.setVisible(false);
-
              this.damagedPlayer.takeDamage(this.damageAmmount);
+             this.destroy();
          }
      }
  
