@@ -18,3 +18,5 @@ Como jugador controlamos a las fuerzas de resistencia ante la rebelión robótic
 
 Tablero HacknPlan: https://app.hacknplan.com/p/173818/kanban?boardId=477013
 
+El inicio del juego se mostrará de la siguiente forma
+![image](https://github.com/PabloCondeLopez/La-caida-de-ADAN/blob/main/IMG/Inicio.png)
