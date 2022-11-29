@@ -24,11 +24,11 @@ class MainMenu extends Phaser.Scene {
         this.endlessButton = this.add.image(this.screenWidth / 2 + 450, this.screenHeight / 2 + 150, 'button').setScale(3.5);
 
         this.historyText = this.add.text(this.screenWidth / 2 + 455, this.screenHeight / 2 - 255, 'Historia', {fontSize: '40px', fill: '#fff', fontFamily: 'Pixeled'}).setStroke("#000", 4).setOrigin(0.5, 0.5);
-        this.historyText.setInteractive();
-        this.historyText.on('pointerdown', this.startLevel);
-
         this.competitiveText = this.add.text(this.screenWidth / 2 + 452, this.screenHeight / 2 - 55, 'Competitivo', {fontSize: '29px', fill: '#fff', fontFamily: 'Pixeled'}).setStroke("#000", 4).setOrigin(0.5, 0.5);
+
         this.endlessText = this.add.text(this.screenWidth / 2 + 455, this.screenHeight / 2 + 145, 'Infinito', {fontSize: '40px', fill: '#fff', fontFamily: 'Pixeled'}).setStroke('#000', 4).setOrigin(0.5, 0.5);
+        this.endlessText.setInteractive();
+        this.endlessText.on('pointerdown', this.startLevel);
     }
 
     startLevel(){

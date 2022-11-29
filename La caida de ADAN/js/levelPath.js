@@ -151,6 +151,15 @@ class LevelPath extends Phaser.Scene {
 
         this.input.on('pointerdown', this.onClickHandler);
         this.input.keyboard.on('keydown', this.onKeyboardHandler);
+
+        firstPlayer.setHP(100);
+        secondPlayer.setHP(100);
+
+        firstPlayer.setEnergy(20);
+        secondPlayer.setEnergy(20);
+        
+        firstPlayer.setMoney(50);
+        secondPlayer.setMoney(50);
     }
     
     getLeftEnemies(){
@@ -186,16 +195,9 @@ class LevelPath extends Phaser.Scene {
         }
 
         if(firstPlayer.getCurrentHP() <= 0 || secondPlayer.getCurrentHP() <= 0){
-
-            firstPlayer.setHP(100);
-            secondPlayer.setHP(100);
-            firstPlayer.setEnergy(20);
-            secondPlayer.setEnergy(20);
-            firstPlayer.setMoney(50);
-            secondPlayer.setMoney(50);
-
             this.endGame();
         }
+
         if(time > this.nextEnemy){
             enemyHP *= 1.05;
             let leftEnemy = leftEnemies.get();
