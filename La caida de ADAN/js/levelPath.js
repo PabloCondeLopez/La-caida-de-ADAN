@@ -160,6 +160,8 @@ class LevelPath extends Phaser.Scene {
 
         firstPlayer.setMoney(50);
         secondPlayer.setMoney(50);
+
+        this.resetMap();
     }
     
     getLeftEnemies(){
@@ -399,13 +401,23 @@ class LevelPath extends Phaser.Scene {
         }
     }
 
+    resetMap() {
+        for(var i = 0; i < leftMap.length; i++){
+            for(var j = 0; j < leftMap[i].length; j++){
+                if(leftMap[i][j] === 1) leftMap[i][j] = 0;
+            }
+        }
+
+        for(var i = 0; i < rightMap.length; i++){
+            for(var j = 0; j < rightMap[i].length; j++){
+                if(rightMap[i][j] === 1) rightMap[i][j] = 0;
+            }
+        }
+    }
+
     endGame(){
-
-    
-
         this.scene.launch('GameOver');
         this.scene.pause();
-        
     }
     
 }
