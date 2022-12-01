@@ -98,7 +98,7 @@ class LevelPath extends Phaser.Scene {
         leftPath.lineTo(705, 548);
         
         //leftPath.draw(graphics);
-        //this.drawLeftGrid();
+        this.drawLeftGrid();
 
         rightPath = this.add.path(this.screenWidht, 228);
         rightPath.lineTo(1312, 228);
@@ -108,7 +108,7 @@ class LevelPath extends Phaser.Scene {
         rightPath.lineTo(832, 548);
 
         //rightPath.draw(graphics);
-        //this.drawRightGrid();
+        this.drawRightGrid();
 
         this.firstPlayerMoneyText = this.add.text(20, 16, 'Peseta Coins: 50', { fontSize: '20px', fill: '#fff', fontFamily: 'Pixeled'}).setStroke('#000', 4);
         this.firstPlayerHPText = this.add.text(520, 16, 'Vida: ' + firstPlayer.getMaxHp(), {fontSize: '20px', fill: '#fff', fontFamily: 'Pixeled'}).setStroke('#000', 4);
@@ -229,13 +229,13 @@ class LevelPath extends Phaser.Scene {
         graphics.lineStyle(1, 0x0000ff, 0.8);
 
         for(var i = 0; i < 17; i++){
-            graphics.moveTo(0, i * 64);
-            graphics.lineTo(this.screenWidht / 2 - 64, i * 64);
+            graphics.moveTo(0, i * 32);
+            graphics.lineTo(this.screenWidht / 2 - 32, i * 32);
         }
 
         for(var j = 0; j < 12; j++) {
-            graphics.moveTo(j * 64, 0);
-            graphics.lineTo(j * 64, this.screenHeight);
+            graphics.moveTo(j * 32, 0);
+            graphics.lineTo(j * 32, this.screenHeight);
         }
         graphics.strokePath();
 
@@ -245,13 +245,13 @@ class LevelPath extends Phaser.Scene {
         graphics.lineStyle(1, 0x0000ff, 0.8);
 
         for(var i = 0; i < 17; i++){
-            graphics.moveTo(this.screenWidht, i * 64);
-            graphics.lineTo(this.screenWidht / 2 + 64, i * 64);
+            graphics.moveTo(this.screenWidht, i * 32);
+            graphics.lineTo(this.screenWidht / 2 + 32, i * 32);
         }
 
         for(var j = 0; j < 12; j++) {
-            graphics.moveTo(this.screenWidht - j * 64, 0);
-            graphics.lineTo(this.screenWidht - j * 64, this.screenHeight);
+            graphics.moveTo(this.screenWidht - j * 32, 0);
+            graphics.lineTo(this.screenWidht - j * 32, this.screenHeight);
         }
         graphics.strokePath();
 

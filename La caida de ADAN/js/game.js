@@ -4,8 +4,8 @@ import PauseMenu from "./pauseMenu.js";
 import BuyMenu from "./buyMenu.js";
 import GameOver from "./gameOver.js";
 
-const gameWidth = 1536;
-const gameHeight = 1024;
+const gameWidth = 1856;
+const gameHeight = 896;
 
 const config = {
     type: Phaser.AUTO,
