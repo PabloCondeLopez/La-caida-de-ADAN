@@ -72,7 +72,7 @@ class LevelPath extends Phaser.Scene {
         this.load.image('turret', 'assets/metralleta high-res.png');
         this.load.image('enemy', 'assets/pixil-frame-0.png');
         this.load.image('bullet', 'assets/bullet.png');
-        this.load.image('map', 'assets/Mapa1');
+        this.load.image('map', 'assets/Fondo_de_juego_franja_ui.png');
         this.load.image('select', 'assets/select.png');
         this.load.image('energyTurret', 'assets/energia.png');
         this.load.image('skelly', 'assets/skelly.png');
@@ -119,7 +119,7 @@ class LevelPath extends Phaser.Scene {
         });
 
         rightEnemies = this.physics.add.group({
-            classType: Enemy,
+            classType: SkellyEnemy,
             runChildUpdate: true
         });
         
@@ -197,8 +197,7 @@ class LevelPath extends Phaser.Scene {
 
         if(time > this.nextEnemy){
             enemyHP *= 1.05;
-            let leftEnemy = new TurretEnemy(this.scene);
-            leftEnemies.add(leftEnemy);
+            let leftEnemy = leftEnemies.get();
             let rightEnemy = rightEnemies.get();
 
             if(leftEnemy){
