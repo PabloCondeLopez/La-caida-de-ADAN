@@ -114,12 +114,12 @@ class LevelPath extends Phaser.Scene {
         this.secondPlayerEnergyText = this.add.text(1320, 964, 'Energía: ' + secondPlayer.getEnergy(), {fontSize: '20px', fill: '#fff', fontFamily: 'Pixeled'}).setStroke('#000', 4);
 
         leftEnemies = this.physics.add.group({
-            classType: Enemy,
+            classType: TurretEnemy,
             runChildUpdate: true
         });
 
         rightEnemies = this.physics.add.group({
-            classType: Enemy,
+            classType: SkellyEnemy,
             runChildUpdate: true
         });
         
