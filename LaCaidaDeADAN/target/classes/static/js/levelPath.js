@@ -1,44 +1,38 @@
 import Bullet from './bullet.js';
 import Enemy from './enemy.js';
+import TurretEnemy from './turretEnemy.js';
+import SkellyEnemy from './skellyEnemy.js';
 import Turret from './turret.js';
 import Player from './player.js';
 import EnergyTurret from './energyTurret.js';
 import BuyMenu from './buyMenu.js';
 
-var leftMap =       [[-1,-1,-1,-1,-1,-1,-1,-1,-1,-1,-1],
-                    [ -1,-1,-1,-1,-1,-1,-1,-1,-1,-1,-1],
-                    [ -1,-1, 0,-1,-1,-1,-1,-1,-1,-1,-1],
-                    [ -1,-1,-1,-1,-1,-1,-1,-1,-1,-1,-1],
-                    [ -1,-1, 0,-1,-1,-1,-1,-1,-1,-1,-1],
-                    [ -1,-1,-1,-1,-1,-1,-1,-1,-1,-1,-1],
-                    [ -1,-1,-1,-1,-1,-1,-1,-1,-1,-1,-1],
-                    [ -1,-1,-1,-1,-1,-1,-1,-1,-1,-1, 0],
-                    [ -1,-1,-1,-1,-1,-1,-1,-1,-1,-1,-1],
-                    [ -1,-1,-1,-1, 0,-1,-1,-1,-1,-1, 0],
-                    [ -1,-1,-1,-1,-1,-1,-1,-1,-1,-1,-1],
-                    [ -1,-1,-1,-1,-1,-1,-1, 0,-1,-1,-1],
-                    [ -1,-1,-1,-1,-1,-1,-1,-1,-1,-1,-1],
-                    [ -1,-1,-1,-1, 0,-1,-1,-1,-1,-1,-1],
-                    [ -1,-1,-1,-1,-1,-1,-1,-1,-1,-1,-1],
-                    [ -1,-1,-1,-1,-1,-1,-1,-1,-1,-1,-1]];
+var leftMap =       [[-1,-1,-1,-1,-1,-1,-1,-1,-1,-1,-1,-1,-1],
+                    [ -1,-1,-1,-1,-1,-1,-1,-1,-1,-1,-1,-1,-1],
+                    [ -1,-1,-1,-1,-1,-1,-1,-1,-1,-1,-1,-1,-1],
+                    [ -1,-1,-1,-1,-1,-1,-1,-1,-1,-1,-1,-1,-1],
+                    [ -1,-1,-1,-1,-1,-1,-1,-1,-1,-1,-1,-1,-1],
+                    [ -1,-1,-1,-1,-1,-1,-1,-1,-1,-1,-1,-1,-1],
+                    [ -1,-1,-1,-1,-1,-1,-1,-1,-1,-1,-1,-1,-1],
+                    [ -1,-1,-1,-1,-1,-1,-1,-1,-1,-1,-1,-1,-1],
+                    [ -1,-1,-1,-1,-1,-1,-1,-1,-1,-1,-1,-1,-1],
+                    [ -1,-1,-1,-1,-1,-1,-1,-1,-1,-1,-1,-1,-1],
+                    [ -1,-1,-1,-1,-1,-1,-1,-1,-1,-1,-1,-1,-1],
+                    [ -1,-1,-1,-1,-1,-1,-1,-1,-1,-1,-1,-1,-1]];
 
 
-var rightMap =  [[-1,-1,-1,-1,-1,-1,-1,-1,-1,-1,-1],
-                [ -1,-1,-1,-1,-1,-1,-1,-1,-1,-1,-1],
-                [ -1,-1,-1,-1,-1,-1,-1,-1, 0,-1,-1],
-                [ -1,-1,-1,-1,-1,-1,-1,-1,-1,-1,-1],
-                [ -1,-1,-1,-1,-1,-1,-1,-1, 0,-1,-1],
-                [ -1,-1,-1,-1,-1,-1,-1,-1,-1,-1,-1],
-                [ -1,-1,-1,-1,-1,-1,-1,-1,-1,-1,-1],
-                [  0,-1,-1,-1,-1,-1,-1,-1,-1,-1,-1],
-                [ -1,-1,-1,-1,-1,-1,-1,-1,-1,-1,-1],
-                [  0,-1,-1,-1,-1,-1, 0,-1,-1,-1,-1],
-                [ -1,-1,-1,-1,-1,-1,-1,-1,-1,-1,-1],
-                [ -1,-1,-1, 0,-1,-1,-1,-1,-1,-1,-1],
-                [ -1,-1,-1,-1,-1,-1,-1,-1,-1,-1,-1],
-                [ -1,-1,-1,-1,-1,-1, 0,-1,-1,-1,-1],
-                [ -1,-1,-1,-1,-1,-1,-1,-1,-1,-1,-1],
-                [ -1,-1,-1,-1,-1,-1,-1,-1,-1,-1,-1]];
+var rightMap =      [[-1,-1,-1,-1,-1,-1,-1,-1,-1,-1,-1,-1,-1],
+                    [ -1,-1,-1,-1,-1,-1,-1,-1,-1,-1,-1,-1,-1],
+                    [ -1,-1,-1,-1,-1,-1,-1,-1,-1,-1,-1,-1,-1],
+                    [ -1,-1,-1,-1,-1,-1,-1,-1,-1,-1,-1,-1,-1],
+                    [ -1,-1,-1,-1,-1,-1,-1,-1,-1,-1,-1,-1,-1],
+                    [ -1,-1,-1,-1,-1,-1,-1,-1,-1,-1,-1,-1,-1],
+                    [ -1,-1,-1,-1,-1,-1,-1,-1,-1,-1,-1,-1,-1],
+                    [ -1,-1,-1,-1,-1,-1,-1,-1,-1,-1,-1,-1,-1],
+                    [ -1,-1,-1,-1,-1,-1,-1,-1,-1,-1,-1,-1,-1],
+                    [ -1,-1,-1,-1,-1,-1,-1,-1,-1,-1,-1,-1,-1],
+                    [ -1,-1,-1,-1,-1,-1,-1,-1,-1,-1,-1,-1,-1],
+                    [ -1,-1,-1,-1,-1,-1,-1,-1,-1,-1,-1,-1,-1]];
 
 let graphics;
 let leftPath;
@@ -63,12 +57,12 @@ let selectImage;
 let levelPaused = false;
 
 class LevelPath extends Phaser.Scene {
-    constructor(screenWidht, screenHeight){
+    constructor(screenWidth, screenHeight){
         super();
 
         Phaser.Scene.call(this, {key: 'Level'})
 
-        this.screenWidht = screenWidht;
+        this.screenWidth = screenWidth;
         this.screenHeight = screenHeight;
         
         this.SPAWN_SPEED = 4000;
@@ -78,13 +72,14 @@ class LevelPath extends Phaser.Scene {
         this.load.image('turret', 'assets/metralleta high-res.png');
         this.load.image('enemy', 'assets/pixil-frame-0.png');
         this.load.image('bullet', 'assets/bullet.png');
-        this.load.image('map', 'assets/Mapa1.png');
+        this.load.image('map', 'assets/Fondo_de_juego_franja_ui.png');
         this.load.image('select', 'assets/select.png');
         this.load.image('energyTurret', 'assets/energia.png');
+        this.load.image('skelly', 'assets/skelly.png');
     }
     
     create() {
-        this.add.image(this.screenWidht / 2, this.screenHeight / 2, 'map').setScale(0.2);
+        this.add.image(this.screenWidth / 2, this.screenHeight / 2, 'map');
         selectImage = this.add.image(keyPosX * 64 + 32, keyPosY * 64 + 32, 'select').setScale(3);
 
         graphics = this.add.graphics();
@@ -98,9 +93,9 @@ class LevelPath extends Phaser.Scene {
         leftPath.lineTo(705, 548);
         
         //leftPath.draw(graphics);
-        this.drawLeftGrid();
+        //this.drawLeftGrid();
 
-        rightPath = this.add.path(this.screenWidht, 228);
+        rightPath = this.add.path(this.screenWidth, 228);
         rightPath.lineTo(1312, 228);
         rightPath.lineTo(1312, 804);
         rightPath.lineTo(992, 804);
@@ -108,7 +103,7 @@ class LevelPath extends Phaser.Scene {
         rightPath.lineTo(832, 548);
 
         //rightPath.draw(graphics);
-        this.drawRightGrid();
+        //this.drawRightGrid();
 
         this.firstPlayerMoneyText = this.add.text(20, 16, 'Peseta Coins: 50', { fontSize: '20px', fill: '#fff', fontFamily: 'Pixeled'}).setStroke('#000', 4);
         this.firstPlayerHPText = this.add.text(520, 16, 'Vida: ' + firstPlayer.getMaxHp(), {fontSize: '20px', fill: '#fff', fontFamily: 'Pixeled'}).setStroke('#000', 4);
@@ -124,7 +119,7 @@ class LevelPath extends Phaser.Scene {
         });
 
         rightEnemies = this.physics.add.group({
-            classType: Enemy,
+            classType: SkellyEnemy,
             runChildUpdate: true
         });
         
@@ -229,13 +224,13 @@ class LevelPath extends Phaser.Scene {
         graphics.lineStyle(1, 0x0000ff, 0.8);
 
         for(var i = 0; i < 17; i++){
-            graphics.moveTo(0, i * 32);
-            graphics.lineTo(this.screenWidht / 2 - 32, i * 32);
+            graphics.moveTo(0, i * 64);
+            graphics.lineTo(this.screenWidth / 2 - 64, i * 64);
         }
 
         for(var j = 0; j < 12; j++) {
-            graphics.moveTo(j * 32, 0);
-            graphics.lineTo(j * 32, this.screenHeight);
+            graphics.moveTo(j * 64, 0);
+            graphics.lineTo(j * 64, this.screenHeight);
         }
         graphics.strokePath();
 
@@ -245,13 +240,13 @@ class LevelPath extends Phaser.Scene {
         graphics.lineStyle(1, 0x0000ff, 0.8);
 
         for(var i = 0; i < 17; i++){
-            graphics.moveTo(this.screenWidht, i * 32);
-            graphics.lineTo(this.screenWidht / 2 + 32, i * 32);
+            graphics.moveTo(this.screenWidth, i * 64);
+            graphics.lineTo(this.screenWidth / 2 + 64, i * 64);
         }
 
         for(var j = 0; j < 12; j++) {
-            graphics.moveTo(this.screenWidht - j * 32, 0);
-            graphics.lineTo(this.screenWidht - j * 32, this.screenHeight);
+            graphics.moveTo(this.screenWidth - j * 64, 0);
+            graphics.lineTo(this.screenWidth - j * 64, this.screenHeight);
         }
         graphics.strokePath();
 
@@ -306,7 +301,7 @@ class LevelPath extends Phaser.Scene {
                 break;
             
             case('d' || 'D'):
-                if(keyPosX + 1 < 11){
+                if(keyPosX + 1 < 13){
                     keyPosX++;
                 }
                 break;
@@ -318,7 +313,7 @@ class LevelPath extends Phaser.Scene {
                 break;
             
             case('s' || 'S'):
-                if(keyPosY + 1 < 16){
+                if(keyPosY + 1 < 14){
                     keyPosY++;
                 }
                 break;
