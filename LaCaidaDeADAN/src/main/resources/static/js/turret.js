@@ -6,7 +6,6 @@ class Turret extends Phaser.GameObjects.Image {
 
         this.nextTick = 0;
         this.bullets = this.scene.getBullets();
-        this.enemies = this.scene.getLeftEnemies();
         this.cost = 20;
         this.energy = 10;
         this.side = undefined;

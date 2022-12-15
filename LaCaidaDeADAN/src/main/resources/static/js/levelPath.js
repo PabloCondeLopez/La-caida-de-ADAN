@@ -8,7 +8,7 @@ import EnergyTurret from './energyTurret.js';
 import BuyMenu from './buyMenu.js';
 
 var leftMap =       [[-1,-1,-1,-1,-1,-1,-1,-1,-1,-1,-1,-1,-1],
-                    [ -1,-1,-1,-1,-1,-1,-1,-1,-1,-1,-1,-1,-1],
+                    [ 0,-1,-1,-1,-1,-1,-1,-1,-1,-1,-1,-1,-1],
                     [ -1,-1,-1,-1,-1,-1,-1,-1,-1,-1,-1,-1,-1],
                     [ -1,-1,-1,-1,-1,-1,-1,-1,-1,-1,-1,-1,-1],
                     [ -1,-1,-1,-1,-1,-1,-1,-1,-1,-1,-1,-1,-1],
@@ -39,8 +39,10 @@ let leftPath;
 let rightPath;
 
 let turrets;
-let leftEnemies;
-let rightEnemies;
+let leftEnemies1;
+let leftEnemies2;
+let rightEnemies1;
+let rightEnemies2;
 let energyTurrets;
 let enemyHP = 100;
 
@@ -113,12 +115,22 @@ class LevelPath extends Phaser.Scene {
         this.secondPlayerHPText = this.add.text(870, 16, 'Vida: ' + firstPlayer.getMaxHp(), {fontSize: '20px', fill: '#fff', fontFamily: 'Pixeled'}).setStroke('#000', 4);
         this.secondPlayerEnergyText = this.add.text(1320, 964, 'Energía: ' + secondPlayer.getEnergy(), {fontSize: '20px', fill: '#fff', fontFamily: 'Pixeled'}).setStroke('#000', 4);
 
-        leftEnemies = this.physics.add.group({
-            classType: Enemy,
+        leftEnemies1 = this.physics.add.group({
+            classType: TurretEnemy,
             runChildUpdate: true
         });
 
-        rightEnemies = this.physics.add.group({
+        leftEnemies2 = this.physics.add.group({
+            classType: SkellyEnemy,
+            runChildUpdate: true
+        });
+
+        rightEnemies1 = this.physics.add.group({
+            classType: TurretEnemy,
+            runChildUpdate: true
+        });
+
+        rightEnemies2 = this.physics.add.group({
             classType: SkellyEnemy,
             runChildUpdate: true
         });
@@ -138,8 +150,11 @@ class LevelPath extends Phaser.Scene {
             runChildUpdate: true
         });
         
-        this.physics.add.overlap(leftEnemies, bullets, damageEnemy);
-        this.physics.add.overlap(rightEnemies, bullets, damageEnemy);
+        this.physics.add.overlap(leftEnemies1, bullets, damageEnemy);
+        this.physics.add.overlap(leftEnemies2, bullets, damageEnemy);
+
+        this.physics.add.overlap(rightEnemies1, bullets, damageEnemy);
+        this.physics.add.overlap(rightEnemies2, bullets, damageEnemy);
 
         this.nextEnemy = 0;
         this.pauseOnScene = false;
@@ -157,10 +172,6 @@ class LevelPath extends Phaser.Scene {
         secondPlayer.setMoney(50);
 
         this.resetMap();
-    }
-    
-    getLeftEnemies(){
-        return leftEnemies;
     }
 
     getBullets(){
@@ -197,8 +208,23 @@ class LevelPath extends Phaser.Scene {
 
         if(time > this.nextEnemy){
             enemyHP *= 1.05;
-            let leftEnemy = leftEnemies.get();
-            let rightEnemy = rightEnemies.get();
+            let x = Math.random();
+            let y = Math.random();
+            let leftEnemy;
+            if(x<=0.5){
+                leftEnemy = leftEnemies1.get();
+            }
+            else{
+                leftEnemy = leftEnemies2.get();
+            }
+
+            let rightEnemy;
+            if(y<0.5){
+                rightEnemy = rightEnemies1.get();
+            }
+            else{
+                rightEnemy = rightEnemies2.get();
+            }
 
             if(leftEnemy){
                 leftEnemy.setHP(enemyHP);
@@ -369,8 +395,8 @@ class LevelPath extends Phaser.Scene {
     }
 
     getEnemy(x, y, distance, side) {
-        var leftEnemyUnits = leftEnemies.getChildren();
-        var rightEnemyUnits = rightEnemies.getChildren();
+        var leftEnemyUnits = leftEnemies1.getChildren().concat(leftEnemies2.getChildren());
+        var rightEnemyUnits = rightEnemies1.getChildren().concat(rightEnemies2.getChildren());
     
         if(side === 'left'){
             for(var i = 0; i < leftEnemyUnits.length; i++){
