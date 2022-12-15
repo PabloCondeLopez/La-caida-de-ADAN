@@ -363,7 +363,7 @@ class LevelPath extends Phaser.Scene {
             this.endGame();
         }
 
-        if(time > this.nextEnemy){
+        if(time > this.nextEnemy && leftEnemies1.countActive() + leftEnemies2.countActive() < 1){
             enemyHP *= 1.05;
             let x = Math.random();
             let y = Math.random();

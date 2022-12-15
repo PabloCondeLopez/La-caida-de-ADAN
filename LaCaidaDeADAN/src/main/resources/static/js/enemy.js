@@ -10,25 +10,32 @@ class Enemy extends Phaser.GameObjects.Image {
              vec: new Phaser.Math.Vector2()
          };
  
-         this.speed = 8/100000;
-         this.maxHP = 100;
+         this.speed = undefined;
+         this.maxHP = undefined;
          this.currentHP = this.maxHP;
-         this.damageAmmount = 10;
-         this.moneyGiven = 10;
+         this.damageAmmount = undefined;
+         this.moneyGiven = undefined;
+         this.range = undefined;
+         this.attackSpeed = undefined;
+         this.nextAttack = 0;
      }
+     
  
      update (time, delta) {
         if(this.currentHP <= 0) this.die();
         
-         this.follower.t += this.speed * delta;
- 
-         this.path.getPoint(this.follower.t, this.follower.vec);
- 
-         this.setPosition(this.follower.vec.x, this.follower.vec.y);
- 
-         if(this.follower.t >= 1){
-             this.damagedPlayer.takeDamage(this.damageAmmount);
-             this.destroy();
+         if(Phaser.Math.Distance.Between(this.follower.vec.x, this.follower.vec.y, 769, 548)>this.range){
+            this.follower.t += this.speed * delta;
+            this.path.getPoint(this.follower.t, this.follower.vec);
+            this.setPosition(this.follower.vec.x, this.follower.vec.y);
+         }
+         
+         else{
+            if(time > this.nextAttack){
+                this.damagedPlayer.takeDamage(this.damageAmmount);
+
+                this.nextAttack = time + this.attackSpeed*100;
+            }
          }
      }
  

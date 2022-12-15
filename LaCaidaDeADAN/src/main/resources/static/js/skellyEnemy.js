@@ -14,11 +14,13 @@ class SkellyEnemy extends Enemy{
         this.speed = 8/100000;
         this.maxHP = 100;
         this.currentHP = this.maxHP;
-        this.damageAmmount = 10;
+        this.damageAmmount = 8;
         this.moneyGiven = 10;
+        this.range = 100
+        this.attackSpeed = 10;
     }
 
-    update (time, delta) {
+    /*update (time, delta) {
         if(this.currentHP <= 0) this.die();
         
          this.follower.t += this.speed * delta;
@@ -31,7 +33,7 @@ class SkellyEnemy extends Enemy{
              this.damagedPlayer.takeDamage(this.damageAmmount);
              this.destroy();
          }
-     }
+     }*/
  
      /*startOnPath(path, moneyPlayer, damagedPlayer) {
          this.follower.t = 0;
