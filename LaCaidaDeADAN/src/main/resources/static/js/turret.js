@@ -19,7 +19,7 @@ class Turret extends Phaser.GameObjects.Image {
 
     placeRight(i, j, map) {
         this.y = i * 64 + 32;
-        this.x = (j + 13) * 64 + 32;
+        this.x = (j + 16) * 64 + 32;
         map[i][j] = 1;
     }
 

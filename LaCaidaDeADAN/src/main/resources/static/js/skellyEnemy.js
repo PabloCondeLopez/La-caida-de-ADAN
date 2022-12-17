@@ -16,7 +16,7 @@ class SkellyEnemy extends Enemy{
         this.currentHP = this.maxHP;
         this.damageAmmount = 8;
         this.moneyGiven = 10;
-        this.range = 100
+        this.range = 128;
         this.attackSpeed = 10;
     }
 

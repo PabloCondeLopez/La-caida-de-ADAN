@@ -16,7 +16,7 @@ class TurretEnemy extends Enemy{
         this.currentHP = this.maxHP;
         this.damageAmmount = 5;
         this.moneyGiven = 10;
-        this.range = 300;
+        this.range = 350;
         this.attackSpeed = 7;
     }
 

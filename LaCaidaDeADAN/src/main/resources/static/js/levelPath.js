@@ -8,29 +8,33 @@ import EnergyTurret from './energyTurret.js';
 import BuyMenu from './buyMenu.js';
 
 var leftMap =       [[-1,-1,-1,-1,-1,-1,-1,-1,-1,-1,-1,-1,-1],
-                    [ 0,-1,-1,-1,-1,-1,-1,-1,-1,-1,-1,-1,-1],
                     [ -1,-1,-1,-1,-1,-1,-1,-1,-1,-1,-1,-1,-1],
+                    [ -1,-1, 0,-1,-1,-1,-1,-1,-1,-1,-1,-1,-1],
                     [ -1,-1,-1,-1,-1,-1,-1,-1,-1,-1,-1,-1,-1],
+                    [ -1,-1, 0,-1,-1,-1,-1,-1,-1,-1,-1,-1,-1],
+                    [ -1,-1,-1,-1,-1,-1,-1,-1,-1,-1,-1,-1, 0],
                     [ -1,-1,-1,-1,-1,-1,-1,-1,-1,-1,-1,-1,-1],
+                    [ -1,-1,-1,-1, 0,-1,-1,-1,-1,-1,-1,-1, 0],
                     [ -1,-1,-1,-1,-1,-1,-1,-1,-1,-1,-1,-1,-1],
+                    [ -1,-1,-1,-1,-1,-1,-1,-1, 0,-1,-1,-1,-1],
                     [ -1,-1,-1,-1,-1,-1,-1,-1,-1,-1,-1,-1,-1],
-                    [ -1,-1,-1,-1,-1,-1,-1,-1,-1,-1,-1,-1,-1],
-                    [ -1,-1,-1,-1,-1,-1,-1,-1,-1,-1,-1,-1,-1],
-                    [ -1,-1,-1,-1,-1,-1,-1,-1,-1,-1,-1,-1,-1],
+                    [ -1,-1,-1,-1, 0,-1,-1,-1,-1,-1,-1,-1,-1],
                     [ -1,-1,-1,-1,-1,-1,-1,-1,-1,-1,-1,-1,-1],
                     [ -1,-1,-1,-1,-1,-1,-1,-1,-1,-1,-1,-1,-1]];
 
 
-var rightMap =      [[-1,-1,-1,-1,-1,-1,-1,-1,-1,-1,-1,0,-1],
+var rightMap =      [[-1,-1,-1,-1,-1,-1,-1,-1,-1,-1,-1,-1,-1],
                     [ -1,-1,-1,-1,-1,-1,-1,-1,-1,-1,-1,-1,-1],
+                    [ -1,-1,-1,-1,-1,-1,-1,-1,-1,-1, 0,-1,-1],
                     [ -1,-1,-1,-1,-1,-1,-1,-1,-1,-1,-1,-1,-1],
+                    [ -1,-1,-1,-1,-1,-1,-1,-1,-1,-1, 0,-1,-1],
+                    [  0,-1,-1,-1,-1,-1,-1,-1,-1,-1,-1,-1,-1],
                     [ -1,-1,-1,-1,-1,-1,-1,-1,-1,-1,-1,-1,-1],
+                    [  0,-1,-1,-1,-1,-1,-1,-1, 0,-1,-1,-1,-1],
                     [ -1,-1,-1,-1,-1,-1,-1,-1,-1,-1,-1,-1,-1],
+                    [ -1,-1,-1,-1, 0,-1,-1,-1,-1,-1,-1,-1,-1],
                     [ -1,-1,-1,-1,-1,-1,-1,-1,-1,-1,-1,-1,-1],
-                    [ -1,-1,-1,-1,-1,-1,-1,-1,-1,-1,-1,-1,-1],
-                    [ -1,-1,-1,-1,-1,-1,-1,-1,-1,-1,-1,-1,-1],
-                    [ -1,-1,-1,-1,-1,-1,-1,-1,-1,-1,-1,-1,-1],
-                    [ -1,-1,-1,-1,-1,-1,-1,-1,-1,-1,-1,-1,-1],
+                    [ -1,-1,-1,-1,-1,-1,-1,-1, 0,-1,-1,-1,-1],
                     [ -1,-1,-1,-1,-1,-1,-1,-1,-1,-1,-1,-1,-1],
                     [ -1,-1,-1,-1,-1,-1,-1,-1,-1,-1,-1,-1,-1]];
 
@@ -68,6 +72,8 @@ let buyButton;
 let upgradeButton;
 let sellButton;
 
+let cellSize = 64;
+
 class LevelPath extends Phaser.Scene {
     constructor(screenWidth, screenHeight, game){
         super();
@@ -85,7 +91,7 @@ class LevelPath extends Phaser.Scene {
         this.load.image('turret', 'assets/metralleta high-res.png');
         this.load.image('enemy', 'assets/pixil-frame-0.png');
         this.load.image('bullet', 'assets/bullet.png');
-        this.load.image('map', 'assets/Fondo_de_juego_franja_ui.png');
+        this.load.image('map', 'assets/Nivel1_map.png');
         this.load.image('select', 'assets/select.png');
         this.load.image('energyTurret', 'assets/energia.png');
         this.load.image('skelly', 'assets/skelly.png');
@@ -96,39 +102,39 @@ class LevelPath extends Phaser.Scene {
     }
     
     create() {
-        this.add.image(this.screenWidth / 2, this.screenHeight / 2, 'map');
+        this.add.image(this.screenWidth / 2, this.screenHeight / 2, 'map').setScale(0.2);
         selectImage = this.add.image(keyPosX * 64 + 32, keyPosY * 64 + 32, 'select').setScale(3);
 
         graphics = this.add.graphics();
         graphics.lineStyle(3, 0xffffff, 1);
         
-        leftPath = this.add.path(0, 228);
-        leftPath.lineTo(225, 228);
-        leftPath.lineTo(225, 804);
-        leftPath.lineTo(545, 804);
-        leftPath.lineTo(545, 548);
-        leftPath.lineTo(705, 548);
+        leftPath = this.add.path(0, cellSize*3.5);
+        leftPath.lineTo(cellSize*3.5, cellSize*3.5);
+        leftPath.lineTo(cellSize*3.5, cellSize*10.5);
+        leftPath.lineTo(cellSize*9.5, cellSize*10.5);
+        leftPath.lineTo(cellSize*9.5, cellSize*6.5);
+        leftPath.lineTo(cellSize*12.75, cellSize*6.5);
         
         //leftPath.draw(graphics);
         //this.drawLeftGrid();
 
-        rightPath = this.add.path(this.screenWidth, 228);
-        rightPath.lineTo(1312, 228);
-        rightPath.lineTo(1312, 804);
-        rightPath.lineTo(992, 804);
-        rightPath.lineTo(992, 548);
-        rightPath.lineTo(832, 548);
+        rightPath = this.add.path(this.screenWidth, cellSize*3.5);
+        rightPath.lineTo(this.screenWidth - cellSize*3.5, cellSize*3.5);
+        rightPath.lineTo(this.screenWidth - cellSize*3.5, cellSize*10.5);
+        rightPath.lineTo(this.screenWidth - cellSize*9.5, cellSize*10.5);
+        rightPath.lineTo(this.screenWidth - cellSize*9.5, cellSize*6.5);
+        rightPath.lineTo(this.screenWidth - cellSize*12.75, cellSize*6.5);
 
         //rightPath.draw(graphics);
         //this.drawRightGrid();
 
         this.firstPlayerMoneyText = this.add.text(20, 16, 'Peseta Coins: 50', { fontSize: '20px', fill: '#fff', fontFamily: 'Pixeled'}).setStroke('#000', 4);
-        this.firstPlayerHPText = this.add.text(520, 16, 'Vida: ' + firstPlayer.getMaxHp(), {fontSize: '20px', fill: '#fff', fontFamily: 'Pixeled'}).setStroke('#000', 4);
-        this.firstPlayerEnergyText = this.add.text(20, 964, 'Energía: ' + firstPlayer.getEnergy(), {fontSize: '20px', fill: '#fff', fontFamily: 'Pixeled'}).setStroke('#000', 4);
+        this.firstPlayerHPText = this.add.text((this.screenWidth/2) - 256, 16, 'Vida: ' + firstPlayer.getMaxHp(), {fontSize: '20px', fill: '#fff', fontFamily: 'Pixeled'}).setStroke('#000', 4);
+        this.firstPlayerEnergyText = this.add.text(20, this.screenHeight-50, 'Energía: ' + firstPlayer.getEnergy(), {fontSize: '20px', fill: '#fff', fontFamily: 'Pixeled'}).setStroke('#000', 4);
 
-        this.secondPlayerMoneyText = this.add.text(1230, 16, 'Peseta Coins: 50', { fontSize: '20px', fill: '#fff', fontFamily: 'Pixeled'}).setStroke('#000', 4);
-        this.secondPlayerHPText = this.add.text(870, 16, 'Vida: ' + firstPlayer.getMaxHp(), {fontSize: '20px', fill: '#fff', fontFamily: 'Pixeled'}).setStroke('#000', 4);
-        this.secondPlayerEnergyText = this.add.text(1320, 964, 'Energía: ' + secondPlayer.getEnergy(), {fontSize: '20px', fill: '#fff', fontFamily: 'Pixeled'}).setStroke('#000', 4);
+        this.secondPlayerMoneyText = this.add.text(this.screenWidth-300, 16, 'Peseta Coins: 50', { fontSize: '20px', fill: '#fff', fontFamily: 'Pixeled'}).setStroke('#000', 4);
+        this.secondPlayerHPText = this.add.text((this.screenWidth/2) + 128, 16, 'Vida: ' + firstPlayer.getMaxHp(), {fontSize: '20px', fill: '#fff', fontFamily: 'Pixeled'}).setStroke('#000', 4);
+        this.secondPlayerEnergyText = this.add.text(this.screenWidth-200, this.screenHeight-50, 'Energía: ' + secondPlayer.getEnergy(), {fontSize: '20px', fill: '#fff', fontFamily: 'Pixeled'}).setStroke('#000', 4);
 
         leftEnemies1 = this.physics.add.group({
             classType: TurretEnemy,
@@ -174,7 +180,7 @@ class LevelPath extends Phaser.Scene {
         this.nextEnemy = 0;
         this.pauseOnScene = false;
 
-        //this.input.on('pointerdown', this.onClickHandler);
+        this.input.on('pointerdown', this.onClickHandler);
         this.input.keyboard.on('keydown', this.onKeyboardHandler);
 
         firstPlayer.setHP(100);
@@ -226,13 +232,13 @@ class LevelPath extends Phaser.Scene {
         
 
         // rectangulos de prueba
-        rect = this.add.image(320-32, 320-32, 'square').setScale(0.05);
+        /*rect = this.add.image(320-32, 320-32, 'square').setScale(0.05);
         rect.setInteractive();
         rect.on('pointerdown', this.openCloseMenu);
 
         rect1 = this.add.image(1152-32, 64-32, 'square').setScale(0.05);
         rect1.setInteractive();
-        rect1.on('pointerdown', this.openCloseMenu);
+        rect1.on('pointerdown', this.openCloseMenu);*/
     }
 
     getBullets(){
@@ -363,7 +369,7 @@ class LevelPath extends Phaser.Scene {
             this.endGame();
         }
 
-        if(time > this.nextEnemy && leftEnemies1.countActive() + leftEnemies2.countActive() < 1){
+        if(time > this.nextEnemy){
             enemyHP *= 1.05;
             let x = Math.random();
             let y = Math.random();
@@ -510,10 +516,11 @@ class LevelPath extends Phaser.Scene {
     }
 
     onClickHandler(pointer) {
+        
         let i = Math.floor(pointer.y/64);
         let j;
-        if(pointer.x/64  >= 13){
-        j = Math.floor((pointer.x / 64) % 13);
+        if(pointer.x/64  >= 16){
+        j = Math.floor(((pointer.x - cellSize*2)/ 64 ) % 14);
         }
         else 
             j=undefined;
