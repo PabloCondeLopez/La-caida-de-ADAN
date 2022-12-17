@@ -8,7 +8,7 @@ import EnergyTurret from './energyTurret.js';
 import BuyMenu from './buyMenu.js';
 
 var leftMap =       [[-1,-1,-1,-1,-1,-1,-1,-1,-1,-1,-1,-1,-1],
-                    [ -1,-1,-1,-1,-1,-1,-1,-1,-1,-1,-1,-1,-1],
+                    [ 0,-1,-1,-1,-1,-1,-1,-1,-1,-1,-1,-1,-1],
                     [ -1,-1,-1,-1,-1,-1,-1,-1,-1,-1,-1,-1,-1],
                     [ -1,-1,-1,-1,-1,-1,-1,-1,-1,-1,-1,-1,-1],
                     [ -1,-1,-1,-1,-1,-1,-1,-1,-1,-1,-1,-1,-1],
@@ -21,7 +21,7 @@ var leftMap =       [[-1,-1,-1,-1,-1,-1,-1,-1,-1,-1,-1,-1,-1],
                     [ -1,-1,-1,-1,-1,-1,-1,-1,-1,-1,-1,-1,-1]];
 
 
-var rightMap =      [[-1,-1,-1,-1,-1,-1,-1,-1,-1,-1,-1,-1,-1],
+var rightMap =      [[-1,-1,-1,-1,-1,-1,-1,-1,-1,-1,-1,0,-1],
                     [ -1,-1,-1,-1,-1,-1,-1,-1,-1,-1,-1,-1,-1],
                     [ -1,-1,-1,-1,-1,-1,-1,-1,-1,-1,-1,-1,-1],
                     [ -1,-1,-1,-1,-1,-1,-1,-1,-1,-1,-1,-1,-1],
@@ -39,8 +39,10 @@ let leftPath;
 let rightPath;
 
 let turrets;
-let leftEnemies;
-let rightEnemies;
+let leftEnemies1;
+let leftEnemies2;
+let rightEnemies1;
+let rightEnemies2;
 let energyTurrets;
 let enemyHP = 100;
 
@@ -56,12 +58,23 @@ let selectImage;
 
 let levelPaused = false;
 
+var input;
+let rect;
+let rect1;
+let laserWeapon1Button;
+let energyWeapon1Button;
+let bulletWeapon1Button;
+let buyButton;
+let upgradeButton;
+let sellButton;
+
 class LevelPath extends Phaser.Scene {
-    constructor(screenWidth, screenHeight){
+    constructor(screenWidth, screenHeight, game){
         super();
 
         Phaser.Scene.call(this, {key: 'Level'})
 
+        this.game = game;
         this.screenWidth = screenWidth;
         this.screenHeight = screenHeight;
         
@@ -76,6 +89,10 @@ class LevelPath extends Phaser.Scene {
         this.load.image('select', 'assets/select.png');
         this.load.image('energyTurret', 'assets/energia.png');
         this.load.image('skelly', 'assets/skelly.png');
+
+        // botones
+        this.load.image('square', 'assets/cuadrado.png');
+        this.load.image('storeIcons', 'assets/iconos_tienda.png');
     }
     
     create() {
@@ -113,12 +130,22 @@ class LevelPath extends Phaser.Scene {
         this.secondPlayerHPText = this.add.text(870, 16, 'Vida: ' + firstPlayer.getMaxHp(), {fontSize: '20px', fill: '#fff', fontFamily: 'Pixeled'}).setStroke('#000', 4);
         this.secondPlayerEnergyText = this.add.text(1320, 964, 'Energía: ' + secondPlayer.getEnergy(), {fontSize: '20px', fill: '#fff', fontFamily: 'Pixeled'}).setStroke('#000', 4);
 
-        leftEnemies = this.physics.add.group({
-            classType: Enemy,
+        leftEnemies1 = this.physics.add.group({
+            classType: TurretEnemy,
             runChildUpdate: true
         });
 
-        rightEnemies = this.physics.add.group({
+        leftEnemies2 = this.physics.add.group({
+            classType: SkellyEnemy,
+            runChildUpdate: true
+        });
+
+        rightEnemies1 = this.physics.add.group({
+            classType: TurretEnemy,
+            runChildUpdate: true
+        });
+
+        rightEnemies2 = this.physics.add.group({
             classType: SkellyEnemy,
             runChildUpdate: true
         });
@@ -138,13 +165,16 @@ class LevelPath extends Phaser.Scene {
             runChildUpdate: true
         });
         
-        this.physics.add.overlap(leftEnemies, bullets, damageEnemy);
-        this.physics.add.overlap(rightEnemies, bullets, damageEnemy);
+        this.physics.add.overlap(leftEnemies1, bullets, damageEnemy);
+        this.physics.add.overlap(leftEnemies2, bullets, damageEnemy);
+
+        this.physics.add.overlap(rightEnemies1, bullets, damageEnemy);
+        this.physics.add.overlap(rightEnemies2, bullets, damageEnemy);
 
         this.nextEnemy = 0;
         this.pauseOnScene = false;
 
-        this.input.on('pointerdown', this.onClickHandler);
+        //this.input.on('pointerdown', this.onClickHandler);
         this.input.keyboard.on('keydown', this.onKeyboardHandler);
 
         firstPlayer.setHP(100);
@@ -157,19 +187,157 @@ class LevelPath extends Phaser.Scene {
         secondPlayer.setMoney(50);
 
         this.resetMap();
-    }
-    
-    getLeftEnemies(){
-        return leftEnemies;
+
+        
+
+        // botones tienda
+        input = this.input;
+
+
+        //TIENDA
+        buyButton = this.add.image(1000, 200, 'storeIcons').setCrop(288*8,0,288,288).setScale(0.2);
+        buyButton.setInteractive();
+        buyButton.on('pointerdown', this.openCloseWeapons);
+
+        upgradeButton = this.add.image(1000 - 50*3, 200, 'storeIcons').setCrop(288*9,0,288,288).setScale(0.2);
+        upgradeButton.setInteractive();
+        //this.bulletWeapon1Button.on('pointerdown', this.onBuildButton, (this.laserWeapon1Button.texture, input));
+
+        sellButton = this.add.image(1000 - 50*6, 200, 'storeIcons').setCrop(288*10,0,288,288).setScale(0.2);
+        sellButton.setInteractive();
+        //this.energyWeapon1Button.on('pointerdown', this.onBuildButton, (this.laserWeapon1Button.texture, input));
+
+        //this.openCloseMenu(undefined);
+        
+        //ARMAS
+        laserWeapon1Button = this.add.image(1000, 200, 'storeIcons').setCrop(0,0,288,288).setScale(0.2);
+        laserWeapon1Button.setInteractive();
+        //laserWeapon1Button.on('pointerdown', this.onBuildButton, (this.laserWeapon1Button.texture, input));
+
+        bulletWeapon1Button = this.add.image(1000 - 50*3, 200, 'storeIcons').setCrop(288*3,0,288,288).setScale(0.2);
+        bulletWeapon1Button.setInteractive();
+        //this.bulletWeapon1Button.on('pointerdown', this.onBuildButton, (this.laserWeapon1Button.texture, input));
+
+        energyWeapon1Button = this.add.image(1000 - 50*6, 200, 'storeIcons').setCrop(288*6,0,288,288).setScale(0.2);
+        energyWeapon1Button.setInteractive();
+        //this.energyWeapon1Button.on('pointerdown', this.onBuildButton, (this.laserWeapon1Button.texture, input));
+
+        this.openCloseWeapons(undefined);
+        
+
+        // rectangulos de prueba
+        rect = this.add.image(320-32, 320-32, 'square').setScale(0.05);
+        rect.setInteractive();
+        rect.on('pointerdown', this.openCloseMenu);
+
+        rect1 = this.add.image(1152-32, 64-32, 'square').setScale(0.05);
+        rect1.setInteractive();
+        rect1.on('pointerdown', this.openCloseMenu);
     }
 
     getBullets(){
         return bullets;
     }
+    
+    openCloseMenu(pointer){
+        if(pointer!=undefined){
+            let i = Math.floor(pointer.y/64);
+            let j = Math.floor(pointer.x/64);
+        
+            console.log(i);
+            console.log(j);
+
+            i*=64;
+            j*=64;
+
+            buyButton.x = j - 200;
+            buyButton.y = i + 96;
+
+            upgradeButton.x = j - 198;
+            upgradeButton.y = i + 96;
+
+            sellButton.x = j - 196;
+            sellButton.y = i + 96;
+        }
+        
+        //buyButton.setActive(!buyButton.active);
+        buyButton.setVisible(!buyButton.visible);
+
+        upgradeButton.setActive(!upgradeButton.active);
+        upgradeButton.setVisible(!upgradeButton.visible);
+
+        sellButton.setActive(!sellButton.active);
+        sellButton.setVisible(!sellButton.visible);
+    }
+
+    openCloseWeapons(pointer){
+        console.log("closeweapons");
+        if(pointer!=undefined){
+            let i = Math.floor(pointer.y/64);
+            let j = Math.floor((pointer.x/64)%13);
+        
+            console.log(i);
+            console.log(j);
+
+            i*=64;
+            j*=64;
+
+            laserWeapon1Button.x = i + 148 + 110;
+            laserWeapon1Button.y = j + 96;
+            bulletWeapon1Button.x = i + 148;
+            bulletWeapon1Button.y = j + 96;
+            energyWeapon1Button.x = i + 148 - 110;
+            energyWeapon1Button.y = j + 96;
+        }
+        
+        laserWeapon1Button.setActive(!laserWeapon1Button.active);
+        laserWeapon1Button.setVisible(!laserWeapon1Button.visible);
+
+        bulletWeapon1Button.setActive(!bulletWeapon1Button.active);
+        bulletWeapon1Button.setVisible(!bulletWeapon1Button.visible);
+
+        energyWeapon1Button.setActive(!energyWeapon1Button.active);
+        energyWeapon1Button.setVisible(!energyWeapon1Button.visible);
+    }
+    
+    openCloseLaserWeapons(pointer){
+        let i = Math.floor(pointer.y/64);
+        let j = Math.floor((pointer.x/64)%13);
+        
+        console.log(i);
+        console.log(j);
+
+        i*=64;
+        j*=64;
+    }
+
+
+    onBuildButton(texture, pointer){
+        let i = Math.floor(pointer.y/64);
+        let j;
+        if(pointer.x/64  >= 13){
+        j = Math.floor((pointer.x / 64) % 13);
+        }
+        else 
+            j=undefined;
+
+        if(texture = "laserWeapon1" && canPlaceTurretRight(i, j, 20, 10)){
+                let turret = turrets.get();
+    
+                if(turret){
+                    turret.setActive(true);
+                    turret.setVisible(true);
+                    turret.setSide('right');
+                    turret.placeRight(i, j, rightMap);
+                    secondPlayer.addMoney(-turret.getCost());
+                    secondPlayer.addEnergy(-turret.getEnergy());
+                }
+        }
+    } 
+    
 
     update(time, delta) {
        
-
         this.firstPlayerMoneyText.setText('Peseta Coins: ' + firstPlayer.getMoney());
         this.firstPlayerHPText.setText("Vida: " + firstPlayer.getCurrentHP());
         this.firstPlayerEnergyText.setText("Energía: " + firstPlayer.getEnergy());
@@ -195,10 +363,25 @@ class LevelPath extends Phaser.Scene {
             this.endGame();
         }
 
-        if(time > this.nextEnemy){
+        if(time > this.nextEnemy && leftEnemies1.countActive() + leftEnemies2.countActive() < 1){
             enemyHP *= 1.05;
-            let leftEnemy = leftEnemies.get();
-            let rightEnemy = rightEnemies.get();
+            let x = Math.random();
+            let y = Math.random();
+            let leftEnemy;
+            if(x<=0.5){
+                leftEnemy = leftEnemies1.get();
+            }
+            else{
+                leftEnemy = leftEnemies2.get();
+            }
+
+            let rightEnemy;
+            if(y<0.5){
+                rightEnemy = rightEnemies1.get();
+            }
+            else{
+                rightEnemy = rightEnemies2.get();
+            }
 
             if(leftEnemy){
                 leftEnemy.setHP(enemyHP);
@@ -369,8 +552,8 @@ class LevelPath extends Phaser.Scene {
     }
 
     getEnemy(x, y, distance, side) {
-        var leftEnemyUnits = leftEnemies.getChildren();
-        var rightEnemyUnits = rightEnemies.getChildren();
+        var leftEnemyUnits = leftEnemies1.getChildren().concat(leftEnemies2.getChildren());
+        var rightEnemyUnits = rightEnemies1.getChildren().concat(rightEnemies2.getChildren());
     
         if(side === 'left'){
             for(var i = 0; i < leftEnemyUnits.length; i++){

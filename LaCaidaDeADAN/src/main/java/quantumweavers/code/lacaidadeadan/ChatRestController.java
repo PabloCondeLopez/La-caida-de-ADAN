@@ -7,6 +7,7 @@ import java.util.concurrent.ConcurrentHashMap;
 import org.springframework.http.HttpStatus;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PostMapping;
+import org.springframework.web.bind.annotation.PutMapping;
 import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.ResponseStatus;
@@ -25,8 +26,14 @@ public class ChatRestController {
 	
 	@PostMapping
 	@ResponseStatus(HttpStatus.CREATED)
-	public void NewMessage(@RequestBody ChatMessage Message) {
+	public ChatMessage NewMessage(@RequestBody ChatMessage Message) {
 		Message.SetId(currentId);
+		Chat.put(currentId, Message);
 		currentId++;
+		return Message;
 	}
+	
+	
+	
+	
 }
