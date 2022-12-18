@@ -1,5 +1,8 @@
 package quantumweavers.code.lacaidadeadan;
 
+import org.springframework.stereotype.Component;
+
+@Component
 public class ChatMessage {
 	private long id;
 	private String message;
