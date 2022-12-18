@@ -20,6 +20,7 @@ class TurretEnemy extends Enemy{
         this.attackSpeed = 7;
     }
 
+
     /*update (time, delta) {
         if(this.currentHP <= 0) this.die();
         
