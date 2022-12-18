@@ -71,6 +71,8 @@ let bulletWeapon1Button;
 let buyButton;
 let upgradeButton;
 let sellButton;
+let menuOpenX = undefined;
+let menuOpenY = undefined;
 
 let cellSize = 64;
 
@@ -85,6 +87,7 @@ class LevelPath extends Phaser.Scene {
         this.screenHeight = screenHeight;
         
         this.SPAWN_SPEED = 4000;
+        
     }
 
     preload() {
@@ -116,7 +119,7 @@ class LevelPath extends Phaser.Scene {
         leftPath.lineTo(cellSize*12.75, cellSize*6.5);
         
         //leftPath.draw(graphics);
-        //this.drawLeftGrid();
+        this.drawLeftGrid();
 
         rightPath = this.add.path(this.screenWidth, cellSize*3.5);
         rightPath.lineTo(this.screenWidth - cellSize*3.5, cellSize*3.5);
@@ -126,7 +129,7 @@ class LevelPath extends Phaser.Scene {
         rightPath.lineTo(this.screenWidth - cellSize*12.75, cellSize*6.5);
 
         //rightPath.draw(graphics);
-        //this.drawRightGrid();
+        this.drawRightGrid();
 
         this.firstPlayerMoneyText = this.add.text(20, 16, 'Peseta Coins: 50', { fontSize: '20px', fill: '#fff', fontFamily: 'Pixeled'}).setStroke('#000', 4);
         this.firstPlayerHPText = this.add.text((this.screenWidth/2) - 256, 16, 'Vida: ' + firstPlayer.getMaxHp(), {fontSize: '20px', fill: '#fff', fontFamily: 'Pixeled'}).setStroke('#000', 4);
@@ -200,7 +203,7 @@ class LevelPath extends Phaser.Scene {
         //TIENDA
         buyButton = this.add.image(1000, 200, 'storeIcons').setCrop(288*8,0,288,288).setScale(0.2).setActive(false).setVisible(false);
         buyButton.setInteractive();
-    
+
         upgradeButton = this.add.image(1000 - 50*3, 200, 'storeIcons').setCrop(288*9,0,288,288).setScale(0.2).setActive(false).setVisible(false);
         upgradeButton.setInteractive();
         //this.bulletWeapon1Button.on('pointerdown', this.onBuildButton, (this.laserWeapon1Button.texture, input));
@@ -585,6 +588,8 @@ function openCloseMenu(pointer){
     
         console.log(i);
         console.log(j);
+        menuOpenX = j;
+        menuOpenY = i;
 
         i*=64;
         j*=64;
@@ -607,36 +612,55 @@ function openCloseMenu(pointer){
 
     sellButton.setActive(!sellButton.active);
     sellButton.setVisible(!sellButton.visible);
+
+    laserWeapon1Button.setActive(false);
+    laserWeapon1Button.setVisible(false);
+
+    bulletWeapon1Button.setActive(false);
+    bulletWeapon1Button.setVisible(false);
+
+    energyWeapon1Button.setActive(false);
+    energyWeapon1Button.setVisible(false);
 }
 
-function openCloseWeapons(pointer, button){
-    console.log(button);
+function openCloseWeapons(pointer){
+
+    console.log(pointer.x + "," + pointer.y);
     if(pointer!=undefined){
         let i = Math.floor(pointer.y/64);
-        let j = Math.floor((pointer.x/64)%13);
+        let j = Math.floor(pointer.x/64);
     
-        console.log(i);
-        console.log(j);
+        console.log("menuX" + menuOpenX);
+        console.log("menuY" + menuOpenY);
+        console.log("x" +j);
+        console.log("y" +i);
 
-        i*=64;
-        j*=64;
+        console.log(j === menuOpenX-1);
+        console.log(i === menuOpenY+1);
 
-        laserWeapon1Button.x = i + 148 + 110;
-        laserWeapon1Button.y = j + 96;
-        bulletWeapon1Button.x = i + 148;
-        bulletWeapon1Button.y = j + 96;
-        energyWeapon1Button.x = i + 148 - 110;
-        energyWeapon1Button.y = j + 96;
+        if(j === menuOpenX-1 && i=== menuOpenY+1){
+            console.log("aaaa");
+
+            laserWeapon1Button.x = buyButton.x + 456;
+            laserWeapon1Button.y = buyButton.y + 64;
+            bulletWeapon1Button.x = buyButton.x + 283;
+            bulletWeapon1Button.y = buyButton.y + 127;
+            energyWeapon1Button.x = buyButton.x + 110;
+            energyWeapon1Button.y = buyButton.y + 192;
+
+            laserWeapon1Button.setActive(!laserWeapon1Button.active);
+            laserWeapon1Button.setVisible(!laserWeapon1Button.visible);
+
+            bulletWeapon1Button.setActive(!bulletWeapon1Button.active);
+            bulletWeapon1Button.setVisible(!bulletWeapon1Button.visible);
+
+            energyWeapon1Button.setActive(!energyWeapon1Button.active);
+            energyWeapon1Button.setVisible(!energyWeapon1Button.visible);
+        }
+        
     }
     
-    laserWeapon1Button.setActive(!laserWeapon1Button.active);
-    laserWeapon1Button.setVisible(!laserWeapon1Button.visible);
-
-    bulletWeapon1Button.setActive(!bulletWeapon1Button.active);
-    bulletWeapon1Button.setVisible(!bulletWeapon1Button.visible);
-
-    energyWeapon1Button.setActive(!energyWeapon1Button.active);
-    energyWeapon1Button.setVisible(!energyWeapon1Button.visible);
+    
 }
 
 export default LevelPath;
