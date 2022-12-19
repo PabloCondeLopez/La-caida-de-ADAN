@@ -102,6 +102,9 @@ class LevelPath extends Phaser.Scene {
         // botones
         this.load.image('square', 'assets/cuadrado.png');
         this.load.image('storeIcons', 'assets/iconos_tienda.png');
+
+        // Sonidos
+        this.load.audio('shoot', 'assets/turret_shoot.mp3');
     }
     
     create() {
