@@ -19,12 +19,12 @@ class MainMenu extends Phaser.Scene {
     create() {
         this.add.image(this.screenWidth / 2, this.screenHeight / 2, 'background');
 
-        this.historyButton = this.add.image(this.screenWidth / 2 + 450, this.screenHeight / 2 - 250, 'button').setScale(3.5);
-        this.competitiveButton = this.add.image(this.screenWidth / 2 + 450, this.screenHeight / 2 - 50, 'button').setScale(3.5);
+        this.historyButton = this.add.image(this.screenWidth / 2 + 450, this.screenHeight / 2 - 250, 'button').setScale(3.5).setTint(0x808080);
+        this.competitiveButton = this.add.image(this.screenWidth / 2 + 450, this.screenHeight / 2 - 50, 'button').setScale(3.5).setTint(0x808080);
         this.endlessButton = this.add.image(this.screenWidth / 2 + 450, this.screenHeight / 2 + 150, 'button').setScale(3.5);
 
-        this.historyText = this.add.text(this.screenWidth / 2 + 455, this.screenHeight / 2 - 255, 'Historia', {fontSize: '40px', fill: '#fff', fontFamily: 'Pixeled'}).setStroke("#000", 4).setOrigin(0.5, 0.5);
-        this.competitiveText = this.add.text(this.screenWidth / 2 + 452, this.screenHeight / 2 - 55, 'Competitivo', {fontSize: '29px', fill: '#fff', fontFamily: 'Pixeled'}).setStroke("#000", 4).setOrigin(0.5, 0.5);
+        this.historyText = this.add.text(this.screenWidth / 2 + 455, this.screenHeight / 2 - 255, 'Historia', {fontSize: '40px', fill: '#fff', fontFamily: 'Pixeled'}).setStroke("#000", 4).setOrigin(0.5, 0.5).setTint(0x808080);
+        this.competitiveText = this.add.text(this.screenWidth / 2 + 452, this.screenHeight / 2 - 55, 'Competitivo', {fontSize: '29px', fill: '#fff', fontFamily: 'Pixeled'}).setStroke("#000", 4).setOrigin(0.5, 0.5).setTint(0x808080);
 
         this.endlessText = this.add.text(this.screenWidth / 2 + 455, this.screenHeight / 2 + 145, 'Infinito', {fontSize: '40px', fill: '#fff', fontFamily: 'Pixeled'}).setStroke('#000', 4).setOrigin(0.5, 0.5);
         this.endlessText.setInteractive();
