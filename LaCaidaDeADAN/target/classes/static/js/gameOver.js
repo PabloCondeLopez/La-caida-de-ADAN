@@ -22,9 +22,9 @@ class GameOver extends Phaser.Scene {
           graphics.alpha = 0.75;
           graphics.fillRectShape(rect);
 
-        this.add.text(265, 350, 'HAS PERDIDO', { fontSize: '110px', fill: '#fff', fontFamily: 'Pixeled'}).setStroke('#000', 10);
-        this.resumeButton = this.add.image(750, 700, 'resumeButton');
-        this.quitText = this.add.text(760, 510 + 195, 'Salir', { fontSize: '30px', color: '#fff', fontFamily: 'Pixeled'}).setStroke('#000', 5).setOrigin(0.5, 0.5);
+        this.add.text(this.gameWidth/2, this.gameHeigth/3, 'HAS PERDIDO', { fontSize: '110px', fill: '#fff', fontFamily: 'Pixeled'}).setStroke('#000', 10).setOrigin(0.5,0.5);
+        this.resumeButton = this.add.image(this.gameWidth/2, this.gameHeigth/1.5, 'resumeButton').setOrigin(0.5,0.5);
+        this.quitText = this.add.text(this.gameWidth/2, this.gameHeigth/1.5, 'Salir', { fontSize: '30px', color: '#fff', fontFamily: 'Pixeled'}).setStroke('#000', 5).setOrigin(0.5, 0.5);
         this.quitText.setInteractive();
         this.quitText.on('pointerdown', this.goToMainMenu);
     }

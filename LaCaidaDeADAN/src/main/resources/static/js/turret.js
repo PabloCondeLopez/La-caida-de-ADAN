@@ -74,6 +74,7 @@ class Turret extends Phaser.GameObjects.Image {
         if(enemy){
             var angle = Phaser.Math.Angle.Between(this.x, this.y, enemy.x, enemy.y);
             this.scene.addBullet(this.x, this.y, angle);
+            this.scene.sound.play('shoot');
             this.angle = (angle, Math.PI/2) * Phaser.Math.RAD_TO_DEG;
         }
     }

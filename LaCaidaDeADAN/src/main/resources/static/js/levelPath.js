@@ -108,6 +108,9 @@ class LevelPath extends Phaser.Scene {
         // botones
         this.load.image('square', 'assets/cuadrado.png');
         this.load.image('storeIcons', 'assets/iconos_tienda.png');
+
+        // Sonidos
+        this.load.audio('shoot', 'assets/turret_shoot.mp3');
     }
     
     create() {
@@ -125,7 +128,7 @@ class LevelPath extends Phaser.Scene {
         leftPath.lineTo(cellSize*12.75, cellSize*6.5);
         
         //leftPath.draw(graphics);
-        this.drawLeftGrid();
+        //this.drawLeftGrid();
 
         rightPath = this.add.path(this.screenWidth, cellSize*3.5);
         rightPath.lineTo(this.screenWidth - cellSize*3.5, cellSize*3.5);
@@ -135,7 +138,7 @@ class LevelPath extends Phaser.Scene {
         rightPath.lineTo(this.screenWidth - cellSize*12.75, cellSize*6.5);
 
         //rightPath.draw(graphics);
-        this.drawRightGrid();
+        //this.drawRightGrid();
 
         this.firstPlayerMoneyText = this.add.text(20, 16, 'Peseta Coins: 50', { fontSize: '20px', fill: '#fff', fontFamily: 'Pixeled'}).setStroke('#000', 4);
         this.firstPlayerHPText = this.add.text((this.screenWidth/2) - 256, 16, 'Vida: ' + firstPlayer.getMaxHp(), {fontSize: '20px', fill: '#fff', fontFamily: 'Pixeled'}).setStroke('#000', 4);
@@ -317,7 +320,7 @@ class LevelPath extends Phaser.Scene {
             }
 
             if(leftEnemy){
-                leftEnemy.setHP(enemyHP);
+                leftEnemy.setMaxHP(enemyHP);
                 leftEnemy.setActive(true);
                 leftEnemy.setVisible(true);
 
@@ -325,7 +328,7 @@ class LevelPath extends Phaser.Scene {
             }
 
             if(rightEnemy){
-                rightEnemy.setHP(enemyHP);
+                rightEnemy.setMaxHP(enemyHP);
                 rightEnemy.setActive(true);
                 rightEnemy.setVisible(true);
 
