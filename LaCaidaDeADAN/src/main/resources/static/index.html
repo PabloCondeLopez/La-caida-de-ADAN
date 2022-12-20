@@ -6,6 +6,36 @@
                 font-family: 'Pixeled';
                 src: url("assets/Pixeled.ttf");
             }
+
+            table {
+                font-family: 'Pixeled';
+                width: 1856px;
+                height: 896px;
+                color: white;
+                background-color: black;
+                position: absolute;
+                bottom: 0px;
+            }
+            
+            button {
+              padding: 15px 25px;
+              font-size: 24px;
+              text-align: center;
+              cursor: pointer;
+              outline: none;
+              color:rgb(0,0,0);
+              border: none;
+              box-shadow: 0 9px #999;
+            }
+
+            button:hover {background-color: rgb(130, 4, 4)}
+
+            button:active {
+              background-color: rgb(145, 0, 0);
+              box-shadow: 0 5px #666;
+              transform: translateY(4px);
+            }
+            
         </style>
 
         <link rel="preload" href="assets/Pixeled.ttf" as="font" type="font/woff2" crossorigin="anonymous">
@@ -20,7 +50,12 @@
 
         <div>
             <table style="display: none;" id="ChatBox">
-                <tr>
+				<tr>
+					<td>
+						<div id="Info"></div>
+					</td>
+				</tr>
+				<tr>
                     <td>
                         <div id="Chat"></div>
                     </td>

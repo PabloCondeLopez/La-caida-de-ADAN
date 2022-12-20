@@ -1,6 +1,8 @@
+let ip = 'http://localhost:8080';
+
 function loadUser(callback) {
     $.ajax({
-        url: 'http://localhost:8080/player'
+        url: ip + '/player'
     }).done(function (Player) {
         console.log('Users loaded: ' + JSON.stringify(Player));
         callback(Player);
@@ -10,7 +12,7 @@ function loadUser(callback) {
 function createUser(Player, callback) {
     $.ajax({
         method: "POST",
-        url: 'http://localhost:8080/player',
+        url: ip + '/player',
         data: JSON.stringify(Player),
         processData: false,
         headers: {
@@ -19,14 +21,17 @@ function createUser(Player, callback) {
     }).done(function (Player) {
         console.log("User created: " + JSON.stringify(Player));
         callback(Player);
-    })
+    }).fail(function() {
+		$('#Info').empty();
+		$('#Info').append("<p>Usuario existente</p>");
+	})
 }
 
 
 function updateUser(Player) {
     $.ajax({
         method: 'PUT',
-        url: 'http://localhost:8080/player',
+        url: ip + '/player',
         data: JSON.stringify(Player),
         processData: false,
         headers: {
@@ -34,13 +39,16 @@ function updateUser(Player) {
         }
     }).done(function (Player) {
         console.log("Updated user: " + JSON.stringify(Player))
-    })
+    }).fail(function () {
+		$('#Info').empty();
+		$('#Info').append("<p>Usuario no encontrado</p>");
+	})
 }
 
 function deleteUser(Player) {
     $.ajax({
         method: 'DELETE',
-        url: 'http://localhost:8080/player/' + Player
+        url: ip + '/player' + Player
     }).done(function (Player) {
         console.log("Deleted user " + Player)
     })
@@ -80,19 +88,25 @@ $(document).ready(function () {
     $("#EnterButton").click(function () {
 		var userVal = user.val();
 		user.val(''); 
+		
+		if(userVal == ""){
+			$('#Info').empty();
+			$('#Info').append("<p>Nombre no valido</p>");
+			return;
+		}
 
-        var Player = {
+        var newPlayer = {
             user: userVal,
         }
 
-        createUser(Player, function (Player) {
+        createUser(newPlayer, function (Player) {
             showUser(Player)
         });
     })
     
     $("#ConnectionButton").click(function () {
 		var userVal = user.val();
-		user.val('');  
+		user.val('');
 
         var Player = {
             user: userVal,

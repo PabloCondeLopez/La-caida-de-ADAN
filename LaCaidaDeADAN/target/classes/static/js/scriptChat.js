@@ -1,18 +1,19 @@
-//Load items from server
 function loadChat(callback) {
     $.ajax({
-        url: 'http://localhost:8080/Chat'
+        url: ip + '/Chat'
     }).done(function (ChatMessage) {
         console.log('Chat loaded: ' + JSON.stringify(ChatMessage));
         callback(ChatMessage);
-    })
+    }).fail(function() {
+		$('#Info').empty();
+		$('#Info').append("<p>Servidor desconectado</p>");
+	})
 }
 
-//Create item in server
 function createMessage(ChatMessage, callback) {
     $.ajax({
         method: "POST",
-        url: 'http://localhost:8080/Chat',
+        url: ip + '/Chat',
         data: JSON.stringify(ChatMessage),
         processData: false,
         headers: {
@@ -24,11 +25,10 @@ function createMessage(ChatMessage, callback) {
     })
 }
 
-//Update item in server
 function updateMessage(ChatMessage) {
     $.ajax({
         method: 'PUT',
-        url: 'http://localhost:8080/Chat/' + ChatMessage.id,
+        url: ip + '/Chat' + ChatMessage.id,
         data: JSON.stringify(ChatMessage),
         processData: false,
         headers: {
@@ -39,17 +39,15 @@ function updateMessage(ChatMessage) {
     })
 }
 
-//Delete item from server
 function deleteMessage(ChatMessageId) {
     $.ajax({
         method: 'DELETE',
-        url: 'http://localhost:8080/Chat/' + ChatMessageId
+        url: ip + '/Chat' + ChatMessageId
     }).done(function (ChatMessageId) {
         console.log("Deleted message " + ChatMessageId)
     })
 }
 
-//Show item in page
 function showChat(chat) {
 	var msFormat = '<b>' + chat.sender + ":" + '</b>' + " " + chat.message;
 	
@@ -77,11 +75,23 @@ $(document).ready(function () {
     var sender = $('#Nickname');
     var message = $('#Message');
     
-    //Handle add button
+   
     $("#SendButton").click(function () {
 		var senderVal = sender.val();
 		var messageVal = message.val();
-		message.val('');      
+		message.val('');
+		
+		if(senderVal === ''){
+			$('#Info').empty();
+			$('#Info').append("<p>Nombre no valido</p>");
+			return;
+		}
+		
+		if(messageVal === ''){
+			$('#Info').empty();
+			$('#Info').append("<p>Mensaje no valido</p>");
+			return;
+		}
 
         var Message = {
             message : messageVal,
