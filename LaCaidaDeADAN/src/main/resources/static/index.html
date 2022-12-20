@@ -9,10 +9,24 @@
         </style>
 
         <link rel="preload" href="assets/Pixeled.ttf" as="font" type="font/woff2" crossorigin="anonymous">
+        <script src="https://code.jquery.com/jquery-2.2.0.min.js"></script>
         <script src="js/phaser.js"></script>
+        <script src="scriptChat.js"></script>
+        <script src="scriptLogin.js"></script>
     </head>
 
     <body>
         <script type="module" src="js/game.js"></script>
+        <div id='chat'>
+    	</div>
+    	<input id='user-input' type='text'>
+    	<input id='message-input' type='text'>
+    	<button id='send-button'>Send</button>
+    	<div>
+    	</div>
+    	<input id='name-input' type='text'>
+    	<input id='pass-input' type='password'>
+    	<button id='login-button'>Log in</button>
+    	<button id='reg-button'>Register</button>
     </body>
 </html>

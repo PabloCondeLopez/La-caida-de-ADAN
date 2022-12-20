@@ -6,18 +6,17 @@ import org.springframework.stereotype.Component;
 @Component
 public class Player {
 	private String user;
-	private String passWord;
+	private String password;
 	private long id;
-	private Timestamp connection;
+	private boolean connected;
 
 	
 	public Player() {}
 	
-	public Player(String u,String p, long i , Timestamp c) {
+	public Player(String u, String p) {
 		this.user = u;
-		this.passWord = p;
-		this.id = i;
-		this.connection = c;
+		this.password = p;
+		this.setConnected(false);
 	}
 	
 	public String getUser() {
@@ -25,16 +24,13 @@ public class Player {
 	}
 	
 	public String getPassword() {
-		return this.passWord;
+		return this.password;
 	}
 	
 	public long getId() {
 		return this.id;
 	}
-	
-	public Timestamp getConnection() {
-		return this.connection;
-	}
+
 	
 	
 	public void setUser(String u) {
@@ -42,18 +38,20 @@ public class Player {
 	}
 	
 	public void setPassword(String p) {
-		this.passWord = p;
+		this.password = p;
 	}
 	
 	public void setId(long ID) {
 		this.id = ID;
 	}
-	
-	public void setConnection(Timestamp c) {
-		this.connection = c;
+
+	public boolean isConnected() {
+		return connected;
 	}
-	
-	
+
+	public void setConnected(boolean connected) {
+		this.connected = connected;
+	}
 	
 
 }

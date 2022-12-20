@@ -1,5 +1,7 @@
 package quantumweavers.code.lacaidadeadan;
 
+import java.sql.Timestamp;
+
 import org.springframework.stereotype.Component;
 
 @Component
@@ -7,9 +9,13 @@ public class ChatMessage {
 	private long id;
 	private String message;
 	private String sender;
-	private String receiver;
+	private Timestamp date;
 	
-	public ChatMessage() {
+	public ChatMessage() {}
+	
+	public ChatMessage(String s, String m) {
+		this.sender = s;
+		this.message = m;
 	}
 	
 	public long GetId() {
@@ -24,6 +30,11 @@ public class ChatMessage {
 		return this.message;
 	}
 	
+	@Override
+	public String toString() {
+		return "ChatMessage [id=" + id + ", message=" + message + ", sender=" + sender + "]";
+	}
+
 	public void SetMessage(String newMessage) {
 		this.message = newMessage;
 	}
@@ -36,11 +47,11 @@ public class ChatMessage {
 		this.sender = newSender;
 	}
 	
-	public String GetReceiver() {
-		return this.receiver;
+	public Timestamp getDate() {
+		return date;
 	}
-	
-	public void SetReceiver(String newReceiver) {
-		this.receiver = newReceiver;
+
+	public void setDate(Timestamp date) {
+		this.date = date;
 	}
 }
