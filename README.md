@@ -51,6 +51,27 @@ El diseño de los niveles serán lo siguiente
 ![image](https://github.com/PabloCondeLopez/La-caida-de-ADAN/blob/main/IMG/Personajes.PNG)
 ![image](https://github.com/PabloCondeLopez/La-caida-de-ADAN/blob/main/IMG/Interfaces.PNG)
 ![image](https://github.com/PabloCondeLopez/La-caida-de-ADAN/blob/main/IMG/Niveles.PNG)
+--------------------------------------------------------------------------------------------------------------------------
+3º practica
+En esta fase se ha implementado la API REST para el servidor mediante SpringBoot
+
+Nombre del juego: La caida de Adan
+En esta practica, se ha implementado el chat y el lobby en funcion del diagrama siguiente, se implementa una clase de Mensajes para chat y su controller,junto con la clase de Player y su controller, en ellos se implementan todos los atributos necesarios que se muestra en la foto siguiente.
+(foto de atributo de player)
+(foto de atributo de chat)
+Y dentro del controlador se implementa los metodos adecuados, ya que en chat se considera que no es necesario el metodo de delete y update, los cuales sí se implementan dentro del controlador de jugador.
+(foto de metodos de controlador)
+(foto de metodos de controlador de mensajes)
+
+Todas esas clases de API REST se ha implementado en funcion de ese diagrama que se presenta.
+(foto del diagrama)
+
+El juego se ha implementado escenas nuevas, una escena para ayuda, y otra escena que presenta el chat y log in del usuario, los restos seran iguales.
+
+Para usar el jar se necesita una aplicacion 7z, se descomprime y se abre el proyecto con SPRING TOOL SUITE 4.0, se hace un run as /spring boot app, y se inicia google chrome con web de localhost:8080
+(foto de la web)
+
+
 
 
 
