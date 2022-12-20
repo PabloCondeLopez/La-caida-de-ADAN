@@ -21,7 +21,7 @@ class Controls extends Phaser.Scene {
 
         this.continueButton = this.add.image(this.screenWidth / 2 + 730, this.screenHeight / 2 + 370, 'button').setScale(3.5);
 
-        this.continueText = this.add.text(this.screenWidth / 2 + 735, this.screenHeight / 2 + 370, 'Continuar', {fontSize: '30px', fill: '#fff', fontFamily: 'Pixeled'}).setStroke('#000', 4).setOrigin(0.5, 0.5);
+        this.continueText = this.add.text(this.screenWidth / 2 + 735, this.screenHeight / 2 + 370, 'Menu', {fontSize: '30px', fill: '#fff', fontFamily: 'Pixeled'}).setStroke('#000', 4).setOrigin(0.5, 0.5);
         this.continueText.setInteractive();
         this.continueText.on('pointerdown', this.backToMenu);
 
