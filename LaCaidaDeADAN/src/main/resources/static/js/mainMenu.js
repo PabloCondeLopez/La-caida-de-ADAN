@@ -14,6 +14,7 @@ class MainMenu extends Phaser.Scene {
     preload() {
         this.load.image('background', 'assets/menu_principal.png');
         this.load.image('button', 'assets/boton_menu_principal.png');
+        this.load.image('question', 'assets/interrogation.png');
     }
 
     create() {
@@ -35,7 +36,11 @@ class MainMenu extends Phaser.Scene {
         this.controlsText = this.add.text(this.screenWidth / 2 + 735, this.screenHeight / 2 + 370, 'Controles', {fontSize: '30px', fill: '#fff', fontFamily: 'Pixeled'}).setStroke('#000', 4).setOrigin(0.5, 0.5);
         this.controlsText.setInteractive();
         this.controlsText.on('pointerdown', this.openControls);
-        
+
+        this.resourcesButton = this.add.image(this.screenWidth / 2 + 865, this.screenHeight / 2 - 390, 'question').setScale(0.6);
+        this.resourcesButton.setInteractive();
+        this.resourcesButton.on('pointerdown', this.openResources);
+
         this.chatText = this.add.text(150, this.screenHeight - 50, 'Chat', {fontSize: '25px', fill: '#fff', fontFamily: 'Pixeled'}).setStroke('#000', 4).setOrigin(0.5, 0.5);
         this.chatText.setInteractive();
         this.chatText.on('pointerdown', this.chatScene);
@@ -74,6 +79,11 @@ class MainMenu extends Phaser.Scene {
     openControls(){
         game.scene.stop('MainMenu');
         game.scene.start('Controls');
+    }
+
+    openResources(){
+        game.scene.stop('MainMenu');
+        game.scene.start('Resources');
     }
 }
 
