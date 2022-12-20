@@ -94,6 +94,9 @@ let weaponMenuRightOpen = false;
 let buyMenuLeftOpen = false;
 let weaponMenuLeftOpen = false;
 
+let damageTimer = 100;
+let deltaDamage = 0;
+
 let cellSize = 64;
 
 class LevelPath extends Phaser.Scene {
@@ -126,11 +129,14 @@ class LevelPath extends Phaser.Scene {
 
         // Sonidos
         this.load.audio('shoot', 'assets/turret_shoot.mp3');
+
+        this.load.image('energy', 'assets/energy.png');
+        this.load.image('coin', 'assets/coin.png');
     }
     
     create() {
         
-        this.add.image(this.screenWidth / 2, this.screenHeight / 2, 'map').setScale(0.2);
+        this.add.image(this.screenWidth / 2, this.screenHeight / 2, 'map').setScale(1);
         selectImage = this.add.image(keyPosX * 64 + 32, keyPosY * 64 + 32, 'select').setScale(3);
         adan = this.physics.add.image(this.screenWidth/2, this.screenHeight/2 - 32, 'adan').setScale(0.15);
         
@@ -158,13 +164,17 @@ class LevelPath extends Phaser.Scene {
         //rightPath.draw(graphics);
         //this.drawRightGrid();
 
-        this.firstPlayerMoneyText = this.add.text(20, 16, 'Peseta Coins: 50', { fontSize: '20px', fill: '#fff', fontFamily: 'Pixeled'}).setStroke('#000', 4);
+        this.firstPlayerMoneyText = this.add.text(90, 13, '50', { fontSize: '30px', fill: '#fff', fontFamily: 'Pixeled'}).setStroke('#000', 4);
+        let firstPlayerMoneyImage = this.add.image(50,50, 'coin').setScale(0.08);
         this.firstPlayerHPText = this.add.text((this.screenWidth/2) - 256, 16, 'Vida: ' + firstPlayer.getMaxHp(), {fontSize: '20px', fill: '#fff', fontFamily: 'Pixeled'}).setStroke('#000', 4);
-        this.firstPlayerEnergyText = this.add.text(20, this.screenHeight-50, 'Energía: ' + firstPlayer.getEnergy(), {fontSize: '20px', fill: '#fff', fontFamily: 'Pixeled'}).setStroke('#000', 4);
+        let firstPlayerEnergyImage = this.add.image(50,this.screenHeight-50, 'energy').setScale(0.8);
+        this.firstPlayerEnergyText = this.add.text(90, this.screenHeight-85, firstPlayer.getEnergy(), {fontSize: '30px', fill: '#fff', fontFamily: 'Pixeled'}).setStroke('#000', 4);
 
-        this.secondPlayerMoneyText = this.add.text(this.screenWidth-300, 16, 'Peseta Coins: 50', { fontSize: '20px', fill: '#fff', fontFamily: 'Pixeled'}).setStroke('#000', 4);
+        this.secondPlayerMoneyText = this.add.text(this.screenWidth-152, 13, '50', { fontSize: '30px', fill: '#fff', fontFamily: 'Pixeled'}).setStroke('#000', 4);
+        let secondPlayerMoneyImage = this.add.image(this.screenWidth - 50,50, 'coin').setScale(0.08);
         this.secondPlayerHPText = this.add.text((this.screenWidth/2) + 128, 16, 'Vida: ' + firstPlayer.getMaxHp(), {fontSize: '20px', fill: '#fff', fontFamily: 'Pixeled'}).setStroke('#000', 4);
-        this.secondPlayerEnergyText = this.add.text(this.screenWidth-200, this.screenHeight-50, 'Energía: ' + secondPlayer.getEnergy(), {fontSize: '20px', fill: '#fff', fontFamily: 'Pixeled'}).setStroke('#000', 4);
+        let secondPlayerEnergyImage = this.add.image(this.screenWidth-50,this.screenHeight-53, 'energy').setScale(0.8);
+        this.secondPlayerEnergyText = this.add.text(this.screenWidth-152, this.screenHeight-85, secondPlayer.getEnergy(), {fontSize: '30px', fill: '#fff', fontFamily: 'Pixeled'}).setStroke('#000', 4);
 
         leftEnemies1 = this.physics.add.group({
             classType: TurretEnemy,
@@ -321,14 +331,16 @@ class LevelPath extends Phaser.Scene {
     
 
     update(time, delta) {
+        deltaDamage -= delta;
+        if(deltaDamage<=0) adan.clearTint();
        
-        this.firstPlayerMoneyText.setText('Peseta Coins: ' + firstPlayer.getMoney());
+        this.firstPlayerMoneyText.setText(firstPlayer.getMoney());
         this.firstPlayerHPText.setText("Vida: " + firstPlayer.getCurrentHP());
-        this.firstPlayerEnergyText.setText("Energía: " + firstPlayer.getEnergy());
+        this.firstPlayerEnergyText.setText(firstPlayer.getEnergy());
 
-        this.secondPlayerMoneyText.setText('Peseta Coins: ' + secondPlayer.getMoney());
+        this.secondPlayerMoneyText.setText(secondPlayer.getMoney());
         this.secondPlayerHPText.setText("Vida: " + secondPlayer.getCurrentHP());
-        this.secondPlayerEnergyText.setText("Energía: " + secondPlayer.getEnergy());
+        this.secondPlayerEnergyText.setText(secondPlayer.getEnergy());
 
         let tur = turrets.getChildren().concat(energyTurrets.getChildren());
         for(var p = 0; p<tur.length; p++){
@@ -613,6 +625,8 @@ function damagePlayer(adan, bullet){
     if(bullet.active===true && adan.active === true){
         bullet.setActive(false);
         bullet.setVisible(false);
+        adan.setTint(0xff0000);
+        deltaDamage = damageTimer;
     }
 }
 

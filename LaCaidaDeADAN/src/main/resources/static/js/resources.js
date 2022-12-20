@@ -1,10 +1,10 @@
 let game;
 
-class Controls extends Phaser.Scene {
+class Resources extends Phaser.Scene {
     constructor(screenWidth, screenHeight, gameConfig) {
         super();
 
-        Phaser.Scene.call(this, {key: 'Controls'});
+        Phaser.Scene.call(this, {key: 'Resources'});
 
         this.screenWidth = screenWidth;
         this.screenHeight = screenHeight;
@@ -12,12 +12,12 @@ class Controls extends Phaser.Scene {
     }
 
     preload() {
-        this.load.image('controls_background', 'assets/pantalla_controles.png');
-        this.load.image('button', 'assets/pantalla_controles.png');
+        this.load.image('resources_background', 'assets/pantalla_recursos.png');
+        this.load.image('button', 'assets/pantalla_recursos.png');
     }
 
     create() {
-        this.add.image(this.screenWidth / 2, this.screenHeight / 2, 'controls_background').setScale(0.95);
+        this.add.image(this.screenWidth / 2, this.screenHeight / 2, 'resources_background').setScale(0.95);
 
         this.continueButton = this.add.image(this.screenWidth / 2 + 730, this.screenHeight / 2 + 370, 'button').setScale(3.5);
 
@@ -37,10 +37,10 @@ class Controls extends Phaser.Scene {
     }
 
     backToMenu(){
-        game.scene.stop('Controls');
+        game.scene.stop('Resources');
         game.scene.start('MainMenu');
     }
 
 }
 
-export default Controls;
+export default Resources;
