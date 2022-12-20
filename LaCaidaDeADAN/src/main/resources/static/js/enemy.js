@@ -21,6 +21,10 @@ class Enemy extends Phaser.GameObjects.Image {
          this.attackSpeed = undefined;
          this.nextAttack = 0;
          this.scene = scene;
+         this.hpBar = undefined;
+         this.hpBar = this.scene.add.graphics();
+         this.hpBar.fillStyle(255, 1);
+         this.hpBar.fillRect(0, 0, 100, 10);
      }
 
      update (time, delta) {
@@ -28,8 +32,12 @@ class Enemy extends Phaser.GameObjects.Image {
         if(this.deltaDamage<=0) this.clearTint();
 
         if(this.currentHP <= 0) this.die();
+     
+        this.hpBar.x = this.follower.vec.x - 50;
+        this.hpBar.y = this.follower.vec.y - 50;
+
         
-         if(Phaser.Math.Distance.Between(this.follower.vec.x, this.follower.vec.y, 1856/2, 896/2)>this.range){
+        if(Phaser.Math.Distance.Between(this.follower.vec.x, this.follower.vec.y, 1856/2, 896/2)>this.range){
             this.follower.t += this.speed * delta;
             this.path.getPoint(this.follower.t, this.follower.vec);
             this.setPosition(this.follower.vec.x, this.follower.vec.y);
@@ -59,19 +67,22 @@ class Enemy extends Phaser.GameObjects.Image {
          return this.currentHP;
      }
 
-     setHP(hp){
+     setMaxHP(hp){
+        this.maxHP = hp
         this.currentHP = hp;
      }
  
      takeDamage(damage, bullet){
         if(this.active && bullet.active === true){
+            this.hpBar.setScale(1 - (1 - (this.currentHP/this.maxHP)) - (damage/this.maxHP), 1);
             this.currentHP -= damage;
             this.setTint(0xff0000);
-            
             this.deltaDamage = this.damageTimer;
 
-            if(this.currentHP <= 0)
-                this.die()
+            if(this.currentHP <= 0){
+                this.die();
+                this.hpBar.destroy();
+            }
         }
      }
 
