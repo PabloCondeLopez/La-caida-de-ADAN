@@ -1,3 +1,5 @@
 Deivid: Hola wenas
 Laura: uwu
 Deivid: Hola
+Hola: Hola
+Adios: adios
