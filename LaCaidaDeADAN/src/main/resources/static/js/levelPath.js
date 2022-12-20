@@ -216,15 +216,15 @@ class LevelPath extends Phaser.Scene {
         upgradeButton = this.add.image(1000 - 50*3, 200, 'storeIcons').setCrop(288*9,0,288,288).setScale(0.2).setActive(false).setVisible(false);
         upgradeButton.setInteractive();
 
-        sellButton = this.add.image(1000 - 50*6, 200, 'storeIcons').setCrop(288*10,0,288,288).setScale(0.2).setActive(false).setVisible(false).on('pointerdown', sellTurret);
+        sellButton = this.add.image(1000 - 50*6, 200, 'storeIcons').setCrop(288*10,0,288,288).setScale(0.2).setActive(false).setVisible(false);
         sellButton.setInteractive();
 
         
         //ARMAS
-        laserWeapon1Button = this.add.image(1000, 200, 'storeIcons').setCrop(0,0,288,288).setScale(0.2).setActive(false).setVisible(false).on('pointerdown', clickPlaceLaserTurret);
+        laserWeapon1Button = this.add.image(1000, 200, 'storeIcons').setCrop(0,0,288,288).setScale(0.2).setActive(false).setVisible(false).on('pointerdown', PlaceLaserTurret);
         laserWeapon1Button.setInteractive();
 
-        bulletWeapon1Button = this.add.image(1000 - 50*3, 200, 'storeIcons').setCrop(288*3,0,288,288).setScale(0.2).setActive(false).setVisible(false).on('pointerdown', clickPlaceEnergyTurret);
+        bulletWeapon1Button = this.add.image(1000 - 50*3, 200, 'storeIcons').setCrop(288*3,0,288,288).setScale(0.2).setActive(false).setVisible(false).on('pointerdown', PlaceEnergyTurret);
         bulletWeapon1Button.setInteractive();
 
         energyWeapon1Button = this.add.image(1000 - 50*6, 200, 'storeIcons').setCrop(288*6,0,288,288).setScale(0.2).setActive(false).setVisible(false).setTint(0x808080);
@@ -441,6 +441,10 @@ class LevelPath extends Phaser.Scene {
             case('Escape'):
                 levelPaused = true;
                 break;
+            
+            case('Enter'):
+                onEnter();
+            break;
         }
 
         selectImage.setPosition(keyPosX * 64 + 32, keyPosY * 64 + 32);
@@ -463,20 +467,6 @@ class LevelPath extends Phaser.Scene {
         }
 
         if (pointer.button===1){
-            /*
-            if(canPlaceTurretRight(i, j, 20, 0)) {
-                let energyTurret = energyTurrets.get();
-
-                if(energyTurret) {
-                    energyTurret.setActive(true);
-                    energyTurret.setVisible(true);
-                    energyTurret.setSide('left');
-                    energyTurret.placeRight(i, j, rightMap);
-                    secondPlayer.addMoney(-energyTurret.getCost());
-                    secondPlayer.addEnergy(energyTurret.getEnergy());
-                }
-            }
-            */
         }
     }
 
@@ -564,20 +554,42 @@ function onRightClick(pointer)
     console.log("ONRIGHTCLICK");
     let i = Math.floor(pointer.y/64);
     let j = Math.floor(pointer.x/64);
+    
 
     //console.log("POSICION: " + j%16 + "," + i + ":" + rightMap[j%16][i]);
+    console.log("POSICION: " + j + "," + i + ":" + rightMap[i][j]);
 
-    if(rightMap[i][j%16]!==-1 && rightMap[i][j%16]!==undefined) openCloseMenu(pointer, i, j);
-    else if(checkPosition(pointer, menuOpenY-1, menuOpenX+1)) openCloseWeapons(pointer);
-    else if(checkPosition(pointer, menuOpenX-1, menuOpenY+2) && weaponMenuOpen) clickPlaceLaserTurret(pointer);
-    else if(checkPosition(pointer, menuOpenX, menuOpenY+2) && weaponMenuOpen) clickPlaceEnergyTurret(pointer);
-    else if(checkPosition(pointer, menuOpenX+1, menuOpenY+1) && buyMenuOpen) sellTurret(pointer, i, j);
+    console.log("MENU: " +menuOpenY +","+ menuOpenX);
+    console.log("i,j: " +i +","+ j%16);
+
+    if(rightMap[i][j%16]!==-1 && rightMap[i][j%16]!==undefined) openCloseMenu(i, j);
+    else if(i===menuOpenX+1 && j%16===menuOpenY-1 && buyMenuOpen) openCloseWeapons();
+    else if(i===menuOpenX+2 && j%16===menuOpenY-1 && weaponMenuOpen) PlaceLaserTurret(false);
+    else if(i===menuOpenX+3 && j%16===menuOpenY-1 && weaponMenuOpen) PlaceEnergyTurret(false);
+    else if(i===menuOpenX+1 && j%16===menuOpenY+1 && buyMenuOpen) sellTurret(i, j, rightMap);
 }
 
-function openCloseMenu(pointer, i, j){
+function onEnter()
+{
+    console.log("OnEnter");
+    let i = keyPosY;
+    let j = keyPosX;
+
+    console.log("POSICION: " + j + "," + i + ":" + rightMap[j][i]);
+
+    console.log("MENU: " +menuOpenX +","+ menuOpenY);
+    console.log("i,j: " +i +","+ j);
+    console.log(weaponMenuOpen);
+    if(leftMap[i][j]!==-1 && leftMap[i][j]!==undefined) openCloseMenu(i, j);
+    else if(i===menuOpenX+1 && j===menuOpenY-1 && buyMenuOpen) openCloseWeapons();
+    else if(i===menuOpenX+2 && j===menuOpenY-1 && weaponMenuOpen) PlaceLaserTurret(true);
+    else if(i===menuOpenX+3 && j===menuOpenY-1 && weaponMenuOpen) PlaceEnergyTurret(true);
+    else if(i===menuOpenX+1 && j===menuOpenY+1 && buyMenuOpen) sellTurret(i, j, leftMap);
+}
+
+function openCloseMenu(i, j){
 
     console.log("openCloseMenu");
-    if(pointer!=undefined){
         menuOpenX = i;
         menuOpenY = j%16;
 
@@ -611,37 +623,57 @@ function openCloseMenu(pointer, i, j){
 
             energyWeapon1Button.setActive(false);
             energyWeapon1Button.setVisible(false);
-    
-    }
-}
-
-function openCloseWeapons(pointer){
-    console.log("openCloseWeapons");
-    console.log(pointer.x + "," + pointer.y);
-
-    if(pointer!=undefined){
-
-            laserWeapon1Button.x = buyButton.x + 456;
-            laserWeapon1Button.y = buyButton.y + 64;
-            bulletWeapon1Button.x = buyButton.x + 283;
-            bulletWeapon1Button.y = buyButton.y + 127;
-            energyWeapon1Button.x = buyButton.x + 110;
-            energyWeapon1Button.y = buyButton.y + 192;
-
-            laserWeapon1Button.setActive(!laserWeapon1Button.active);
-            laserWeapon1Button.setVisible(!laserWeapon1Button.visible);
-
-            bulletWeapon1Button.setActive(!bulletWeapon1Button.active);
-            bulletWeapon1Button.setVisible(!bulletWeapon1Button.visible);
-
-            energyWeapon1Button.setActive(!energyWeapon1Button.active);
-            energyWeapon1Button.setVisible(!energyWeapon1Button.visible);
         
-    }
+            if(buyButton.active) buyMenuOpen=true;
     
 }
 
-function placeTurret(pointer, turret){
+function openCloseWeapons(){
+    console.log("openCloseWeapons");
+
+    laserWeapon1Button.x = buyButton.x + 456;
+    laserWeapon1Button.y = buyButton.y + 64;
+    bulletWeapon1Button.x = buyButton.x + 283;
+    bulletWeapon1Button.y = buyButton.y + 127;
+    energyWeapon1Button.x = buyButton.x + 110;
+    energyWeapon1Button.y = buyButton.y + 192;
+
+    laserWeapon1Button.setActive(!laserWeapon1Button.active);
+    laserWeapon1Button.setVisible(!laserWeapon1Button.visible);
+
+    bulletWeapon1Button.setActive(!bulletWeapon1Button.active);
+    bulletWeapon1Button.setVisible(!bulletWeapon1Button.visible);
+
+    energyWeapon1Button.setActive(!energyWeapon1Button.active);
+    energyWeapon1Button.setVisible(!energyWeapon1Button.visible);
+
+    if(laserWeapon1Button.active) weaponMenuOpen = true;
+}  
+
+function keyPlaceTurret(turret, player){
+    console.log("keyPlaceTurret");
+    console.log("menuOpenX: " + menuOpenX);
+    console.log("menuOpenY: " + menuOpenY);
+    
+    if(canPlaceTurretLeft(menuOpenX, menuOpenY, 20, 10)) {
+        console.log("placing turret");
+
+        if(turret){
+            turret.setActive(true);
+            turret.setVisible(true);
+            turret.setSide('left');
+            turret.placeLeft(menuOpenX, menuOpenY, leftMap);
+            player.addMoney(-turret.getCost());
+            player.addEnergy(-turret.getEnergy());
+            console.log("placed");
+
+        }
+        openCloseMenu();
+    }
+    updateCosts();
+}
+
+function clickPlaceTurret(turret, player){
     console.log("clickPlaceTurret");
     console.log("menuOpenX: " + menuOpenX);
     console.log("menuOpenY: " + menuOpenY);
@@ -654,35 +686,26 @@ function placeTurret(pointer, turret){
             turret.setVisible(true);
             turret.setSide('right');
             turret.placeRight(menuOpenX, menuOpenY, rightMap);
-            secondPlayer.addMoney(-turret.getCost());
-            secondPlayer.addEnergy(-turret.getEnergy());
+            player.addMoney(-turret.getCost());
+            player.addEnergy(-turret.getEnergy());
             console.log("placed");
 
         }
-        openCloseMenu(pointer);
+        openCloseMenu();
     }
     updateCosts();
 }
 
-function clickPlaceLaserTurret(pointer){
+function PlaceLaserTurret(isKeyOrClick){
     let turret = turrets.get();
-    placeTurret(pointer, turret);
+    if(isKeyOrClick===true) { keyPlaceTurret(turret, firstPlayer); }
+    else { clickPlaceTurret(turret, secondPlayer); }
 }
 
-function clickPlaceEnergyTurret(pointer){
+function PlaceEnergyTurret(isKeyOrClick){
     let turret = energyTurrets.get();
-    placeTurret(pointer, turret);
-}
-
-function checkPosition(pointer, X, Y){
-    let i = Math.floor(pointer.y/64);
-    let j = Math.floor((pointer.x/64)%16);
-
-    if(X===-1) {
-        console.log(15===X);
-        return (-1===X && i===Y);
-    }
-    else return (j === X && i=== Y);
+    if(isKeyOrClick===true) { keyPlaceTurret(turret, firstPlayer); }
+    else { clickPlaceTurret(turret, secondPlayer); }
 }
 
 function updateCosts(){
@@ -695,18 +718,25 @@ function updateCosts(){
     else bulletWeapon1Button.clearTint();
 }
 
-function sellTurret(pointer,i,j){
+function sellTurret(x,y,map){
     console.log("Sell turret");
-    if(rightMap[menuOpenX][menuOpenY]===1){
+    if(map[menuOpenX][menuOpenY]===1){
         console.log("Selling");
         let turret = turrets.getChildren();
+        let energyTurret = energyTurrets.getChildren();
         for(var i=0; i<turret.length; i++){
             if(turret[i].getCoordX() === menuOpenX && turret[i].getCoordY() === menuOpenY){
-                console.log("destroy");
-                secondPlayer.money+=turret[i].getCost()/2;
-                rightMap[menuOpenX][menuOpenY]=0; 
+                if(map === rightMap) secondPlayer.money+=turret[i].getCost()/2;
+                else firstPlayer.money+=turret[i].getCost()/2;
+                map[menuOpenX][menuOpenY]=0; 
                 turret[i].destroy();
-                openCloseMenu(pointer,i,j);
+                openCloseMenu(x,y);
+            } else if(energyTurret[i].getCoordX() === menuOpenX && energyTurret[i].getCoordY() === menuOpenY){
+                if(map === rightMap) secondPlayer.money+=turret[i].getCost()/2;
+                else firstPlayer.money+=turret[i].getCost()/2;
+                map[menuOpenX][menuOpenY]=0; 
+                energyTurret[i].destroy();
+                openCloseMenu(x,y);
             }
         } 
     }
