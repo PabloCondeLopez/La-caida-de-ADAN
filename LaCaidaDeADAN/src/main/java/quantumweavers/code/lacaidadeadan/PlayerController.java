@@ -1,5 +1,8 @@
 package quantumweavers.code.lacaidadeadan;
 
+import java.io.*;
+import java.io.FileOutputStream;
+import java.io.PrintStream;
 import java.util.Collection;
 import java.util.Map;
 import java.util.concurrent.ConcurrentHashMap;
@@ -39,7 +42,9 @@ import org.springframework.web.bind.annotation.RestController;
 @RequestMapping("/player")
 public class PlayerController {
 	Map<Long, Player> Players = new ConcurrentHashMap<>();
-	AtomicLong nextId = new AtomicLong(0);
+	AtomicLong nextId = new AtomicLong(0);	
+	
+	 private File text = new File("jugadores.txt");
 	
 	@GetMapping
 	public Collection<Player> Players() {
@@ -54,6 +59,18 @@ public class PlayerController {
 			long id = nextId.incrementAndGet();
 			player.setId((int)id);
 			Players.put(id, player);
+			
+			try {
+				PrintStream flujo;
+				flujo = new PrintStream(new FileOutputStream("jugadores.txt", true));
+
+				flujo.println(player.getUser());
+				flujo.println(player.getPassword());
+				flujo.close();
+
+			} catch (Exception e) {
+				e.printStackTrace();
+			}
 			
 			return player;
 		}

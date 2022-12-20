@@ -6,10 +6,10 @@ import org.springframework.stereotype.Component;
 
 @Component
 public class ChatMessage {
-	private long id;
 	private String message;
 	private String sender;
 	private Timestamp date;
+	private long id;
 	
 	public ChatMessage() {}
 	
@@ -22,11 +22,11 @@ public class ChatMessage {
 		return this.id;
 	}
 	
-	public void SetId(long id) {
+	public void setId(long id) {
 		this.id = id;
 	}
 	
-	public String GetMessage() {
+	public String getMessage() {
 		return this.message;
 	}
 	
@@ -35,15 +35,15 @@ public class ChatMessage {
 		return "ChatMessage [id=" + id + ", message=" + message + ", sender=" + sender + "]";
 	}
 
-	public void SetMessage(String newMessage) {
+	public void setMessage(String newMessage) {
 		this.message = newMessage;
 	}
 	
-	public String GetSender() {
+	public String getSender() {
 		return this.sender;
 	}
 	
-	public void SetSender(String newSender) {
+	public void setSender(String newSender) {
 		this.sender = newSender;
 	}
 	

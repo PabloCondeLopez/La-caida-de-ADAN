@@ -35,8 +35,9 @@ public class ChatRestController {
 	public ChatMessage nuevoItem(@RequestBody ChatMessage message) {
 
 		long id = nextId.incrementAndGet();
-		message.SetId(id);
+		message.setId(id);
 		messages.put(id, message);
+		System.out.println(message.toString());
 
 		return message;
 	}

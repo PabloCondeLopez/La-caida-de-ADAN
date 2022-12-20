@@ -51,9 +51,12 @@ function deleteMessage(ChatMessageId) {
 
 //Show item in page
 function showChat(chat) {
+	
+	var msFormat = '<b>' + chat.sender + ":" + '</b>' + " " + chat.message;
+	
     $('#chat').append(
-        '<div id="message-' + chat.id + '">' + chat.message +
-        '</div>')
+        '<div id="message-' + chat.id + '">' + msFormat + '</div>')
+       
 }
 
 $(document).ready(function () {
@@ -66,23 +69,23 @@ $(document).ready(function () {
         }
     });
 
-    var user = $('#user-input')
-    var message = $('#message-input')
+    var sender = $('#user-input');
+    var message = $('#message-input');
     
     //Handle add button
     $("#send-button").click(function () {
-		var userVal = user.val();
+		var senderVal = sender.val();
 		var messageVal = message.val();
 		message.val('');      
 
         var Message = {
             message : messageVal,
-            sender : userVal 
+            sender : senderVal 
         }
-
-        createMessage(Message, function (MessageWithId) {
+        createMessage(Message, function (MessageID) {
             //When item with id is returned from server
-            showChat(MessageWithId);
+            showChat(MessageID);
         });
+        
     })
 })
