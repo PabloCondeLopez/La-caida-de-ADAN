@@ -37,7 +37,6 @@ public class ChatRestController {
 		long id = nextId.incrementAndGet();
 		message.setId(id);
 		messages.put(id, message);
-		System.out.println(message.toString());
 
 		return message;
 	}
@@ -45,7 +44,7 @@ public class ChatRestController {
 	@PutMapping("/{id}")
 	public ResponseEntity<ChatMessage> actualizaItem(@PathVariable long id, @RequestBody ChatMessage updatedMS) {
 
-		ChatMessage savedMessage = messages.get(updatedMS.GetId());
+		ChatMessage savedMessage = messages.get(updatedMS.getId());
 
 		if (savedMessage != null) {
 
@@ -75,7 +74,7 @@ public class ChatRestController {
 		ChatMessage savedItem = messages.get(id);
 
 		if (savedItem != null) {
-			messages.remove(savedItem.GetId());
+			messages.remove(savedItem.getId());
 			return new ResponseEntity<>(savedItem, HttpStatus.OK);
 		} else {
 			return new ResponseEntity<>(HttpStatus.NOT_FOUND);

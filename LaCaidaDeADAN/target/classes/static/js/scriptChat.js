@@ -51,29 +51,13 @@ function deleteMessage(ChatMessageId) {
 
 //Show item in page
 function showChat(chat) {
-	
 	var msFormat = '<b>' + chat.sender + ":" + '</b>' + " " + chat.message;
-	
-	console.log(chat.message + ": " + chat.id)
 	
     $('#Chat').append(
-        '<div id="message-' + chat.id + '">' + msFormat + '</div>')
-       
-}
-
-function updateChatText(chat) {
-	$('#message-' + chat.id).empty();
-	
-	console.log(chat.message + ": " + chat.id)
-	var msFormat = '<b>' + chat.sender + ":" + '</b>' + " " + chat.message;
-	
-	$('#message-' + chat.id).append(
         '<div id="message-' + chat.id + '">' + msFormat + '</div>')
 }
 
 $(document).ready(function () {
-
-
     loadChat(function (ChatMessage) {
         for (var i = 0; i < ChatMessage.length; i++) {
             showChat(ChatMessage[i]);
@@ -82,11 +66,13 @@ $(document).ready(function () {
     
     setInterval(function() {
 		loadChat(function (ChatMessage) {
+			$('#Chat').empty();
+			
         	for (var i = 0; i < ChatMessage.length; i++) {
-            	updateChatText(ChatMessage[i]);
+            	showChat(ChatMessage[i]);
         	}
     	});
-	}, 240)
+	}, 1000)
 
     var sender = $('#Nickname');
     var message = $('#Message');

@@ -5,7 +5,7 @@ class Turret extends Phaser.GameObjects.Image {
         Phaser.GameObjects.Image.call(this, scene, 0, 0, 'energyTurret');
 
         this.cost = 20;
-        this.energy = 40;
+        this.energy = -40;
         this.side = undefined;
         this.coord = undefined;
     }

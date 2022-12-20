@@ -15,7 +15,7 @@ public class ChatMessage {
 		this.message = m;
 	}
 	
-	public long GetId() {
+	public long getId() {
 		return this.id;
 	}
 	

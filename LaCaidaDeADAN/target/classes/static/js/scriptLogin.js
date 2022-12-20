@@ -61,20 +61,6 @@ function showUser(User) {
 	$('#Players').append('<div id="player-' + User.id + '">' + 'Nombre: ' + User.user + ' | Estado: ' + estado + '</div>')
 }
 
-function updateUserText(User) {
-	let estado = '';
-	
-	if(User.connected === true){
-		estado = 'Conectado';
-	} else {
-		estado = 'Desconectado';
-	}
-	
-	$('#player-' + User.id).empty();
-	
-	$('#player-' + User.id).append('<div id="player-' + User.id + '">' + 'Nombre: ' + User.user + ' | Estado: ' + estado + '</div>')
-}
-
 $(document).ready(function () {
 	loadUser(function(Player) {
 		for (var i = 0; i < Player.length; i++) {
@@ -84,11 +70,12 @@ $(document).ready(function () {
 	
 	setInterval(function() {
 		loadUser(function(Player) {
+			$('#Players').empty();
 			for (var i = 0; i < Player.length; i++) {
-            	updateUserText(Player[i]);
+            	showUser(Player[i]);
         	}
 		})
-	}, 240);
+	}, 1000);
 	
     var user = $('#Username')
     

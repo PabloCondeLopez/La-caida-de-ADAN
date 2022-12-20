@@ -17,6 +17,7 @@ class SkellyEnemy extends Enemy{
         this.damageAmmount = 8;
         this.moneyGiven = 10;
         this.range = 128;
+        this.ranged = false;
         this.attackSpeed = 10;
     }
 
