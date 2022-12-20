@@ -236,7 +236,7 @@ class LevelPath extends Phaser.Scene {
         input = this.input;
 
         //TIENDA DERECHA
-        buyButton = this.add.image(1000, 200, 'storeIcons').setCrop(288*8,0,288,288).setScale(0.2).setActive(false).setVisible(false).on('pointerdown', openCloseWeapons);
+        buyButton = this.add.image(1000, 200, 'storeIcons').setCrop(288*8,0,288,288).setScale(0.2).setActive(false).setVisible(false);
         buyButton.setInteractive();
 
         upgradeButton = this.add.image(1000 - 50*3, 200, 'storeIcons').setCrop(288*9,0,288,288).setScale(0.2).setActive(false).setVisible(false);
@@ -247,10 +247,10 @@ class LevelPath extends Phaser.Scene {
 
         
         //ARMAS
-        laserWeapon1Button = this.add.image(1000, 200, 'storeIcons').setCrop(0,0,288,288).setScale(0.2).setActive(false).setVisible(false).on('pointerdown', PlaceLaserTurret);
+        laserWeapon1Button = this.add.image(1000, 200, 'storeIcons').setCrop(0,0,288,288).setScale(0.2).setActive(false).setVisible(false);
         laserWeapon1Button.setInteractive();
 
-        bulletWeapon1Button = this.add.image(1000 - 50*3, 200, 'storeIcons').setCrop(288*3,0,288,288).setScale(0.2).setActive(false).setVisible(false).on('pointerdown', PlaceEnergyTurret);
+        bulletWeapon1Button = this.add.image(1000 - 50*3, 200, 'storeIcons').setCrop(288*3,0,288,288).setScale(0.2).setActive(false).setVisible(false);
         bulletWeapon1Button.setInteractive();
 
         energyWeapon1Button = this.add.image(1000 - 50*6, 200, 'storeIcons').setCrop(288*6,0,288,288).setScale(0.2).setActive(false).setVisible(false).setTint(0x808080);
@@ -258,7 +258,7 @@ class LevelPath extends Phaser.Scene {
 
 
         //TIENDA IZQUIERDA
-        buyButton1 = this.add.image(1000, 200, 'storeIcons').setCrop(288*8,0,288,288).setScale(0.2).setActive(false).setVisible(false).on('pointerdown', openCloseWeapons);
+        buyButton1 = this.add.image(1000, 200, 'storeIcons').setCrop(288*8,0,288,288).setScale(0.2).setActive(false).setVisible(false);
         buyButton1.setInteractive();
 
         upgradeButton1 = this.add.image(1000 - 50*3, 200, 'storeIcons').setCrop(288*9,0,288,288).setScale(0.2).setActive(false).setVisible(false);
@@ -269,10 +269,10 @@ class LevelPath extends Phaser.Scene {
 
         
         //ARMAS
-        laserWeapon1Button1 = this.add.image(1000, 200, 'storeIcons').setCrop(0,0,288,288).setScale(0.2).setActive(false).setVisible(false).on('pointerdown', PlaceLaserTurret);
+        laserWeapon1Button1 = this.add.image(1000, 200, 'storeIcons').setCrop(0,0,288,288).setScale(0.2).setActive(false).setVisible(false);
         laserWeapon1Button1.setInteractive();
 
-        bulletWeapon1Button1 = this.add.image(1000 - 50*3, 200, 'storeIcons').setCrop(288*3,0,288,288).setScale(0.2).setActive(false).setVisible(false).on('pointerdown', PlaceEnergyTurret);
+        bulletWeapon1Button1 = this.add.image(1000 - 50*3, 200, 'storeIcons').setCrop(288*3,0,288,288).setScale(0.2).setActive(false).setVisible(false);
         bulletWeapon1Button1.setInteractive();
 
         energyWeapon1Button1 = this.add.image(1000 - 50*6, 200, 'storeIcons').setCrop(288*6,0,288,288).setScale(0.2).setActive(false).setVisible(false).setTint(0x808080);
@@ -329,6 +329,13 @@ class LevelPath extends Phaser.Scene {
         this.secondPlayerMoneyText.setText('Peseta Coins: ' + secondPlayer.getMoney());
         this.secondPlayerHPText.setText("Vida: " + secondPlayer.getCurrentHP());
         this.secondPlayerEnergyText.setText("Energía: " + secondPlayer.getEnergy());
+
+        let tur = turrets.getChildren().concat(energyTurrets.getChildren());
+        for(var p = 0; p<tur.length; p++){
+            if(tur[p].x === 0){
+                tur[p].destroy();
+            }
+        }
 
         if(levelPaused) {
             levelPaused = false;
@@ -512,9 +519,6 @@ class LevelPath extends Phaser.Scene {
         if(pointer.button === 0){
 
             onRightClick(pointer);
-        }
-
-        if (pointer.button===1){
         }
     }
 
@@ -758,7 +762,7 @@ function openCloseWeapons(menu){
 function keyPlaceTurret(turret, player){
     console.log("keyPlaceTurret");
 
-        if(canPlaceTurretLeft(menuLeftOpenX, menuLeftOpenY, 20, 10)) {
+        if(canPlaceTurretLeft(menuLeftOpenX, menuLeftOpenY, turret.cost, turret.energy)) {
             if(turret){
                 turret.setActive(true);
                 turret.setVisible(true);
@@ -774,7 +778,7 @@ function keyPlaceTurret(turret, player){
 
 function clickPlaceTurret(turret, player){
     console.log("clickPlaceTurret");
-    if(canPlaceTurretRight(menuRightOpenX, menuRightOpenY, 20, 10)) {
+    if(canPlaceTurretRight(menuRightOpenX, menuRightOpenY, turret.cost, turret.energy)) {
 
         if(turret){
             turret.setActive(true);
