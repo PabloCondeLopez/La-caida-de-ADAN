@@ -247,7 +247,7 @@ class LevelPath extends Phaser.Scene {
 
         
         //ARMAS
-        laserWeapon1Button = this.add.image(1000, 200, 'storeIcons').setCrop(0,0,288,288).setScale(0.2).setActive(false).setVisible(false).on('pointerdown', PlaceLaserTurret);
+        laserWeapon1Button = this.add.image(1000, 200, 'storeIcons').setCrop(0,0,288,288).setScale(0.2).setActive(false).setVisible(false);
         laserWeapon1Button.setInteractive();
 
         bulletWeapon1Button = this.add.image(1000 - 50*3, 200, 'storeIcons').setCrop(288*3,0,288,288).setScale(0.2).setActive(false).setVisible(false).on('pointerdown', PlaceEnergyTurret);
@@ -269,7 +269,7 @@ class LevelPath extends Phaser.Scene {
 
         
         //ARMAS
-        laserWeapon1Button1 = this.add.image(1000, 200, 'storeIcons').setCrop(0,0,288,288).setScale(0.2).setActive(false).setVisible(false).on('pointerdown', PlaceLaserTurret);
+        laserWeapon1Button1 = this.add.image(1000, 200, 'storeIcons').setCrop(0,0,288,288).setScale(0.2).setActive(false).setVisible(false);
         laserWeapon1Button1.setInteractive();
 
         bulletWeapon1Button1 = this.add.image(1000 - 50*3, 200, 'storeIcons').setCrop(288*3,0,288,288).setScale(0.2).setActive(false).setVisible(false).on('pointerdown', PlaceEnergyTurret);
