@@ -6,12 +6,10 @@ class ChatMenu extends Phaser.Scene{
 
         this.gameWidth = gameWidth;
         this.gameHeight = gameHeight;
-        console.log("Holi");
     }
 
     create() {
-        console.log("Holi");
-        document.getElementById('Chat').style.display = 'block';
+        document.getElementById('ChatBox').style.display = 'block';
     }
 }
 
