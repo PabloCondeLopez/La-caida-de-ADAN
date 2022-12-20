@@ -136,7 +136,7 @@ class LevelPath extends Phaser.Scene {
     
     create() {
         
-        this.add.image(this.screenWidth / 2, this.screenHeight / 2, 'map').setScale(1);
+        this.add.image(this.screenWidth / 2, this.screenHeight / 2, 'map').setScale(0.2);
         selectImage = this.add.image(keyPosX * 64 + 32, keyPosY * 64 + 32, 'select').setScale(3);
         adan = this.physics.add.image(this.screenWidth/2, this.screenHeight/2 - 32, 'adan').setScale(0.15);
         
