@@ -118,7 +118,7 @@ class LevelPath extends Phaser.Scene {
         this.load.image('select', 'assets/select.png');
         this.load.image('energyTurret', 'assets/energia.png');
         this.load.image('skelly', 'assets/skelly.png');
-        this.load.image('adan', 'assets/metralleta high-res.png');
+        this.load.image('adan', 'assets/cuadrado.png');
 
         // botones
         this.load.image('square', 'assets/cuadrado.png');
@@ -132,7 +132,7 @@ class LevelPath extends Phaser.Scene {
         
         this.add.image(this.screenWidth / 2, this.screenHeight / 2, 'map').setScale(0.2);
         selectImage = this.add.image(keyPosX * 64 + 32, keyPosY * 64 + 32, 'select').setScale(3);
-        adan = this.physics.add.image(this.screenWidth/2, this.screenHeight/2, 'adan');
+        adan = this.physics.add.image(this.screenWidth/2, this.screenHeight/2 - 32, 'adan').setScale(0.15);
         
 
         graphics = this.add.graphics();
