@@ -1,5 +1,8 @@
 package quantumweavers.code.lacaidadeadan;
 
+import java.io.File;
+import java.io.FileOutputStream;
+import java.io.PrintStream;
 import java.util.Collection;
 import java.util.Map;
 import java.util.concurrent.ConcurrentHashMap;
@@ -23,6 +26,7 @@ import org.springframework.web.bind.annotation.RestController;
 public class ChatRestController {
 
 	Map<Long, ChatMessage> messages = new ConcurrentHashMap<>(); 
+	private File text = new File("chat.txt");
 	AtomicLong nextId = new AtomicLong(0);
 	
 	@GetMapping
@@ -37,6 +41,17 @@ public class ChatRestController {
 		long id = nextId.incrementAndGet();
 		message.setId(id);
 		messages.put(id, message);
+		
+		try {
+			PrintStream flujo;
+			flujo = new PrintStream(new FileOutputStream("chat.txt", true));
+
+			flujo.println(message.getSender() + ": " + message.getMessage());
+			flujo.close();
+
+		} catch (Exception e) {
+			e.printStackTrace();
+		}
 
 		return message;
 	}

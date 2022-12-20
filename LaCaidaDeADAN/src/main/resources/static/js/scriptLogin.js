@@ -1,4 +1,3 @@
-//Load items from server
 function loadUser(callback) {
     $.ajax({
         url: 'http://localhost:8080/player'
@@ -8,7 +7,6 @@ function loadUser(callback) {
     })
 }
 
-//Create item in server
 function createUser(Player, callback) {
     $.ajax({
         method: "POST",
@@ -24,7 +22,7 @@ function createUser(Player, callback) {
     })
 }
 
-//Update item in server
+
 function updateUser(Player) {
     $.ajax({
         method: 'PUT',
@@ -39,7 +37,6 @@ function updateUser(Player) {
     })
 }
 
-//Delete item from server
 function deleteUser(Player) {
     $.ajax({
         method: 'DELETE',
