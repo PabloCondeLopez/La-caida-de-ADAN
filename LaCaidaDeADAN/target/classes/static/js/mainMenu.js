@@ -62,7 +62,6 @@ class MainMenu extends Phaser.Scene {
     }
 
     chatScene() {
-		console.log(game.scene);
         game.scene.stop('MainMenu');
         game.scene.start('ChatMenu');
     }

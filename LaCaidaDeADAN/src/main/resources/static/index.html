@@ -10,6 +10,9 @@
 
         <link rel="preload" href="assets/Pixeled.ttf" as="font" type="font/woff2" crossorigin="anonymous">
         <script src="js/phaser.js"></script>
+        <script src="https://code.jquery.com/jquery-2.2.0.min.js"></script>
+        <script src="js/scriptLogin.js"></script>
+        <script src="js/scriptChat.js"></script>
     </head>
 
     <body>
@@ -17,13 +20,13 @@
         <script type="module" src="js/game.js"></script>
         
         <div>
-            <table style="display: none;" id="Chat">
+            <table style="display: none;" id="ChatBox">
                 <tr>
                     <td>
-                        <div id="Players"></div>
+                        <div id="Chat"></div>
                     </td>
                     <td>
-                        <div id="Info"></div>
+                        <div id="Players"></div>
                     </td>
                 </tr>
                 <tr>
@@ -34,20 +37,27 @@
                     </td>
                     <td>
                         <div>
-                            <input id="Message" type="text" placeholder="Introduce tu mensaje">
+							<input id="Username" type="text" placeholder="Nombre de usuario">
                         </div>
                     </td>
                 </tr>
                 <tr>
+					<td>
+						<div>
+							<input id="Message" type="text" placeholder="Introduce tu mensaje">
+						</div>
+					</td>
+				</tr>
+                <tr>
                     <td>
                         <div>
-                            <button id="ConnectButton">Conectarse</button>
-                            <button id="DisconnectButton">Desconectarse</button>
+                            <button id="SendButton">Enviar</button>
                         </div>
                     </td>
                     <td>
                         <div>
-                            <button id="SendButton">Enviar</button>
+                            <button id="EnterButton">Entrar</button>
+                            <button id="ConnectionButton">Conectarse/Desconectarse</button>
                         </div>
                     </td>
                 </tr>

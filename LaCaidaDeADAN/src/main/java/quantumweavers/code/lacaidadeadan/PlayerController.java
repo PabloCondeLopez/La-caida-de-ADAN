@@ -1,6 +1,8 @@
 package quantumweavers.code.lacaidadeadan;
 
-import quantumweavers.code.lacaidadeadan.Player;
+import java.io.*;
+import java.io.FileOutputStream;
+import java.io.PrintStream;
 import java.util.Collection;
 import java.util.Map;
 import java.util.concurrent.ConcurrentHashMap;
@@ -23,7 +25,9 @@ import org.springframework.web.bind.annotation.RestController;
 @RequestMapping("/player")
 public class PlayerController {
 	Map<Long, Player> Players = new ConcurrentHashMap<>();
-	AtomicLong nextId = new AtomicLong(0);
+	AtomicLong nextId = new AtomicLong(0);	
+	
+	 private File text = new File("jugadores.txt");
 	
 	@GetMapping
 	public Collection<Player> Players() {
@@ -33,29 +37,66 @@ public class PlayerController {
 	@PostMapping
 	@ResponseStatus(HttpStatus.CREATED)
 	public Player nuevoPlayer(@RequestBody Player player) {
+		
+		if(!hasAccount(player)) {
+			long id = nextId.incrementAndGet();
+			player.setId((int)id);
+			Players.put(id, player);
+			
+			try {
+				PrintStream flujo;
+				flujo = new PrintStream(new FileOutputStream("jugadores.txt", true));
 
-		long id = nextId.incrementAndGet();
-		player.setId((int)id);
-		Players.put(id, player);
+				flujo.println(player.getUser());
+				flujo.close();
 
-		return player;
+			} catch (Exception e) {
+				e.printStackTrace();
+			}
+			
+			return player;
+		}
+		return null;
 	}
 	
-	@PutMapping("/players/{id}")
-	public ResponseEntity<Player> actulizaPlayer(@PathVariable long id, @RequestBody Player PlayerActualizado) {
+	@PutMapping
+	public ResponseEntity<Player> actulizaPlayer(@RequestBody Player PlayerActualizado) {
+		
+		long playerID = validPlayer(PlayerActualizado);
 
-		Player savedPlayer = Players.get(PlayerActualizado.getId());
-
-		if (savedPlayer != null) {
-
-			Players.put(id, PlayerActualizado);
+		if (playerID != -1) {
+			
+			if(Players.get(playerID).isConnected()) {
+				PlayerActualizado.setConnected(false);
+			} else {
+				PlayerActualizado.setConnected(true);
+			}
+			
+			Players.put(playerID, PlayerActualizado);
 
 			return new ResponseEntity<>(PlayerActualizado, HttpStatus.OK);
 		} else {
 			return new ResponseEntity<>(HttpStatus.NOT_FOUND);
 		}
 	}
-	@GetMapping("/players/{id}")
+	
+	private boolean hasAccount (Player player) {
+		for (Map.Entry<Long,Player> entry : Players.entrySet()) {
+			if(entry.getValue().getUser().equals(player.getUser())) return true;
+		}
+		return false;
+	}
+	
+	private long validPlayer (Player player) {
+		for (Map.Entry<Long,Player> entry : Players.entrySet()) {
+			if(entry.getValue().getUser().equals(player.getUser())) {
+				return entry.getKey();
+			}
+		}
+		return -1;
+	}
+	
+	@GetMapping("/{id}")
 	public ResponseEntity<Player> getPlayer(@PathVariable long id) {
 
 		Player savedPlayer = Players.get(id);
@@ -67,7 +108,7 @@ public class PlayerController {
 		}
 	}
 	
-	@DeleteMapping("/players/{id}")
+	@DeleteMapping("/{id}")
 	public ResponseEntity<Player> borraPlayer(@PathVariable long id) {
 
 		Player savedPlayer = Players.get(id);

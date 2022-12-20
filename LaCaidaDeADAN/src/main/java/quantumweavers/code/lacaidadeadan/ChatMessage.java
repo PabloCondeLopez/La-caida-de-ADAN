@@ -4,43 +4,43 @@ import org.springframework.stereotype.Component;
 
 @Component
 public class ChatMessage {
-	private long id;
 	private String message;
 	private String sender;
-	private String receiver;
+	private long id;
 	
-	public ChatMessage() {
+	public ChatMessage() {}
+	
+	public ChatMessage(String s, String m) {
+		this.sender = s;
+		this.message = m;
 	}
 	
-	public long GetId() {
+	public long getId() {
 		return this.id;
 	}
 	
-	public void SetId(long id) {
+	public void setId(long id) {
 		this.id = id;
 	}
 	
-	public String GetMessage() {
+	public String getMessage() {
 		return this.message;
 	}
 	
-	public void SetMessage(String newMessage) {
+	@Override
+	public String toString() {
+		return "ChatMessage [id=" + id + ", message=" + message + ", sender=" + sender + "]";
+	}
+
+	public void setMessage(String newMessage) {
 		this.message = newMessage;
 	}
 	
-	public String GetSender() {
+	public String getSender() {
 		return this.sender;
 	}
 	
-	public void SetSender(String newSender) {
+	public void setSender(String newSender) {
 		this.sender = newSender;
-	}
-	
-	public String GetReceiver() {
-		return this.receiver;
-	}
-	
-	public void SetReceiver(String newReceiver) {
-		this.receiver = newReceiver;
 	}
 }

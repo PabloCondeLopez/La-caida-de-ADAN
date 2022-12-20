@@ -19,6 +19,7 @@ class Enemy extends Phaser.GameObjects.Image {
          this.moneyGiven = undefined;
          this.range = undefined;
          this.attackSpeed = undefined;
+         this.ranged = undefined;
          this.nextAttack = 0;
          this.scene = scene;
          this.hpBar = undefined;
@@ -45,8 +46,10 @@ class Enemy extends Phaser.GameObjects.Image {
          
          else{
             if(time > this.nextAttack){
+                if(this.ranged){
+                    this.fire();
+                }
                 this.damagedPlayer.takeDamage(this.damageAmmount);
-
                 this.nextAttack = time + this.attackSpeed*100;
             }
          }
