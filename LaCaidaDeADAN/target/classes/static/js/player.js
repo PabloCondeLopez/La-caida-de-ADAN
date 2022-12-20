@@ -32,6 +32,7 @@ class Player {
 
     takeDamage(ammount) {
         this.currentHp -= ammount;
+        if(this.currentHp < 0) this.currentHp = 0;
     }
 
     addEnergy(amount){

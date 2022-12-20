@@ -14,6 +14,43 @@
 
     <body>
         <script type="module" src="js/game.js"></script>
-        <script type='module' src='ChatPrueba.js'></script>
+
+        <div>
+            <table style="display: none;" id="Chat">
+                <tr>
+                    <td>
+                        <div id="Players"></div>
+                    </td>
+                    <td>
+                        <div id="Info"></div>
+                    </td>
+                </tr>
+                <tr>
+                    <td>
+                        <div>
+                            <input id="Nickname" type="text" placeholder="Introduce tu nombre">
+                        </div>
+                    </td>
+                    <td>
+                        <div>
+                            <input id="Message" type="text" placeholder="Introduce tu mensaje">
+                        </div>
+                    </td>
+                </tr>
+                <tr>
+                    <td>
+                        <div>
+                            <button id="ConnectButton">Conectarse</button>
+                            <button id="DisconnectButton">Desconectarse</button>
+                        </div>
+                    </td>
+                    <td>
+                        <div>
+                            <button id="SendButton">Enviar</button>
+                        </div>
+                    </td>
+                </tr>
+            </table>
+        </div>
     </body>
 </html>
