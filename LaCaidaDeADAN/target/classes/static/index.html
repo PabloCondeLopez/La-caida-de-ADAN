@@ -9,13 +9,14 @@
 
             table {
                 font-family: 'Pixeled';
-                width: 1856px;
-                height: 896px;
+                width: 30%;
+                height: 70%;
                 color: white;
                 background-color: black;
                 position: absolute;
-                bottom: 0px;
+                
             }
+            
             
             button {
               padding: 15px 25px;
@@ -46,25 +47,27 @@
     </head>
 
     <body>
+        
         <script type="module" src="js/game.js"></script>
-
+        
         <div>
-            <table style="display: none;" id="ChatBox">
+            <table style= "display: none;" id="ChatBox">
 				<tr>
-					<td>
+					<td >
 						<div id="Info"></div>
 					</td>
 				</tr>
 				<tr>
-                    <td>
+                    <td style="max-width: 100px;">
                         <div id="Chat"></div>
                     </td>
-                    <td>
+                    <td style="max-width: 100px;" >
                         <div id="Players"></div>
                     </td>
-                </tr>
+                
                 <tr>
-                    <td>
+                    <td >
+                    <div >
                         <div>
                             <input id="Nickname" type="text" placeholder="Introduce tu nombre">
                         </div>
@@ -93,9 +96,12 @@
                             <button id="EnterButton">Entrar</button>
                             <button id="ConnectionButton">Conectarse/Desconectarse</button>
                         </div>
+                        </div>
                     </td>
                 </tr>
             </table>
         </div>
+        
     </body>
+    
 </html>

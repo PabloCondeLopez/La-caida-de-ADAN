@@ -36,7 +36,7 @@ public class ChatRestController {
 
 	@PostMapping
 	@ResponseStatus(HttpStatus.CREATED)
-	public ChatMessage nuevoItem(@RequestBody ChatMessage message) {
+	public ChatMessage nuevoMensaje(@RequestBody ChatMessage message) {
 
 		long id = nextId.incrementAndGet();
 		message.setId(id);
@@ -57,7 +57,7 @@ public class ChatRestController {
 	}
 
 	@PutMapping("/{id}")
-	public ResponseEntity<ChatMessage> actualizaItem(@PathVariable long id, @RequestBody ChatMessage updatedMS) {
+	public ResponseEntity<ChatMessage> actualizaMensaje(@PathVariable long id, @RequestBody ChatMessage updatedMS) {
 
 		ChatMessage savedMessage = messages.get(updatedMS.getId());
 
@@ -72,7 +72,7 @@ public class ChatRestController {
 	}
 
 	@GetMapping("/{id}")
-	public ResponseEntity<ChatMessage> getItem(@PathVariable long id) {
+	public ResponseEntity<ChatMessage> getMensaje(@PathVariable long id) {
 
 		ChatMessage savedMessage = messages.get(id);
 
@@ -84,7 +84,7 @@ public class ChatRestController {
 	}
 
 	@DeleteMapping("/{id}")
-	public ResponseEntity<ChatMessage> borraItem(@PathVariable long id) {
+	public ResponseEntity<ChatMessage> borraMensaje(@PathVariable long id) {
 
 		ChatMessage savedItem = messages.get(id);
 
