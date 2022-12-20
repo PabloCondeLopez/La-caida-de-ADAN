@@ -41,6 +41,7 @@ var rightMap =      [
                     ];
 
 let turretArray;
+let adan;
 
 let graphics;
 let leftPath;
@@ -52,6 +53,7 @@ let leftEnemies2;
 let rightEnemies1;
 let rightEnemies2;
 let energyTurrets;
+let enemyBullets;
 let enemyHP = 100;
 
 let bullets;
@@ -104,6 +106,7 @@ class LevelPath extends Phaser.Scene {
         this.load.image('select', 'assets/select.png');
         this.load.image('energyTurret', 'assets/energia.png');
         this.load.image('skelly', 'assets/skelly.png');
+        this.load.image('adan', 'assets/metralleta high-res.png');
 
         // botones
         this.load.image('square', 'assets/cuadrado.png');
@@ -114,8 +117,11 @@ class LevelPath extends Phaser.Scene {
     }
     
     create() {
+        
         this.add.image(this.screenWidth / 2, this.screenHeight / 2, 'map').setScale(0.2);
         selectImage = this.add.image(keyPosX * 64 + 32, keyPosY * 64 + 32, 'select').setScale(3);
+        adan = this.physics.add.image(this.screenWidth/2, this.screenHeight/2, 'adan');
+        
 
         graphics = this.add.graphics();
         graphics.lineStyle(3, 0xffffff, 1);
@@ -182,12 +188,21 @@ class LevelPath extends Phaser.Scene {
             classType: Bullet,
             runChildUpdate: true
         });
+
+        enemyBullets = this.physics.add.group({
+            classType: Bullet,
+            runChildUpdate: true
+        });
+
+        
         
         this.physics.add.overlap(leftEnemies1, bullets, damageEnemy);
         this.physics.add.overlap(leftEnemies2, bullets, damageEnemy);
 
         this.physics.add.overlap(rightEnemies1, bullets, damageEnemy);
         this.physics.add.overlap(rightEnemies2, bullets, damageEnemy);
+
+        this.physics.add.overlap(enemyBullets, adan, damagePlayer);
 
         this.nextEnemy = 0;
         this.pauseOnScene = false;
@@ -498,6 +513,14 @@ class LevelPath extends Phaser.Scene {
         }
     }
 
+    addEnemyBullet(x, y, angle){
+        let bullet = enemyBullets.get();
+
+        if(bullet){
+            bullet.fire(x, y, angle);
+        }
+    }
+
     resetMap() {
         for(var i = 0; i < leftMap.length; i++){
             for(var j = 0; j < leftMap[i].length; j++){
@@ -546,6 +569,13 @@ function damageEnemy(enemy, bullet){
         bullet.setActive(false);
         bullet.setVisible(false);
         updateCosts();
+    }
+}
+
+function damagePlayer(adan, bullet){
+    if(bullet.active===true && adan.active === true){
+        bullet.setActive(false);
+        bullet.setVisible(false);
     }
 }
 

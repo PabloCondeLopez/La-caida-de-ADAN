@@ -17,9 +17,16 @@ class TurretEnemy extends Enemy{
         this.damageAmmount = 5;
         this.moneyGiven = 10;
         this.range = 350;
+        this.ranged = true;
         this.attackSpeed = 7;
     }
 
+    fire() {
+            var angle = Phaser.Math.Angle.Between(this.follower.vec.x, this.follower.vec.y, 1856/2, 896/2);
+            this.scene.addEnemyBullet(this.follower.vec.x, this.follower.vec.y, angle);
+            this.scene.sound.play('shoot');
+            this.angle = (angle, Math.PI/2) * Phaser.Math.RAD_TO_DEG;
+    }
 
     /*update (time, delta) {
         if(this.currentHP <= 0) this.die();
