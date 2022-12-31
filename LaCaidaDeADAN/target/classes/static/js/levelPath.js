@@ -6,6 +6,8 @@ import Turret from './turret.js';
 import Player from './player.js';
 import EnergyTurret from './energyTurret.js';
 import BuyMenu from './buyMenu.js';
+import Web from "./static/Web.js";
+
 
 var leftMap =       [[-1,-1,-1,-1,-1,-1,-1,-1,-1,-1,-1,-1,-1],
                     [ -1,-1,-1,-1,-1,-1,-1,-1,-1,-1,-1,-1,-1],
@@ -773,6 +775,13 @@ function openCloseWeapons(menu){
     }
 }  
 
+buyTurret.onmessage=function(message){
+	if(JSON.parse(message.data.side)==1){ clickPlaceTurret(JSON.parse(message.data.turret), 
+	JSON.parse(message.data.player)); }
+	else { keyPlaceTurret(JSON.parse(message.data.turret), 
+	JSON.parse(message.data.player)); }
+}
+
 function keyPlaceTurret(turret, player){
     console.log("keyPlaceTurret");
 
@@ -804,6 +813,14 @@ function clickPlaceTurret(turret, player){
         }
         openCloseMenu(menuRightOpenX, menuRightOpenY, false);
     }
+    //Aqui haria falta las coordenadas de la torreta, tipo y si es el jugador de la derecha o la izquierda
+    var jsonData = {
+		player: player,
+		turret: turret,
+		side: 1,
+		//TIPO		
+	}
+    buyTurret.send(JSON.stringify(jsonData));  
     updateCosts();
 }
 

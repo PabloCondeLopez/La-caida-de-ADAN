@@ -7,7 +7,8 @@ public class Player {
 	private String user;
 	private long id;
 	private boolean connected;
-
+	private int side; //Para saber si está en la izquierda o la derecha del mapa. 0 es derecha, 1 izquierda
+	
 	
 	public Player() {}
 	
@@ -38,6 +39,14 @@ public class Player {
 
 	public void setConnected(boolean connected) {
 		this.connected = connected;
+	}
+
+	public int getSide() {
+		return side;
+	}
+
+	public void setSide(int side) {
+		this.side = side;
 	}
 	
 
