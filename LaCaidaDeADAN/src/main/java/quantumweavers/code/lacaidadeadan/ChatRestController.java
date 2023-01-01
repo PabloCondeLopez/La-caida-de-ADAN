@@ -23,7 +23,7 @@ import org.springframework.web.bind.annotation.ResponseStatus;
 import org.springframework.web.bind.annotation.RestController;
 
 @RestController
-@RequestMapping("/Chat")
+@RequestMapping("/chat")
 @CrossOrigin("*")
 public class ChatRestController {
 

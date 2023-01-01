@@ -1,7 +1,7 @@
 //Load items from server
 function loadChat(callback) {
     $.ajax({
-        url: 'http://localhost:8080/Chat'
+        url: 'http://127.0.0.1:8080/chat'
     }).done(function (Chat) {
         console.log('Chat loaded: ' + JSON.stringify(Chat));
         callback(Chat);
@@ -12,7 +12,7 @@ function loadChat(callback) {
 function createMessage(ChatMessage, callback) {
     $.ajax({
         method: "POST",
-        url: 'http://localhost:8080/Chat',
+        url: 'http://127.0.0.1:8080/chat',
         data: JSON.stringify(ChatMessage),
         processData: false,
         headers: {
@@ -28,7 +28,7 @@ function createMessage(ChatMessage, callback) {
 function updateMessage(ChatMessage) {
     $.ajax({
         method: 'PUT',
-        url: 'http://localhost:8080/Chat/' + ChatMessage.id,
+        url: 'http://127.0.0.1:8080/chat/' + ChatMessage.id,
         data: JSON.stringify(ChatMessage),
         processData: false,
         headers: {
@@ -43,7 +43,7 @@ function updateMessage(ChatMessage) {
 function deleteMessage(ChatMessageId) {
     $.ajax({
         method: 'DELETE',
-        url: 'http://localhost:8080/Chat/' + ChatMessageId
+        url: 'http://127.0.0.1:8080/chat' + ChatMessageId
     }).done(function (ChatMessage) {
         console.log("Deleted item " + ChatMessageId)
     })

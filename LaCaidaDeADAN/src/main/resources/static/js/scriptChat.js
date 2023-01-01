@@ -1,6 +1,6 @@
 function loadChat(callback) {
     $.ajax({
-        url: ip + '/Chat'
+        url: ip + '/chat'
     }).done(function (ChatMessage) {
         console.log('Chat loaded: ' + JSON.stringify(ChatMessage));
         callback(ChatMessage);
@@ -13,7 +13,7 @@ function loadChat(callback) {
 function createMessage(ChatMessage, callback) {
     $.ajax({
         method: "POST",
-        url: ip + '/Chat',
+        url: ip + '/chat',
         data: JSON.stringify(ChatMessage),
         processData: false,
         headers: {
@@ -28,7 +28,7 @@ function createMessage(ChatMessage, callback) {
 function updateMessage(ChatMessage) {
     $.ajax({
         method: 'PUT',
-        url: ip + '/Chat' + ChatMessage.id,
+        url: ip + '/chat' + ChatMessage.id,
         data: JSON.stringify(ChatMessage),
         processData: false,
         headers: {
@@ -42,7 +42,7 @@ function updateMessage(ChatMessage) {
 function deleteMessage(ChatMessageId) {
     $.ajax({
         method: 'DELETE',
-        url: ip + '/Chat' + ChatMessageId
+        url: ip + '/chat' + ChatMessageId
     }).done(function (ChatMessageId) {
         console.log("Deleted message " + ChatMessageId)
     })

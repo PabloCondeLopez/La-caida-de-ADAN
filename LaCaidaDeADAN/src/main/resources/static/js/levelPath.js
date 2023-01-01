@@ -6,7 +6,6 @@ import Turret from './turret.js';
 import Player from './player.js';
 import EnergyTurret from './energyTurret.js';
 import BuyMenu from './buyMenu.js';
-import Web from "./static/Web.js";
 
 
 var leftMap =       [[-1,-1,-1,-1,-1,-1,-1,-1,-1,-1,-1,-1,-1],
