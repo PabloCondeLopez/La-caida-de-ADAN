@@ -3,11 +3,18 @@ package quantumweavers.code.lacaidadeadan.GameHandlers;
 import java.util.Map;
 import java.util.concurrent.ConcurrentHashMap;
 
+import org.springframework.web.bind.annotation.CrossOrigin;
+import org.springframework.web.bind.annotation.RequestMapping;
+import org.springframework.web.bind.annotation.RestController;
 import org.springframework.web.socket.CloseStatus;
 import org.springframework.web.socket.TextMessage;
 import org.springframework.web.socket.WebSocketSession;
 import org.springframework.web.socket.handler.TextWebSocketHandler;
 
+
+@RestController
+@RequestMapping("/buy")
+@CrossOrigin("*")
 public class turretBuyHandler extends TextWebSocketHandler {
 	private Map<String, WebSocketSession> userSessions = new ConcurrentHashMap<>();
 	
