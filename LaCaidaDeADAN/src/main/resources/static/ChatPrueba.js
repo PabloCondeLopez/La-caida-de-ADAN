@@ -1,3 +1,5 @@
+/*
+
 //Load items from server
 function loadChat(callback) {
     $.ajax({
@@ -119,6 +121,8 @@ $(document).ready(function () {
         textSpan.css('text-decoration', style);
 
     })*/
+    
+    /*
 
     //Handle add button
     $("#add-button").click(function () {
@@ -140,4 +144,6 @@ $(document).ready(function () {
             showChat(MessageWithId);
         });
     })
-})
+}) 
+
+*/

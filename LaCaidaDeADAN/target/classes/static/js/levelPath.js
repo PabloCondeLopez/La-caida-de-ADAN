@@ -818,8 +818,8 @@ function clickPlaceTurret(turret, player){
 		turret: turret,
 		side: 1,
 		//TIPO		
-	}
-    buyTurret.send(JSON.stringify(jsonData));  
+	}    
+	buyTurret.send(JSON.stringify(jsonData));  
     updateCosts();
 }
 

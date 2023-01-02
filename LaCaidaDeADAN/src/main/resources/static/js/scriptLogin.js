@@ -1,3 +1,5 @@
+/*
+
 let ip = 'http://localhost:8080';
 
 function loadUser(callback) {
@@ -116,3 +118,5 @@ $(document).ready(function () {
         updateUser(Player);
     })
 })
+
+*/

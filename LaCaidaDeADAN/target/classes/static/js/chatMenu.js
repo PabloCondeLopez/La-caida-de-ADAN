@@ -1,3 +1,4 @@
+/*
 class ChatMenu extends Phaser.Scene{
     constructor(gameWidth, gameHeight) {
         super();
@@ -14,3 +15,4 @@ class ChatMenu extends Phaser.Scene{
 }
 
 export default ChatMenu;
+*/

@@ -1,3 +1,5 @@
+/*
+
 function loadChat(callback) {
     $.ajax({
         url: ip + '/chat'
@@ -103,3 +105,5 @@ $(document).ready(function () {
         
     })
 })
+
+*/
