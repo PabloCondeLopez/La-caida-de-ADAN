@@ -1,11 +1,9 @@
 import Bullet from './bullet.js';
-import Enemy from './enemy.js';
 import TurretEnemy from './turretEnemy.js';
 import SkellyEnemy from './skellyEnemy.js';
 import Turret from './turret.js';
 import Player from './player.js';
 import EnergyTurret from './energyTurret.js';
-import BuyMenu from './buyMenu.js';
 
 
 var leftMap =       [[-1,-1,-1,-1,-1,-1,-1,-1,-1,-1,-1,-1,-1],
@@ -40,6 +38,9 @@ var rightMap =      [
                     [ -1,-1,-1,-1,-1,-1,-1,-1,-1,-1,-1,-1,-1],
                     [ -1,-1,-1,-1,-1,-1,-1,-1,-1,-1,-1,-1,-1]
                     ];
+
+
+let echoHandler = new WebSocket('ws://localhost:8080/echo');
 
 let turretArray;
 let adan;
@@ -294,42 +295,6 @@ class LevelPath extends Phaser.Scene {
     getBullets(){
         return bullets;
     }
-    
-    openCloseLaserWeapons(pointer){
-        let i = Math.floor(pointer.y/64);
-        let j = Math.floor((pointer.x/64)%13);
-        
-        console.log(i);
-        console.log(j);
-
-        i*=64;
-        j*=64;
-    }
-
-
-    onBuildButton(texture, pointer){
-        let i = Math.floor(pointer.y/64);
-        let j;
-        if(pointer.x/64  >= 13){
-        j = Math.floor((pointer.x / 64) % 13);
-        }
-        else 
-            j=undefined;
-
-        if(texture = "laserWeapon1" && canPlaceTurretRight(i, j, 20, 10)){
-                let turret = turrets.get();
-    
-                if(turret){
-                    turret.setActive(true);
-                    turret.setVisible(true);
-                    turret.setSide('right');
-                    turret.placeRight(i, j, rightMap);
-                    secondPlayer.addMoney(-turret.getCost());
-                    secondPlayer.addEnergy(-turret.getEnergy());
-                }
-        }
-    } 
-    
 
     update(time, delta) {
         deltaDamage -= delta;
@@ -378,6 +343,12 @@ class LevelPath extends Phaser.Scene {
             else{
                 leftEnemy = leftEnemies2.get();
             }
+            
+            let enemy = {
+				enemy: leftEnemy
+			}
+            
+            echoHandler.send(JSON.stringify(enemy))
 
             let rightEnemy;
             if(y<0.5){
@@ -772,13 +743,6 @@ function openCloseWeapons(menu){
 
         if(laserWeapon1Button1.active) weaponMenuLeftOpen = true;
     }
-}  
-
-buyTurret.onmessage=function(message){
-	if(JSON.parse(message.data.side)==1){ clickPlaceTurret(JSON.parse(message.data.turret), 
-	JSON.parse(message.data.player)); }
-	else { keyPlaceTurret(JSON.parse(message.data.turret), 
-	JSON.parse(message.data.player)); }
 }
 
 function keyPlaceTurret(turret, player){
@@ -809,30 +773,44 @@ function clickPlaceTurret(turret, player){
             turret.placeRight(menuRightOpenX, menuRightOpenY, rightMap);
             player.addMoney(-turret.getCost());
             player.addEnergy(-turret.getEnergy());
+            
+            let turretInfo = {
+				type: turret.getType(),
+				posX: menuRightOpenX,
+				posY: menuRightOpenY,
+				cost: turret.getCost(),
+				energy: turret.getEnergy(),
+			}
+                    
+        	echoHandler.send(turretInfo);
         }
+        
         openCloseMenu(menuRightOpenX, menuRightOpenY, false);
     }
-    //Aqui haria falta las coordenadas de la torreta, tipo y si es el jugador de la derecha o la izquierda
-    var jsonData = {
-		player: player,
-		turret: turret,
-		side: 1,
-		//TIPO		
-	}    
-	buyTurret.send(JSON.stringify(jsonData));  
+
     updateCosts();
 }
 
 function PlaceLaserTurret(isKeyOrClick){
     let turret = turrets.get();
-    if(isKeyOrClick===true) { keyPlaceTurret(turret, firstPlayer); }
-    else { clickPlaceTurret(turret, secondPlayer); }
+
+    if(isKeyOrClick===true) { 
+		keyPlaceTurret(turret, firstPlayer); 
+	}
+    else { 
+		clickPlaceTurret(turret, secondPlayer); 
+	}
 }
 
 function PlaceEnergyTurret(isKeyOrClick){
     let turret = energyTurrets.get();
-    if(isKeyOrClick===true) { keyPlaceTurret(turret, firstPlayer); }
-    else { clickPlaceTurret(turret, secondPlayer); }
+    
+    if(isKeyOrClick===true) { 
+		keyPlaceTurret(turret, firstPlayer); 
+	}
+    else { 
+		clickPlaceTurret(turret, secondPlayer); 
+	}
 }
 
 function updateCosts(){
@@ -883,7 +861,5 @@ function sellTurret(x,y,map,menuX, menuY){
         } 
     }
 }
-
-
 
 export default LevelPath;

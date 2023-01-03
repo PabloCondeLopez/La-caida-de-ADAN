@@ -8,6 +8,7 @@ class Turret extends Phaser.GameObjects.Image {
         this.energy = -40;
         this.side = undefined;
         this.coord = undefined;
+        this.type = "energy";
     }
 
     placeLeft(i, j, map){
@@ -52,7 +53,9 @@ class Turret extends Phaser.GameObjects.Image {
         this.side = side;
     }
 
-    
+    getType() {
+		return this.type;
+	}
 }
 
 export default Turret;
