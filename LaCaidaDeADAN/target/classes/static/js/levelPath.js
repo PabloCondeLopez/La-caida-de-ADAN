@@ -604,13 +604,8 @@ function damagePlayer(adan, bullet){
 
 function onRightClick(pointer)
 {
-    console.log("ONRIGHTCLICK");
     let i = Math.floor(pointer.y/64);
     let j = Math.floor(pointer.x/64);
-    
-    //console.log("POSICION: " + j + "," + i + ":" + rightMap[i][j]);
-    console.log("MENU: " +menuRightOpenY +","+ menuRightOpenX);
-    //console.log("i,j: " +i +","+ j%16);
 
     if(rightMap[i][j%16]!==-1 && rightMap[i][j%16]!==undefined) openCloseMenu(i, j, false);
     else if(i===menuRightOpenX+1 && j%16===menuRightOpenY-1 && buyMenuRightOpen) openCloseWeapons(false);
@@ -621,15 +616,9 @@ function onRightClick(pointer)
 
 function onEnter()
 {
-    console.log("OnEnter");
     let i = keyPosY;
     let j = keyPosX;
 
-    console.log("POSICION: " + j + "," + i + ":" + rightMap[j][i]);
-
-    console.log("MENU: " +menuLeftOpenX +","+ menuLeftOpenY);
-    console.log("i,j: " +i +","+ j);
-    console.log(buyMenuLeftOpen);
     if(leftMap[i][j]!==-1 && leftMap[i][j]!==undefined) openCloseMenu(i, j, true);
     else if(i===menuLeftOpenX+1 && j===menuLeftOpenY-1 && buyMenuLeftOpen) openCloseWeapons(true);
     else if(i===menuLeftOpenX+2 && j===menuLeftOpenY-1 && weaponMenuLeftOpen) PlaceLaserTurret(true);
@@ -640,7 +629,6 @@ function onEnter()
 function openCloseMenu(i, j, menu){
 
     if(menu===false){
-        console.log("openCloseMenu1");
         menuRightOpenX = i;
         menuRightOpenY = j%16;
 
@@ -671,7 +659,6 @@ function openCloseMenu(i, j, menu){
         weaponMenuRightOpen=false;
     }
     else {
-        console.log("openCloseMenu2");
         menuLeftOpenX = i;
         menuLeftOpenY = j;
 
@@ -718,7 +705,6 @@ function activeInactive (button1, button2, button3){
 
 function openCloseWeapons(menu){
     if(menu===false){
-        console.log("openCloseWeapons1");
         laserWeapon1Button.x = buyButton.x + 456;
         laserWeapon1Button.y = buyButton.y + 64;
         bulletWeapon1Button.x = buyButton.x + 283;
@@ -731,7 +717,6 @@ function openCloseWeapons(menu){
         if(laserWeapon1Button.active) weaponMenuRightOpen = true;
 
     } else{
-        console.log("openCloseWeapons2");
         laserWeapon1Button1.x = buyButton1.x + 456;
         laserWeapon1Button1.y = buyButton1.y + 64;
         bulletWeapon1Button1.x = buyButton1.x + 283;
@@ -746,7 +731,6 @@ function openCloseWeapons(menu){
 }
 
 function keyPlaceTurret(turret, player){
-    console.log("keyPlaceTurret");
 
         if(canPlaceTurretLeft(menuLeftOpenX, menuLeftOpenY, turret.cost, turret.energy)) {
             if(turret){
@@ -763,7 +747,6 @@ function keyPlaceTurret(turret, player){
 }
 
 function clickPlaceTurret(turret, player){
-    console.log("clickPlaceTurret");
     if(canPlaceTurretRight(menuRightOpenX, menuRightOpenY, turret.cost, turret.energy)) {
 
         if(turret){
@@ -774,6 +757,8 @@ function clickPlaceTurret(turret, player){
             player.addMoney(-turret.getCost());
             player.addEnergy(-turret.getEnergy());
             
+            console.log(turret.getType());
+            
             let turretInfo = {
 				type: turret.getType(),
 				posX: menuRightOpenX,
@@ -782,7 +767,7 @@ function clickPlaceTurret(turret, player){
 				energy: turret.getEnergy(),
 			}
                     
-        	echoHandler.send(turretInfo);
+        	echoHandler.send(JSON.stringify(turretInfo));
         }
         
         openCloseMenu(menuRightOpenX, menuRightOpenY, false);
@@ -825,7 +810,6 @@ function updateCosts(){
 
 function sellTurret(x,y,map,menuX, menuY){
 
-    console.log("Sell turret");
     if(map[menuX][menuY]===1){
         let turret = turrets.getChildren();
         let energyTurret = energyTurrets.getChildren();
@@ -860,6 +844,10 @@ function sellTurret(x,y,map,menuX, menuY){
             }
         } 
     }
+}
+
+echoHandler.onmessage = function(message) {
+	console.log(message);
 }
 
 export default LevelPath;
