@@ -54,6 +54,24 @@ class MainMenu extends Phaser.Scene {
             this.endlessButton.clearTint();
             this.endlessText.clearTint();
         })
+
+        this.controlsText.on("pointerover", () => {
+            this.controlsButton.setTint(0xDDDDDD);
+            this.controlsText.setTint(0xFFFFFF);
+        })
+
+        this.controlsText.on("pointerout", () => {
+            this.controlsButton.clearTint();
+            this.controlsText.clearTint();
+        })
+
+        this.resourcesButton.on("pointerover", () => {
+            this.resourcesButton.setTint(0xDDDDDD);
+        })
+
+        this.resourcesButton.on("pointerout", () => {
+            this.resourcesButton.clearTint();
+        })
         
         this.chatText.on("pointerover", () => {
             this.chatButton.setTint(0xDDDDDD);
