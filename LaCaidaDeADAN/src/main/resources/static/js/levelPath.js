@@ -11,9 +11,9 @@ var leftMap =       [[-1,-1,-1,-1,-1,-1,-1,-1,-1,-1,-1,-1,-1],
                     [ -1,-1, 0,-1,-1,-1,-1,-1,-1,-1,-1,-1,-1],
                     [ -1,-1,-1,-1,-1,-1,-1,-1,-1,-1,-1,-1,-1],
                     [ -1,-1, 0,-1,-1,-1,-1,-1,-1,-1,-1,-1,-1],
-                    [ -1,-1,-1,-1,-1,-1,-1,-1,-1,-1,-1,0, -1],
+                    [ -1,-1,-1,-1,-1,-1,-1,-1,-1,-1,-1, 0,-1],
                     [ -1,-1,-1,-1,-1,-1,-1,-1,-1,-1,-1,-1,-1],
-                    [ -1,-1,-1,-1, 0,-1,-1,-1,-1,-1,-1,0, -1],
+                    [ -1,-1,-1,-1, 0,-1,-1,-1,-1,-1,-1, 0,-1],
                     [ -1,-1,-1,-1,-1,-1,-1,-1,-1,-1,-1,-1,-1],
                     [ -1,-1,-1,-1,-1,-1,-1,-1, 0,-1,-1,-1,-1],
                     [ -1,-1,-1,-1,-1,-1,-1,-1,-1,-1,-1,-1,-1],
@@ -28,19 +28,18 @@ var rightMap =      [
                     [ -1,-1,-1,-1,-1,-1,-1,-1,-1,-1, 0,-1,-1],
                     [ -1,-1,-1,-1,-1,-1,-1,-1,-1,-1,-1,-1,-1],
                     [ -1,-1,-1,-1,-1,-1,-1,-1,-1,-1, 0,-1,-1],
-                    [  -1,0,-1,-1,-1,-1,-1,-1,-1,-1,-1,-1,-1],
+                    [ -1, 0,-1,-1,-1,-1,-1,-1,-1,-1,-1,-1,-1],
                     [ -1,-1,-1,-1,-1,-1,-1,-1,-1,-1,-1,-1,-1],
-                    [  -1,0,-1,-1,-1,-1,-1,-1, 0,-1,-1,-1,-1],
+                    [ -1, 0,-1,-1,-1,-1,-1,-1, 0,-1,-1,-1,-1],
                     [ -1,-1,-1,-1,-1,-1,-1,-1,-1,-1,-1,-1,-1],
                     [ -1,-1,-1,-1, 0,-1,-1,-1,-1,-1,-1,-1,-1],
                     [ -1,-1,-1,-1,-1,-1,-1,-1,-1,-1,-1,-1,-1],
                     [ -1,-1,-1,-1,-1,-1,-1,-1, 0,-1,-1,-1,-1],
                     [ -1,-1,-1,-1,-1,-1,-1,-1,-1,-1,-1,-1,-1],
-                    [ -1,-1,-1,-1,-1,-1,-1,-1,-1,-1,-1,-1,-1]
-                    ];
+                    [ -1,-1,-1,-1,-1,-1,-1,-1,-1,-1,-1,-1,-1]];
 
 
-let echoHandler = new WebSocket('ws://localhost:8080/echo');
+//let echoHandler = new WebSocket('ws://localhost:8080/echo');
 
 let turretArray;
 let adan;
@@ -118,12 +117,15 @@ class LevelPath extends Phaser.Scene {
     preload() {
         this.load.image('turret', 'assets/metralleta high-res.png');
         this.load.image('enemy', 'assets/pixil-frame-0.png');
+        this.load.image('deadEnemy', 'assets/basic robot dead.png');
         this.load.image('bullet', 'assets/bullet.png');
         this.load.image('map', 'assets/Nivel1_map.png');
         this.load.image('select', 'assets/select.png');
         this.load.image('energyTurret', 'assets/energia.png');
         this.load.image('skelly', 'assets/skelly.png');
         this.load.image('adan', 'assets/cuadrado.png');
+
+        this.load.spritesheet('enemyWalkin', 'assets/basic robot stripe movement.png', { frameWidth: 64, frameHeight: 64 });
 
         // botones
         this.load.image('square', 'assets/cuadrado.png');
@@ -141,6 +143,7 @@ class LevelPath extends Phaser.Scene {
         this.add.image(this.screenWidth / 2, this.screenHeight / 2, 'map').setScale(0.2);
         selectImage = this.add.image(keyPosX * 64 + 32, keyPosY * 64 + 32, 'select').setScale(3);
         adan = this.physics.add.image(this.screenWidth/2, this.screenHeight/2 - 32, 'adan').setScale(0.15);
+        
         
 
         graphics = this.add.graphics();
@@ -182,7 +185,7 @@ class LevelPath extends Phaser.Scene {
             classType: TurretEnemy,
             runChildUpdate: true
         });
-
+        
         leftEnemies2 = this.physics.add.group({
             classType: SkellyEnemy,
             runChildUpdate: true
@@ -334,6 +337,9 @@ class LevelPath extends Phaser.Scene {
 
         if(time > this.nextEnemy){
             enemyHP *= 1.05;
+            if(this.SPAWN_SPEED > 500){
+                this.SPAWN_SPEED -= 50;
+            }
             let x = Math.random();
             let y = Math.random();
             let leftEnemy;
@@ -348,7 +354,7 @@ class LevelPath extends Phaser.Scene {
 				enemy: leftEnemy
 			}
             
-            echoHandler.send(JSON.stringify(enemy))
+            //echoHandler.send(JSON.stringify(enemy))
 
             let rightEnemy;
             if(y<0.5){

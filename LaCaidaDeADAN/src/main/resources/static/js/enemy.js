@@ -3,7 +3,7 @@ class Enemy extends Phaser.GameObjects.Image {
      constructor(scene){
          super(scene, 0, 0)
  
-         Phaser.GameObjects.Image.call(this, scene, 0, 0, 'enemy');
+         Phaser.GameObjects.Image.call(this, scene, 0, 0, 'deadEnemy');
  
          this.follower = {
              t: 0,
