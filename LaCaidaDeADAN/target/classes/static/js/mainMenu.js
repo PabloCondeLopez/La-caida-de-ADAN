@@ -1,5 +1,3 @@
-let game;
-
 class MainMenu extends Phaser.Scene {
     constructor(screenWidth, screenHeight, gameConfig) {
         super();
@@ -8,7 +6,7 @@ class MainMenu extends Phaser.Scene {
 
         this.screenWidth = screenWidth;
         this.screenHeight = screenHeight;
-        game = gameConfig;
+        this.game = gameConfig;
     }
 
     preload() {
@@ -31,19 +29,19 @@ class MainMenu extends Phaser.Scene {
 
         this.endlessText = this.add.text(this.screenWidth / 2 + 455, this.screenHeight / 2 + 145, 'Infinito', {fontSize: '40px', fill: '#fff', fontFamily: 'Pixeled'}).setStroke('#000', 4).setOrigin(0.5, 0.5);
         this.endlessText.setInteractive();
-        this.endlessText.on('pointerdown', this.startLevel);
+        this.endlessText.on('pointerdown', this.startLevel, this);
 
         this.controlsText = this.add.text(this.screenWidth / 2 + 735, this.screenHeight / 2 + 370, 'Controles', {fontSize: '30px', fill: '#fff', fontFamily: 'Pixeled'}).setStroke('#000', 4).setOrigin(0.5, 0.5);
         this.controlsText.setInteractive();
-        this.controlsText.on('pointerdown', this.openControls);
+        this.controlsText.on('pointerdown', this.openControls, this);
 
         this.resourcesButton = this.add.image(this.screenWidth / 2 + 865, this.screenHeight / 2 - 390, 'question').setScale(0.6);
         this.resourcesButton.setInteractive();
-        this.resourcesButton.on('pointerdown', this.openResources);
+        this.resourcesButton.on('pointerdown', this.openResources, this);
 
         this.chatText = this.add.text(150, this.screenHeight - 50, 'Chat', {fontSize: '25px', fill: '#fff', fontFamily: 'Pixeled'}).setStroke('#000', 4).setOrigin(0.5, 0.5);
         this.chatText.setInteractive();
-        this.chatText.on('pointerdown', this.chatScene);
+        this.chatText.on('pointerdown', this.chatScene, this);
 
         this.endlessText.on("pointerover", () => {
             this.endlessButton.setTint(0xDDDDDD);
@@ -53,6 +51,24 @@ class MainMenu extends Phaser.Scene {
         this.endlessText.on("pointerout", () => {
             this.endlessButton.clearTint();
             this.endlessText.clearTint();
+        })
+
+        this.controlsText.on("pointerover", () => {
+            this.controlsButton.setTint(0xDDDDDD);
+            this.controlsText.setTint(0xFFFFFF);
+        })
+
+        this.controlsText.on("pointerout", () => {
+            this.controlsButton.clearTint();
+            this.controlsText.clearTint();
+        })
+
+        this.resourcesButton.on("pointerover", () => {
+            this.resourcesButton.setTint(0xDDDDDD);
+        })
+
+        this.resourcesButton.on("pointerout", () => {
+            this.resourcesButton.clearTint();
         })
         
         this.chatText.on("pointerover", () => {
@@ -67,23 +83,23 @@ class MainMenu extends Phaser.Scene {
     }
 
     startLevel(){
-        game.scene.stop('MainMenu');
-        game.scene.start('Level');
+		this.game.scene.stop('MainMenu');
+		this.game.scene.start('OnlineSelector');
     }
 
     chatScene() {
-        game.scene.stop('MainMenu');
-        game.scene.start('ChatMenu');
+        this.game.scene.stop('MainMenu');
+        this.game.scene.start('ChatMenu');
     }
 
     openControls(){
-        game.scene.stop('MainMenu');
-        game.scene.start('Controls');
+        this.game.scene.stop('MainMenu');
+        this.game.scene.start('Controls');
     }
 
     openResources(){
-        game.scene.stop('MainMenu');
-        game.scene.start('Resources');
+        this.game.scene.stop('MainMenu');
+        this.game.scene.start('Resources');
     }
 }
 

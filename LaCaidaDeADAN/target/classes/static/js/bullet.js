@@ -7,7 +7,7 @@ class Bullet extends Phaser.GameObjects.Image {
         this.dx = 0;
         this.dy = 0;
         this.lifeSpan = 0;
-        this.damage = 50;
+        this.damage = 10;
 
         this.speed = Phaser.Math.GetSpeed(1200, 1);
     }
