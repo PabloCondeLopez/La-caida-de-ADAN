@@ -1,12 +1,11 @@
 class MainMenu extends Phaser.Scene {
-    constructor(screenWidth, screenHeight, gameConfig) {
+    constructor(screenWidth, screenHeight) {
         super();
 
         Phaser.Scene.call(this, {key: 'MainMenu'});
 
         this.screenWidth = screenWidth;
         this.screenHeight = screenHeight;
-        this.game = gameConfig;
     }
 
     preload() {
@@ -88,18 +87,18 @@ class MainMenu extends Phaser.Scene {
     }
 
     chatScene() {
-        this.game.scene.stop('MainMenu');
-        this.game.scene.start('ChatMenu');
+        this.scene.stop('MainMenu');
+        this.scene.start('ChatMenu');
     }
 
     openControls(){
-        this.game.scene.stop('MainMenu');
-        this.game.scene.start('Controls');
+        this.scene.stop('MainMenu');
+        this.scene.start('Controls');
     }
 
     openResources(){
-        this.game.scene.stop('MainMenu');
-        this.game.scene.start('Resources');
+        this.scene.stop('MainMenu');
+        this.scene.start('Resources');
     }
 }
 

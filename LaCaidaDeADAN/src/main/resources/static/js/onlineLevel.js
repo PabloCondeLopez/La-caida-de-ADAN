@@ -679,40 +679,20 @@ function openCloseMenu(i, j, menu){
                 turret.placeRight(menuRightOpenX, menuRightOpenY, rightMap);
                 player.addMoney(-turret.getCost());
                 player.addEnergy(-turret.getEnergy());
+                
+                let turretInfo = {
+					type: turret.getType(),
+					posX: menuRightOpenX,
+					posY: menuRightOpenY,
+					cost: turret.getCost(),
+					energy: turret.getEnergy(),
+				}
+                    
+        		echoHandler.send(JSON.stringify(turretInfo));
             }
             openCloseMenu(menuLeftOpenX, menuLeftOpenY, true);
         }
         updateCosts();
-}
-
-function clickPlaceTurret(turret, player){
-    if(canPlaceTurretRight(menuRightOpenX, menuRightOpenY, turret.cost, turret.energy)) {
-
-        if(turret){
-            turret.setActive(true);
-            turret.setVisible(true);
-            turret.setSide('right');
-            turret.placeRight(menuRightOpenX, menuRightOpenY, rightMap);
-            player.addMoney(-turret.getCost());
-            player.addEnergy(-turret.getEnergy());
-            
-            console.log(turret.getType());
-            
-            let turretInfo = {
-				type: turret.getType(),
-				posX: menuRightOpenX,
-				posY: menuRightOpenY,
-				cost: turret.getCost(),
-				energy: turret.getEnergy(),
-			}
-                    
-        	echoHandler.send(JSON.stringify(turretInfo));
-        }
-        
-        openCloseMenu(menuRightOpenX, menuRightOpenY, false);
-    }
-
-    updateCosts();
 }
 
 function PlaceLaserTurret(isKeyOrClick){

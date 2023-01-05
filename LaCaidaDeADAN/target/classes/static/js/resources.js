@@ -1,14 +1,11 @@
-let game;
-
 class Resources extends Phaser.Scene {
-    constructor(screenWidth, screenHeight, gameConfig) {
+    constructor(screenWidth, screenHeight) {
         super();
 
         Phaser.Scene.call(this, {key: 'Resources'});
 
         this.screenWidth = screenWidth;
         this.screenHeight = screenHeight;
-        game = gameConfig;
     }
 
     preload() {
@@ -23,7 +20,7 @@ class Resources extends Phaser.Scene {
 
         this.continueText = this.add.text(this.screenWidth / 2 + 735, this.screenHeight / 2 + 370, 'Menu', {fontSize: '30px', fill: '#fff', fontFamily: 'Pixeled'}).setStroke('#000', 4).setOrigin(0.5, 0.5);
         this.continueText.setInteractive();
-        this.continueText.on('pointerdown', this.backToMenu);
+        this.continueText.on('pointerdown', this.backToMenu, this);
 
         this.continueText.on("pointerover", () => {
             this.continueButton.setTint(0xDDDDDD);
@@ -37,8 +34,8 @@ class Resources extends Phaser.Scene {
     }
 
     backToMenu(){
-        game.scene.stop('Resources');
-        game.scene.start('MainMenu');
+        this.scene.stop('Resources');
+        this.scene.start('MainMenu');
     }
 
 }

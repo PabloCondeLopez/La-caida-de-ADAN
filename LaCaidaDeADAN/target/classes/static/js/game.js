@@ -21,11 +21,11 @@ const config = {
 
 let game = new Phaser.Game(config);
 
-let mainMenu = new MainMenu(gameWidth, gameHeight, game);
-let controls = new Controls(gameWidth, gameHeight, game);
-let resources = new Resources(gameWidth, gameHeight, game);
+let mainMenu = new MainMenu(gameWidth, gameHeight);
+let controls = new Controls(gameWidth, gameHeight);
+let resources = new Resources(gameWidth, gameHeight);
 let level1 = new OnlineLevel(gameWidth, gameHeight, game);
-let onlineSelector = new OnlineSelector(gameWidth, gameHeight, game);
+let onlineSelector = new OnlineSelector(gameWidth, gameHeight);
 let pauseMenu = new PauseMenu(gameWidth, gameHeight);
 let gameOver = new GameOver(gameWidth, gameHeight);
 let chatMenu = new ChatMenu(gameWidth, gameHeight);
