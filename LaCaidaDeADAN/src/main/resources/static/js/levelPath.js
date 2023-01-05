@@ -1,6 +1,7 @@
 import Bullet from './bullet.js';
 import TurretEnemy from './turretEnemy.js';
 import SkellyEnemy from './skellyEnemy.js';
+import BigBotEnemy from './bigBotEnemy.js';
 import Turret from './turret.js';
 import Player from './player.js';
 import EnergyTurret from './energyTurret.js';
@@ -51,11 +52,13 @@ let rightPath;
 let turrets;
 let leftEnemies1;
 let leftEnemies2;
+let leftEnemies3;
 let rightEnemies1;
 let rightEnemies2;
+let rightEnemies3;
 let energyTurrets;
 let enemyBullets;
-let enemyHP = 100;
+let enemyHP = 1.05;
 
 let bullets;
 
@@ -125,7 +128,8 @@ class LevelPath extends Phaser.Scene {
         this.load.image('skelly', 'assets/skelly.png');
         this.load.image('adan', 'assets/cuadrado.png');
 
-        this.load.spritesheet('enemyWalkin', 'assets/basic robot stripe movement.png', { frameWidth: 64, frameHeight: 64 });
+        this.load.spritesheet('enemyWalkin', 'assets/basic robot stripe.png', { frameWidth: 64, frameHeight: 64 });
+        this.load.spritesheet('bigRobot', 'assets/Robotitan.png', {frameWidth: 64, frameHeight: 120});
 
         // botones
         this.load.image('square', 'assets/cuadrado.png');
@@ -171,13 +175,13 @@ class LevelPath extends Phaser.Scene {
 
         this.firstPlayerMoneyText = this.add.text(90, 13, '50', { fontSize: '30px', fill: '#fff', fontFamily: 'Pixeled'}).setStroke('#000', 4);
         let firstPlayerMoneyImage = this.add.image(50,50, 'coin').setScale(0.08);
-        this.firstPlayerHPText = this.add.text((this.screenWidth/2) - 256, 16, 'Vida: ' + firstPlayer.getMaxHp(), {fontSize: '20px', fill: '#fff', fontFamily: 'Pixeled'}).setStroke('#000', 4);
+        this.firstPlayerHPText = this.add.text((this.screenWidth/2) -80 , 16, 'Vida: ' + firstPlayer.getMaxHp(), {fontSize: '20px', fill: '#fff', fontFamily: 'Pixeled'}).setStroke('#000', 4);
         let firstPlayerEnergyImage = this.add.image(50,this.screenHeight-50, 'energy').setScale(0.8);
         this.firstPlayerEnergyText = this.add.text(90, this.screenHeight-85, firstPlayer.getEnergy(), {fontSize: '30px', fill: '#fff', fontFamily: 'Pixeled'}).setStroke('#000', 4);
 
         this.secondPlayerMoneyText = this.add.text(this.screenWidth-152, 13, '50', { fontSize: '30px', fill: '#fff', fontFamily: 'Pixeled'}).setStroke('#000', 4);
         let secondPlayerMoneyImage = this.add.image(this.screenWidth - 50,50, 'coin').setScale(0.08);
-        this.secondPlayerHPText = this.add.text((this.screenWidth/2) + 128, 16, 'Vida: ' + firstPlayer.getMaxHp(), {fontSize: '20px', fill: '#fff', fontFamily: 'Pixeled'}).setStroke('#000', 4);
+        //this.secondPlayerHPText = this.add.text((this.screenWidth/2) + 128, 16, 'Vida: ' + firstPlayer.getMaxHp(), {fontSize: '20px', fill: '#fff', fontFamily: 'Pixeled'}).setStroke('#000', 4);
         let secondPlayerEnergyImage = this.add.image(this.screenWidth-50,this.screenHeight-53, 'energy').setScale(0.8);
         this.secondPlayerEnergyText = this.add.text(this.screenWidth-152, this.screenHeight-85, secondPlayer.getEnergy(), {fontSize: '30px', fill: '#fff', fontFamily: 'Pixeled'}).setStroke('#000', 4);
 
@@ -191,6 +195,11 @@ class LevelPath extends Phaser.Scene {
             runChildUpdate: true
         });
 
+        leftEnemies3 = this.physics.add.group({
+            classType: BigBotEnemy,
+            runChildUpdate: true
+        });
+
         rightEnemies1 = this.physics.add.group({
             classType: TurretEnemy,
             runChildUpdate: true
@@ -198,6 +207,11 @@ class LevelPath extends Phaser.Scene {
 
         rightEnemies2 = this.physics.add.group({
             classType: SkellyEnemy,
+            runChildUpdate: true
+        });
+
+        rightEnemies3 = this.physics.add.group({
+            classType: BigBotEnemy,
             runChildUpdate: true
         });
         
@@ -224,9 +238,11 @@ class LevelPath extends Phaser.Scene {
         
         this.physics.add.overlap(leftEnemies1, bullets, damageEnemy);
         this.physics.add.overlap(leftEnemies2, bullets, damageEnemy);
+        this.physics.add.overlap(leftEnemies3, bullets, damageEnemy);
 
         this.physics.add.overlap(rightEnemies1, bullets, damageEnemy);
         this.physics.add.overlap(rightEnemies2, bullets, damageEnemy);
+        this.physics.add.overlap(rightEnemies3, bullets, damageEnemy);
 
         this.physics.add.overlap(enemyBullets, adan, damagePlayer);
 
@@ -236,7 +252,7 @@ class LevelPath extends Phaser.Scene {
         this.input.on('pointerdown', this.onClickHandler);
         this.input.keyboard.on('keydown', this.onKeyboardHandler);
 
-        firstPlayer.setHP(100);
+        firstPlayer.setHP(200);
         secondPlayer.setHP(100);
 
         firstPlayer.setEnergy(20);
@@ -308,7 +324,7 @@ class LevelPath extends Phaser.Scene {
         this.firstPlayerEnergyText.setText(firstPlayer.getEnergy());
 
         this.secondPlayerMoneyText.setText(secondPlayer.getMoney());
-        this.secondPlayerHPText.setText("Vida: " + secondPlayer.getCurrentHP());
+        //this.secondPlayerHPText.setText("Vida: " + secondPlayer.getCurrentHP());
         this.secondPlayerEnergyText.setText(secondPlayer.getEnergy());
 
         let tur = turrets.getChildren().concat(energyTurrets.getChildren());
@@ -336,18 +352,23 @@ class LevelPath extends Phaser.Scene {
         }
 
         if(time > this.nextEnemy){
-            enemyHP *= 1.05;
+            enemyHP*=1.05
             if(this.SPAWN_SPEED > 500){
                 this.SPAWN_SPEED -= 50;
             }
             let x = Math.random();
             let y = Math.random();
             let leftEnemy;
-            if(x<=0.5){
+            if(x<=0.4){
                 leftEnemy = leftEnemies1.get();
+                leftEnemy.animateWalk();
+            }
+            else if(x<=0.8){
+                leftEnemy = leftEnemies2.get();
             }
             else{
-                leftEnemy = leftEnemies2.get();
+                leftEnemy = leftEnemies3.get();
+                leftEnemy.animateWalk();
             }
             
             let enemy = {
@@ -357,11 +378,17 @@ class LevelPath extends Phaser.Scene {
             //echoHandler.send(JSON.stringify(enemy))
 
             let rightEnemy;
-            if(y<0.5){
+            if(y<0.4){
                 rightEnemy = rightEnemies1.get();
+                rightEnemy.animateWalk();
             }
-            else{
+            else if(y<=0.8){
                 rightEnemy = rightEnemies2.get();
+            }
+
+            else{
+                rightEnemy = rightEnemies3.get();
+                rightEnemy.animateWalk();
             }
 
             if(leftEnemy){
@@ -377,7 +404,7 @@ class LevelPath extends Phaser.Scene {
                 rightEnemy.setActive(true);
                 rightEnemy.setVisible(true);
 
-                rightEnemy.startOnPath(rightPath, firstPlayer, secondPlayer);
+                rightEnemy.startOnPath(rightPath, firstPlayer, firstPlayer);
             }
 
             this.nextEnemy = time + this.SPAWN_SPEED;
@@ -513,8 +540,8 @@ class LevelPath extends Phaser.Scene {
     }
 
     getEnemy(x, y, distance, side) {
-        var leftEnemyUnits = leftEnemies1.getChildren().concat(leftEnemies2.getChildren());
-        var rightEnemyUnits = rightEnemies1.getChildren().concat(rightEnemies2.getChildren());
+        var leftEnemyUnits = leftEnemies1.getChildren().concat(leftEnemies2.getChildren().concat(leftEnemies3.getChildren()));
+        var rightEnemyUnits = rightEnemies1.getChildren().concat(rightEnemies2.getChildren().concat(leftEnemies3.getChildren()));
     
         if(side === 'left'){
             for(var i = 0; i < leftEnemyUnits.length; i++){

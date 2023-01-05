@@ -21,6 +21,13 @@ class SkellyEnemy extends Enemy{
         this.attackSpeed = 10;
     }
 
+    fire() {
+       
+        var angle = Phaser.Math.Angle.Between(this.follower.vec.x, this.follower.vec.y, 1856/2, 896/2);
+        this.scene.addEnemyBullet(this.follower.vec.x, this.follower.vec.y, angle);
+
+    }
+
     /*update (time, delta) {
         if(this.currentHP <= 0) this.die();
         

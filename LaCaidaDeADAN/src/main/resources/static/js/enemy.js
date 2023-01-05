@@ -1,4 +1,4 @@
-class Enemy extends Phaser.GameObjects.Image {
+class Enemy extends Phaser.GameObjects.Sprite {
 
      constructor(scene){
          super(scene, 0, 0)
@@ -46,9 +46,10 @@ class Enemy extends Phaser.GameObjects.Image {
          
          else{
             if(time > this.nextAttack){
-                if(this.ranged){
-                    this.fire();
-                }
+                /*if(this.ranged){
+                    
+                }*/
+                this.fire();
                 this.damagedPlayer.takeDamage(this.damageAmmount);
                 this.nextAttack = time + this.attackSpeed*100;
             }
@@ -71,8 +72,8 @@ class Enemy extends Phaser.GameObjects.Image {
      }
 
      setMaxHP(hp){
-        this.maxHP = hp
-        this.currentHP = hp;
+        this.maxHP *= hp
+        this.currentHP *= hp;
      }
  
      takeDamage(damage, bullet){
