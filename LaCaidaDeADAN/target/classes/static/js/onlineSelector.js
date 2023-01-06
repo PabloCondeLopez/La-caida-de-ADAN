@@ -1,4 +1,4 @@
-let fullText;
+var self;
 
 class OnlineSelector extends Phaser.Scene {
 	constructor(screenWidth, screenHeight) {
@@ -8,6 +8,7 @@ class OnlineSelector extends Phaser.Scene {
 		
 		this.screenWidth = screenWidth;
 		this.screenHeight = screenHeight;
+		this.playerID = 0;
 	}
 	
 	preload() {
@@ -16,6 +17,7 @@ class OnlineSelector extends Phaser.Scene {
 	}
 	
 	create() {
+		self = this;
 		this.add.image(this.screenWidth / 2, this.screenHeight / 2, 'background');
 		
 		this.offlineButton = this.add.image(this.screenWidth / 2 + 500, this.screenHeight / 2 - 150, 'button').setScale(4).setTint(0x808080);
@@ -31,7 +33,7 @@ class OnlineSelector extends Phaser.Scene {
         this.backText.setInteractive();
         this.backText.on('pointerdown', this.onBackButton, this);
         
-        fullText = this.add.text(this.screenWidth / 2 + 500, this.screenHeight / 2 + 300, 'Sala llena', {fontSize: '40px', fill: '#ff0000', fontFamily: 'Pixeled'}).setStroke("#000", 4).setOrigin(0.5, 0.5).setVisible(false);
+        this.fullText = this.add.text(this.screenWidth / 2 + 500, this.screenHeight / 2 + 300, 'Sala llena', {fontSize: '40px', fill: '#ff0000', fontFamily: 'Pixeled'}).setStroke("#000", 4).setOrigin(0.5, 0.5).setVisible(false);
         
         this.onlineText.on("pointerover", () => {
             this.onlineButton.setTint(0xDDDDDD);
@@ -52,7 +54,28 @@ class OnlineSelector extends Phaser.Scene {
 	onOnlineButton() {
 		echoHandler.send("registrar");
 		
-		echoHandler.onmessage = this.connectPlayer;
+		echoHandler.onmessage = function(message) {
+			const msg = JSON.parse(message.data);
+			
+			if(msg.estado === "registrado") {
+				if(msg.jugador === 1){
+					self.playerID = 1;
+				} else if (msg.jugador === 2) {
+					self.playerID = 2;
+				}
+			} 
+			else if (msg.estado === "lleno") {
+				self.fullText.setVisible(true);
+			}
+		}
+	}
+	
+	update() {
+		if(this.playerID === 0) return;
+		
+		playerID = this.playerID;
+		this.scene.stop("OnlineSelector");
+		this.scene.start("Lobby");
 	}
 	
 	onBackButton() {
@@ -60,21 +83,6 @@ class OnlineSelector extends Phaser.Scene {
 		
 		this.scene.stop('OnlineSelector');
 		this.scene.start('MainMenu');
-	}
-	
-	connectPlayer(message) {
-		const msg = JSON.parse(message.data);
-			
-		if(msg.estado === "registrado") {
-			if(msg.jugador === 1)
-				playerID = 1;
-			else if (msg.jugador === 2)
-				playerID = 2;
-		} 
-		else if (msg.estado === "lleno") {
-			fullText.setVisible(true);
-			console.log("Sala llena - TODO - Mensaje por pantalla");
-		}
 	}
 }
 

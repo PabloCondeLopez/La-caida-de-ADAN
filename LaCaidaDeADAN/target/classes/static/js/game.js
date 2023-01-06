@@ -6,6 +6,7 @@ import PauseMenu from "./pauseMenu.js";
 import ChatMenu from "./chatMenu.js";
 import GameOver from "./gameOver.js";
 import OnlineSelector from "./onlineSelector.js";
+import Lobby from "./lobby.js";
 
 const gameWidth = 1856;
 const gameHeight = 896;
@@ -21,14 +22,18 @@ const config = {
 
 let game = new Phaser.Game(config);
 
+// - - - - - - - - SCENES - - - - - - - - - -
 let mainMenu = new MainMenu(gameWidth, gameHeight);
 let controls = new Controls(gameWidth, gameHeight);
 let resources = new Resources(gameWidth, gameHeight);
-let level1 = new OnlineLevel(gameWidth, gameHeight, game);
+let level1 = new OnlineLevel(gameWidth, gameHeight);
 let onlineSelector = new OnlineSelector(gameWidth, gameHeight);
 let pauseMenu = new PauseMenu(gameWidth, gameHeight);
 let gameOver = new GameOver(gameWidth, gameHeight);
 let chatMenu = new ChatMenu(gameWidth, gameHeight);
+let lobby = new Lobby(gameWidth, gameHeight);
+
+// - - - - - - - - - - - - - - - - - - - - - -
 
 game.scene.add('MainMenu', mainMenu);
 game.scene.add('Controls', controls);
@@ -38,4 +43,8 @@ game.scene.add('Pause', pauseMenu);
 game.scene.add('GameOver', gameOver);
 game.scene.add('ChatMenu', chatMenu);
 game.scene.add('OnlineSelector', onlineSelector);
+game.scene.add('Lobby', lobby);
+
+// - - - - - - - - - - - - - - - - - - - - - - -
+
 game.scene.start('MainMenu');

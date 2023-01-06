@@ -23,33 +23,61 @@ public class echoHandler extends TextWebSocketHandler {
 	@Override
 	protected void handleTextMessage(WebSocketSession session, TextMessage message) throws Exception {
 		System.out.println("Mensaje recibido: '" + message.getPayload() + "', sesión: " + session.getId());
+		System.out.println("ID Player 1: " + IDs[0]);
+		System.out.println("ID Player 2: " + IDs[1]);
 		ObjectMapper mapper = new ObjectMapper();
 		ObjectNode node = mapper.createObjectNode();
 		String json = "";
+		
+		// REGISTRO DE LOS JUGADORES
+		// PARA COMPROBAR SI SE PUEDE INICIAR EL JUEGO
+		if(message.getPayload().equals("check")) {
+			if(session.getId().equals(IDs[0])) {
+				if(IDs[1] != null) sessions.get(IDs[1]).sendMessage(new TextMessage("p1Connected"));
+				else sessions.get(IDs[0]).sendMessage(new TextMessage("p2Disconnected"));
+			}
+			
+			if(session.getId().equals(IDs[1])) {
+				if(IDs[0] != null) sessions.get(IDs[0]).sendMessage(new TextMessage("p2Connected"));
+				else sessions.get(IDs[1]).sendMessage(new TextMessage("p1Disconnected"));
+			}
+			
+			return;
+		}
 		
 		if(message.getPayload().equals("registrar") && currentSession < 2) {
 			sessions.put(session.getId(), session);
 			IDs[currentSession] = session.getId();
 			
-			if(currentSession == 0)
+			if(currentSession == 0) {
 				node.put("jugador", 1);
-			else if (currentSession == 1)
+				
+				if(IDs[1] != null) currentSession = 2;
+				else currentSession = 1;
+			}
+			else if (currentSession == 1) {
 				node.put("jugador", 2);
+				currentSession++;
+			}
 			
 			node.put("estado", "registrado");
 			json = mapper.writeValueAsString(node);
 			session.sendMessage(new TextMessage(json));
 			
-			currentSession++;
 			System.out.println("Jugador conectado con la id " + session.getId());
+			return;
 		}
-		else if(currentSession >= 2) {
+		else if (message.getPayload().equals("registrar") && currentSession >= 2) {
 			node.put("estado", "lleno");
 			json = mapper.writeValueAsString(node);
 			session.sendMessage(new TextMessage(json));
 			System.out.println("Sala llena, no se admiten más jugadores");
+			return;
 		}
 		
+		
+		
+		// SI INTENTAMOS ENVIAR UN MENSAJE CON MENOS DE DOS JUGADORES CONECTADOS
 		if(currentSession < 2) {
 			System.out.println("No hay suficientes jugadores");
 			return;
@@ -70,15 +98,16 @@ public class echoHandler extends TextWebSocketHandler {
 		
 		if(session.getId().equals(IDs[0])) {
 			IDs[0] = null;
+			currentSession = 0;
 		}
 		
 		if(currentSession == 2) {
 			if (session.getId().equals(IDs[1])) {
 				IDs[1] = null;
+				currentSession = 1;
 			}
 		}
 		
-		currentSession--;
 		sessions.remove(session.getId());
 	}
 }

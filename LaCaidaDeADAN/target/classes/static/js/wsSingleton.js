@@ -1,2 +1,2 @@
-let echoHandler = new WebSocket('ws://localhost:8080/echo')
-let playerID = 0;
+var echoHandler = new WebSocket('ws://localhost:8080/echo')
+var playerID = 0;

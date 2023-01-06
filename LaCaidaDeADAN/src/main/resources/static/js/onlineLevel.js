@@ -70,7 +70,6 @@ let selectImage;
 
 let levelPaused = false;
 
-
 let buyButton;
 let upgradeButton;
 let sellButton;
@@ -100,12 +99,11 @@ let deltaDamage = 0;
 let cellSize = 64;
 
 class OnlineLevel extends Phaser.Scene {
-    constructor(screenWidth, screenHeight, game){
+    constructor(screenWidth, screenHeight){
         super();
 
         Phaser.Scene.call(this, {key: 'Level'})
 
-        this.game = game;
         this.screenWidth = screenWidth;
         this.screenHeight = screenHeight;
         
