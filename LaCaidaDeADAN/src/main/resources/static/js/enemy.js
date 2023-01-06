@@ -20,6 +20,7 @@ class Enemy extends Phaser.GameObjects.Sprite {
          this.range = undefined;
          this.attackSpeed = undefined;
          this.ranged = undefined;
+         this.offset = undefined;
          this.nextAttack = 0;
          this.scene = scene;
          this.hpBar = undefined;
@@ -35,20 +36,18 @@ class Enemy extends Phaser.GameObjects.Sprite {
         if(this.currentHP <= 0) this.die();
      
         this.hpBar.x = this.follower.vec.x - 50;
-        this.hpBar.y = this.follower.vec.y - 50;
+        this.hpBar.y = this.follower.vec.y - 50 - this.offset;
 
         
         if(Phaser.Math.Distance.Between(this.follower.vec.x, this.follower.vec.y, 1856/2, 896/2)>this.range){
             this.follower.t += this.speed * delta;
             this.path.getPoint(this.follower.t, this.follower.vec);
-            this.setPosition(this.follower.vec.x, this.follower.vec.y);
+            this.setPosition(this.follower.vec.x, this.follower.vec.y-this.offset);
          }
          
          else{
             if(time > this.nextAttack){
-                /*if(this.ranged){
-                    
-                }*/
+               
                 this.fire();
                 this.damagedPlayer.takeDamage(this.damageAmmount);
                 this.nextAttack = time + this.attackSpeed*100;

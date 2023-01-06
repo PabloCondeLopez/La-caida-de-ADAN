@@ -19,6 +19,7 @@ class SkellyEnemy extends Enemy{
         this.range = 128;
         this.ranged = false;
         this.attackSpeed = 10;
+        this.offset = 0;
     }
 
     fire() {

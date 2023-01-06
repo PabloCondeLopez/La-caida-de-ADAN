@@ -10,6 +10,7 @@ class BigBotEnemy extends Enemy{
             t: 0,
             vec: new Phaser.Math.Vector2()
         };
+        
 
         scene.anims.create({
             key:'walkingBot',
@@ -26,6 +27,7 @@ class BigBotEnemy extends Enemy{
         this.range = 128;
         this.ranged = false;
         this.attackSpeed = 15;
+        this.offset = 35;
     }
 
     animateWalk(){

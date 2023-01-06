@@ -122,7 +122,7 @@ class LevelPath extends Phaser.Scene {
         this.load.image('enemy', 'assets/pixil-frame-0.png');
         this.load.image('deadEnemy', 'assets/basic robot dead.png');
         this.load.image('bullet', 'assets/bullet.png');
-        this.load.image('map', 'assets/Nivel1_map.png');
+        this.load.image('map', 'assets/Nivel 1 oscuras.png');
         this.load.image('select', 'assets/select.png');
         this.load.image('energyTurret', 'assets/energia.png');
         this.load.image('skelly', 'assets/skelly.png');
@@ -144,7 +144,7 @@ class LevelPath extends Phaser.Scene {
     
     create() {
         
-        this.add.image(this.screenWidth / 2, this.screenHeight / 2, 'map').setScale(0.2);
+        this.add.image(this.screenWidth / 2, this.screenHeight / 2, 'map');
         selectImage = this.add.image(keyPosX * 64 + 32, keyPosY * 64 + 32, 'select').setScale(3);
         adan = this.physics.add.image(this.screenWidth/2, this.screenHeight/2 - 32, 'adan').setScale(0.15);
         

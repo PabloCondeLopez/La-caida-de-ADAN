@@ -34,6 +34,7 @@ class TurretEnemy extends Enemy{
         this.range = 350;
         this.ranged = true;
         this.attackSpeed = 7;
+        this.offset = 5;
     }
 
     animateWalk(){
