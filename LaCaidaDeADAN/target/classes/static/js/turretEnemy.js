@@ -14,11 +14,12 @@ class TurretEnemy extends Enemy{
         this.speed = 8/100000;
         this.maxHP = 100;
         this.currentHP = this.maxHP;
-        this.damageAmmount = 5;
+        this.damageAmmount = 0; // TO CHANGE
         this.moneyGiven = 10;
         this.range = 350;
         this.ranged = true;
         this.attackSpeed = 7;
+        this.type = "range";
     }
 
     fire() {

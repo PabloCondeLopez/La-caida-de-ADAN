@@ -26,6 +26,7 @@ class Enemy extends Phaser.GameObjects.Image {
          this.hpBar = this.scene.add.graphics();
          this.hpBar.fillStyle(255, 1);
          this.hpBar.fillRect(0, 0, 100, 10);
+         this.type = "";
      }
 
      update (time, delta) {
@@ -88,6 +89,10 @@ class Enemy extends Phaser.GameObjects.Image {
             }
         }
      }
+     
+     getType() {
+		 return this.type;
+	 }
 
      die(){
         this.moneyPlayer.addMoney(this.moneyGiven);

@@ -22,9 +22,11 @@ public class echoHandler extends TextWebSocketHandler {
 	
 	@Override
 	protected void handleTextMessage(WebSocketSession session, TextMessage message) throws Exception {
+		System.out.println("---------- NUEVO MENSAJE ----------");
 		System.out.println("Mensaje recibido: '" + message.getPayload() + "', sesión: " + session.getId());
 		System.out.println("ID Player 1: " + IDs[0]);
 		System.out.println("ID Player 2: " + IDs[1]);
+		System.out.println("-----------------------------------");
 		ObjectMapper mapper = new ObjectMapper();
 		ObjectNode node = mapper.createObjectNode();
 		String json = "";
@@ -74,26 +76,21 @@ public class echoHandler extends TextWebSocketHandler {
 			node.put("estado", "registrado");
 			json = mapper.writeValueAsString(node);
 			session.sendMessage(new TextMessage(json));
-			
-			System.out.println("Jugador conectado con la id " + session.getId());
 			return;
 		}
 		else if (message.getPayload().equals("registrar") && currentSession >= 2) {
 			node.put("estado", "lleno");
 			json = mapper.writeValueAsString(node);
 			session.sendMessage(new TextMessage(json));
-			System.out.println("Sala llena, no se admiten más jugadores");
 			return;
 		}
 		
 		
 		
 		// SI INTENTAMOS ENVIAR UN MENSAJE CON MENOS DE DOS JUGADORES CONECTADOS
-		if(currentSession < 2) {
-			System.out.println("No hay suficientes jugadores");
-			return;
-		}
+		if(currentSession < 2) return;
 		
+		// ENVIO DE MENSAJES AL OTRO JUGADOR
 		if(session.getId().equals(IDs[0])) {
 			sessions.get(IDs[1]).sendMessage(new TextMessage(message.getPayload()));
 		} else if (session.getId().equals(IDs[1])) {
@@ -104,7 +101,8 @@ public class echoHandler extends TextWebSocketHandler {
 	@Override
 	public void afterConnectionClosed(WebSocketSession session, CloseStatus status) throws Exception {
 		session.close();
-		if(currentSession == 0) return;
+		System.out.println(currentSession);
+		if(currentSession == 0 && (IDs[0] == null && IDs[1] == null)) return;
 		
 		if(session.getId().equals(IDs[0])) {
 			IDs[0] = null;
@@ -126,7 +124,12 @@ public class echoHandler extends TextWebSocketHandler {
 			}
 		}
 		
+		System.out.println("---------- DESCONEXION ----------");
 		System.out.println("Jugador desconectado con la id " + session.getId());
+		System.out.println("ID Player 1: " + IDs[0]);
+		System.out.println("ID Player 2: " + IDs[1]);
+		System.out.println(currentSession);
+		System.out.println("---------------------------------");
 		sessions.remove(session.getId());
 	}
 }

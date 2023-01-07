@@ -14,11 +14,12 @@ class SkellyEnemy extends Enemy{
         this.speed = 8/100000;
         this.maxHP = 100;
         this.currentHP = this.maxHP;
-        this.damageAmmount = 8;
+        this.damageAmmount = 0; // TO CHANGE
         this.moneyGiven = 10;
         this.range = 128;
         this.ranged = false;
         this.attackSpeed = 10;
+        this.type = "skelly";
     }
 
     /*update (time, delta) {
