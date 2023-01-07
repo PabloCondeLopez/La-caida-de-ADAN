@@ -11,6 +11,11 @@ class Turret extends Phaser.GameObjects.Image {
         this.side = undefined;
         this.coord = undefined;
         this.type = "normal";
+        
+        this.level = 0;
+        this.maxLevel = 1;
+        this.upgradeRate = 0.8;
+        this.upgradeImage = undefined;
     }
 
     placeLeft(i, j, map){
@@ -42,6 +47,21 @@ class Turret extends Phaser.GameObjects.Image {
     getCost(){
         return this.cost;
     }
+
+    upgradeTurret(){
+        if(this.level<this.maxLevel){
+            this.level++;
+            this.setTexture(this.upgradeImage);
+        }
+    }
+
+    getUpgradeCost(){
+        return this.upgradeRate * this.cost * this.level; 
+    }
+
+    getUpgradeEnergy(){
+        return this.upgradeRate * this.energy * this.level; 
+    }
     
     getEnergy(){
         return this.energy;
@@ -66,6 +86,10 @@ class Turret extends Phaser.GameObjects.Image {
     getType() {
 		return this.type;
 	}
+
+    setUpgradeImage(image) {
+        this.upgradeImage = image;
+    }
 
     update(time, delta){
         if(time > this.nextTick){
