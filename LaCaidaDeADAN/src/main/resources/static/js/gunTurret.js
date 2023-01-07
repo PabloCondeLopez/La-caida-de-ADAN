@@ -13,8 +13,10 @@ class GunTurret extends Turret {
         this.side = undefined;
         this.coord = undefined;
         this.type = "normal";
+        this.damage = 50;
     }
 
+    /*
     placeLeft(i, j, map){
         this.y = i * 64 + 32;
         this.x = j * 64 + 32;
@@ -85,7 +87,7 @@ class GunTurret extends Turret {
             this.scene.sound.play('shoot', {volume: 0.2});
             this.angle = (angle, Math.PI/2) * Phaser.Math.RAD_TO_DEG;
         }
-    }
+    }*/
 }
 
 export default GunTurret;

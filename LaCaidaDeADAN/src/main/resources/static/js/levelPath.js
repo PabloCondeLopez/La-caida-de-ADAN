@@ -146,6 +146,10 @@ class LevelPath extends Phaser.Scene {
 
     create() {
 
+        this.SPAWN_SPEED = 4000;
+        enemyHP = 1.05;
+
+
         this.add.image(this.screenWidth / 2, this.screenHeight / 2, 'map');
         selectImage = this.add.image(keyPosX * 64 + 32, keyPosY * 64 + 32, 'select').setScale(3);
         adan = this.physics.add.image(this.screenWidth / 2, this.screenHeight / 2 - 32, 'adan').setScale(0.15);
@@ -522,11 +526,12 @@ class LevelPath extends Phaser.Scene {
         return false;
     }
 
-    addBullet(x, y, angle) {
+    addBullet(x, y, angle, damage) {
         let bullet = bullets.get();
 
         if (bullet) {
-            bullet.fire(x, y, angle);
+            
+            bullet.fire(x, y, angle, damage);
         }
     }
 
@@ -743,6 +748,7 @@ function keyPlaceTurret(turret, player) {
             turret.placeLeft(menuLeftOpenX, menuLeftOpenY, leftMap);
             player.addMoney(-turret.getCost());
             player.addEnergy(-turret.getEnergy());
+            turret.setUpgradeImage('turretUpgrade');
         }
         openCloseMenu(menuLeftOpenX, menuLeftOpenY, true);
     }

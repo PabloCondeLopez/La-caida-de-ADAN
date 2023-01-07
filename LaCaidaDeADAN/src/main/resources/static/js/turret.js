@@ -11,10 +11,11 @@ class Turret extends Phaser.GameObjects.Image {
         this.side = undefined;
         this.coord = undefined;
         this.type = "normal";
+        this.damage = undefined;
         
         this.level = 0;
-        this.maxLevel = 1;
-        this.upgradeRate = 0.8;
+        this.maxLevel = 4;
+        this.upgradeRate = 1.5;
         this.upgradeImage = undefined;
     }
 
@@ -52,15 +53,18 @@ class Turret extends Phaser.GameObjects.Image {
         if(this.level<this.maxLevel){
             this.level++;
             this.setTexture(this.upgradeImage);
+            this.damage *=this.upgradeRate;
         }
     }
 
     getUpgradeCost(){
-        return this.upgradeRate * this.cost * this.level; 
+        return 0;
+        //return this.upgradeRate * this.cost * this.level; 
     }
 
     getUpgradeEnergy(){
-        return this.upgradeRate * this.energy * this.level; 
+        return 0;
+        //return this.upgradeRate * this.energy * this.level; 
     }
     
     getEnergy(){
@@ -91,6 +95,10 @@ class Turret extends Phaser.GameObjects.Image {
         this.upgradeImage = image;
     }
 
+    getDamage(){
+        return this.damage;
+    }
+
     update(time, delta){
         if(time > this.nextTick){
             this.fire();
@@ -103,7 +111,7 @@ class Turret extends Phaser.GameObjects.Image {
 
         if(enemy){
             var angle = Phaser.Math.Angle.Between(this.x, this.y, enemy.x, enemy.y);
-            this.scene.addBullet(this.x, this.y, angle);            
+            this.scene.addBullet(this.x, this.y, angle, this.damage);            
             this.scene.sound.play('shoot', {volume: 0.2});
             this.angle = (angle, Math.PI/2) * Phaser.Math.RAD_TO_DEG;
         }
