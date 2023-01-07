@@ -32,14 +32,25 @@ public class echoHandler extends TextWebSocketHandler {
 		// REGISTRO DE LOS JUGADORES
 		// PARA COMPROBAR SI SE PUEDE INICIAR EL JUEGO
 		if(message.getPayload().equals("check")) {
+			
 			if(session.getId().equals(IDs[0])) {
-				if(IDs[1] != null) sessions.get(IDs[1]).sendMessage(new TextMessage("p1Connected"));
-				else sessions.get(IDs[0]).sendMessage(new TextMessage("p2Disconnected"));
+				if(IDs[1] != null) {
+					sessions.get(IDs[1]).sendMessage(new TextMessage("p1Connected"));
+					session.sendMessage(new TextMessage("p2Connected"));
+				}
 			}
 			
 			if(session.getId().equals(IDs[1])) {
-				if(IDs[0] != null) sessions.get(IDs[0]).sendMessage(new TextMessage("p2Connected"));
-				else sessions.get(IDs[1]).sendMessage(new TextMessage("p1Disconnected"));
+				if(IDs[0] != null) { 
+					sessions.get(IDs[0]).sendMessage(new TextMessage("p2Connected"));
+					session.sendMessage(new TextMessage("p1Connected"));
+				}
+			}
+			
+			if(IDs[0] != null && IDs[1] != null) {
+				for(WebSocketSession playerSession : sessions.values()) {
+					playerSession.sendMessage(new TextMessage("ready"));
+				}
 			}
 			
 			return;
@@ -93,21 +104,29 @@ public class echoHandler extends TextWebSocketHandler {
 	@Override
 	public void afterConnectionClosed(WebSocketSession session, CloseStatus status) throws Exception {
 		session.close();
-		System.out.println("Jugador desconectado con la id " + session.getId());
 		if(currentSession == 0) return;
 		
 		if(session.getId().equals(IDs[0])) {
 			IDs[0] = null;
 			currentSession = 0;
-		}
-		
-		if(currentSession == 2) {
-			if (session.getId().equals(IDs[1])) {
-				IDs[1] = null;
-				currentSession = 1;
+			
+			if(IDs[1] != null) {
+				sessions.get(IDs[1]).sendMessage(new TextMessage("p1Disconnected"));
 			}
 		}
 		
+		if(IDs[1] != null) {
+			if (session.getId().equals(IDs[1])) {
+				IDs[1] = null;
+				currentSession = 1;
+				
+				if(IDs[0] != null) {
+					sessions.get(IDs[0]).sendMessage(new TextMessage("p2Disconnected"));
+				}
+			}
+		}
+		
+		System.out.println("Jugador desconectado con la id " + session.getId());
 		sessions.remove(session.getId());
 	}
 }

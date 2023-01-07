@@ -49,6 +49,11 @@ class OnlineSelector extends Phaser.Scene {
 			this.backButton.setTint(0xDDDDDD);
 			this.backText.setTint(0xFFFFFF);
 		})
+		
+		this.backText.on("pointerout", () => {
+            this.backButton.clearTint();
+            this.backText.clearTint();
+        })
 	}
 	
 	onOnlineButton() {
@@ -79,7 +84,7 @@ class OnlineSelector extends Phaser.Scene {
 	}
 	
 	onBackButton() {
-		fullText.setVisible(false);
+		this.fullText.setVisible(false);
 		
 		this.scene.stop('OnlineSelector');
 		this.scene.start('MainMenu');

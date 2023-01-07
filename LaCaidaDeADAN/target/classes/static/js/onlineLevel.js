@@ -227,7 +227,6 @@ class OnlineLevel extends Phaser.Scene {
         this.pauseOnScene = false;
 
         this.input.on('pointerdown', this.onClickHandler);
-        this.input.keyboard.on('keydown', this.onKeyboardHandler);
 
         nucleus.setCurrentHP(nucleus.getMaxHp());
 
@@ -284,8 +283,16 @@ class OnlineLevel extends Phaser.Scene {
 
         energyWeapon1Button1 = this.add.image(1000 - 50*6, 200, 'storeIcons').setCrop(288*6,0,288,288).setScale(0.2).setActive(false).setVisible(false).setTint(0x808080);
         energyWeapon1Button1.setInteractive();
+        
+        echoHandler.onmessage = this.handleMessage;
     
     }
+    
+    handleMessage(message) {
+		let msg = message.data;
+		
+		console.log(msg);
+	}
 
     getBullets(){
         return bullets;
@@ -527,18 +534,6 @@ function onRightClick(pointer)
     else if(i===menuRightOpenX+2 && j%16===menuRightOpenY-1 && weaponMenuRightOpen) PlaceLaserTurret(false);
     else if(i===menuRightOpenX+3 && j%16===menuRightOpenY-1 && weaponMenuRightOpen) PlaceEnergyTurret(false);
     else if(i===menuRightOpenX+1 && j%16===menuRightOpenY+1 && buyMenuRightOpen) sellTurret(i, j, rightMap, menuRightOpenX, menuRightOpenY);
-}
-
-function onEnter()
-{
-    let i = keyPosY;
-    let j = keyPosX;
-
-    if(leftMap[i][j]!==-1 && leftMap[i][j]!==undefined) openCloseMenu(i, j, true);
-    else if(i===menuLeftOpenX+1 && j===menuLeftOpenY-1 && buyMenuLeftOpen) openCloseWeapons(true);
-    else if(i===menuLeftOpenX+2 && j===menuLeftOpenY-1 && weaponMenuLeftOpen) PlaceLaserTurret(true);
-    else if(i===menuLeftOpenX+3 && j===menuLeftOpenY-1 && weaponMenuLeftOpen) PlaceEnergyTurret(true);
-    else if(i===menuLeftOpenX+1 && j===menuLeftOpenY+1 && buyMenuLeftOpen) sellTurret(i, j, leftMap, menuLeftOpenX, menuLeftOpenY);
 }
 
 
