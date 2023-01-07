@@ -2,7 +2,7 @@ import Bullet from './bullet.js';
 import TurretEnemy from './turretEnemy.js';
 import SkellyEnemy from './skellyEnemy.js';
 import BigBotEnemy from './bigBotEnemy.js';
-import Turret from './turret.js';
+import GunTurret from './gunTurret.js';
 import Player from './player.js';
 import EnergyTurret from './energyTurret.js';
 
@@ -128,8 +128,9 @@ class LevelPath extends Phaser.Scene {
         this.load.image('skelly', 'assets/skelly.png');
         this.load.image('adan', 'assets/cuadrado.png');
 
-        this.load.spritesheet('enemyWalkin', 'assets/basic robot stripe.png', { frameWidth: 64, frameHeight: 64 });
-        this.load.spritesheet('bigRobot', 'assets/Robotitan.png', {frameWidth: 64, frameHeight: 120});
+        this.load.spritesheet('enemyWalkin', 'assets/turretRobot.png', { frameWidth: 64, frameHeight: 64 });
+        this.load.spritesheet('bigRobot', 'assets/Robotitan spritesheet final.png', {frameWidth: 64, frameHeight: 120});
+        
 
         // botones
         this.load.image('square', 'assets/cuadrado.png');
@@ -221,7 +222,7 @@ class LevelPath extends Phaser.Scene {
         })
 
         turrets = this.add.group({
-            classType: Turret,
+            classType: GunTurret,
             runChildUpdate: true
         });
 
@@ -359,11 +360,11 @@ class LevelPath extends Phaser.Scene {
             let x = Math.random();
             let y = Math.random();
             let leftEnemy;
-            if(x<=0.4){
+            if(x<=0.1){
                 leftEnemy = leftEnemies1.get();
                 leftEnemy.animateWalk();
             }
-            else if(x<=0.8){
+            else if(x<=0.1){
                 leftEnemy = leftEnemies2.get();
             }
             else{
@@ -397,6 +398,7 @@ class LevelPath extends Phaser.Scene {
                 leftEnemy.setVisible(true);
 
                 leftEnemy.startOnPath(leftPath, secondPlayer, firstPlayer);
+                leftEnemy.flip();
             }
 
             if(rightEnemy){
@@ -405,6 +407,7 @@ class LevelPath extends Phaser.Scene {
                 rightEnemy.setVisible(true);
 
                 rightEnemy.startOnPath(rightPath, firstPlayer, firstPlayer);
+                
             }
 
             this.nextEnemy = time + this.SPAWN_SPEED;
@@ -446,45 +449,6 @@ class LevelPath extends Phaser.Scene {
 
     onKeyboardHandler(event) {
         switch(event.key) {
-            case('e' || 'E'):
-                let i = Math.floor(keyPosY);
-                let j = Math.floor(keyPosX);
-
-                if(canPlaceTurretLeft(i, j, 20, 0)) {
-                    let energyTurret = energyTurrets.get();
-
-                    if(energyTurret) {
-                        energyTurret.setActive(true);
-                        energyTurret.setVisible(true);
-                        energyTurret.setSide('left');
-                        energyTurret.placeLeft(i, j, leftMap);
-                        firstPlayer.addMoney(-energyTurret.getCost());
-                        firstPlayer.addEnergy(energyTurret.getEnergy());
-                    }
-                }
-
-                break;
-
-            case('q' || 'Q'):
-                let m = Math.floor(keyPosY);
-                let n = Math.floor(keyPosX);
-
-                console.log(leftMap[m][n]);
-
-                if(canPlaceTurretLeft(m, n, 20, 10)) {
-                    let turret = turrets.get();
-
-                    if(turret) {
-                        turret.setActive(true);
-                        turret.setVisible(true);
-                        turret.setSide('left');
-                        turret.placeLeft(m, n, leftMap);
-                        firstPlayer.addMoney(-turret.getCost());
-                        firstPlayer.addEnergy(-turret.getEnergy());
-                    }
-                }
-
-                break;
 
             case('a' || 'A'):
                 if(keyPosX - 1 >= 0) { 

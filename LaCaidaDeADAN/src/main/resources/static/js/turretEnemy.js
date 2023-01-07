@@ -10,21 +10,21 @@ class TurretEnemy extends Enemy{
             vec: new Phaser.Math.Vector2()
         };
 
+        
+
         scene.anims.create({
             key:'walking',
-            frames: this.anims.generateFrameNumbers('enemyWalkin', {start: 0, end: 4}),
+            frames: this.anims.generateFrameNumbers('enemyWalkin', {start: 0, end: 6}),
             frameRate: 20,
             repeat: -1
         });
-
+        
         scene.anims.create({
             key:'fire',
-            frames: this.anims.generateFrameNumbers('enemyWalkin', {start: 5, end:6}),
-            framerate: 3,
-            repeat:-1
-        });
-
-        
+            frames: this.anims.generateFrameNumbers('enemyWalkin', {start:7, end:8}),
+            frameRate: 2,
+            repeat: -1
+        })
 
         this.speed = 8/100000;
         this.maxHP = 100;
@@ -45,9 +45,9 @@ class TurretEnemy extends Enemy{
         this.anims.play('fire', true);
     }
 
-    fire() {
+    fire() { 
             this.anims.stop('walking');
-            //this.animateFire();
+            this.anims.play('fire', true);
             var angle = Phaser.Math.Angle.Between(this.follower.vec.x, this.follower.vec.y, 1856/2, 896/2);
             this.scene.addEnemyBullet(this.follower.vec.x, this.follower.vec.y, angle);
             this.scene.sound.play('shoot', {volume: 0.1});

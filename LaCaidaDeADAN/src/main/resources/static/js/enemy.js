@@ -22,11 +22,14 @@ class Enemy extends Phaser.GameObjects.Sprite {
          this.ranged = undefined;
          this.offset = undefined;
          this.nextAttack = 0;
+         
          this.scene = scene;
-         this.hpBar = undefined;
+         
          this.hpBar = this.scene.add.graphics();
          this.hpBar.fillStyle(255, 1);
          this.hpBar.fillRect(0, 0, 100, 10);
+
+         this.side = undefined;
      }
 
      update (time, delta) {
@@ -70,9 +73,17 @@ class Enemy extends Phaser.GameObjects.Sprite {
          return this.currentHP;
      }
 
+    setSide(side){
+        this.side = side;
+    }
+
      setMaxHP(hp){
         this.maxHP *= hp
         this.currentHP *= hp;
+     }
+
+     flip(){
+        this.setFlipX(true);
      }
  
      takeDamage(damage, bullet){
