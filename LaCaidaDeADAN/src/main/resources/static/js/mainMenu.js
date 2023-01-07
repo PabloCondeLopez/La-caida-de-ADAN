@@ -68,7 +68,7 @@ class MainMenu extends Phaser.Scene {
 
     startLevel(){
         game.scene.stop('MainMenu');
-        game.scene.start('Level');
+        game.scene.start('SelectLevel');
     }
 
     chatScene() {
