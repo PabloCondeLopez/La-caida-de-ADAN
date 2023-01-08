@@ -24,7 +24,10 @@ class OnlineSelector extends Phaser.Scene {
         this.onlineButton = this.add.image(this.screenWidth / 2 + 500, this.screenHeight / 2 + 100, 'button').setScale(4);
         
         this.offlineText = this.add.text(this.screenWidth / 2 + 505, this.screenHeight / 2 - 150, 'Offline', {fontSize: '40px', fill: '#fff', fontFamily: 'Pixeled'}).setStroke("#000", 4).setOrigin(0.5, 0.5).setTint(0x808080);
-        this.onlineText = this.add.text(this.screenWidth / 2 + 505, this.screenHeight / 2 + 100, 'Online', {fontSize: '40px', fill: '#fff', fontFamily: 'Pixeled'}).setStroke("#000", 4).setOrigin(0.5, 0.5);
+        this.offlineText.setInteractive();
+		this.offlineText.on('pointerdown', this.onOfflineButton, this);
+
+		this.onlineText = this.add.text(this.screenWidth / 2 + 505, this.screenHeight / 2 + 100, 'Online', {fontSize: '40px', fill: '#fff', fontFamily: 'Pixeled'}).setStroke("#000", 4).setOrigin(0.5, 0.5);
         this.onlineText.setInteractive();
         this.onlineText.on('pointerdown', this.onOnlineButton, this);
         
@@ -77,6 +80,12 @@ class OnlineSelector extends Phaser.Scene {
 				self.fullText.setVisible(true);
 			}
 		}
+	}
+
+	onOfflineButton(){
+		this.game.scene.stop('OnlineSelector');
+		this.game.scene.start('SelectLevel');
+		activeScene = 'SelectLevel';
 	}
 	
 	update() {

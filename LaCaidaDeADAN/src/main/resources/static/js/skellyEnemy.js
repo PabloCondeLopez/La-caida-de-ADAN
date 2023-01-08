@@ -14,7 +14,7 @@ class SkellyEnemy extends Enemy{
         this.speed = 8/100000;
         this.maxHP = 100;
         this.currentHP = this.maxHP;
-        this.damageAmmount = 0; // TO CHANGE
+        this.damageAmmount = 2; // TO CHANGE
         this.moneyGiven = 10;
         this.range = 128;
         this.ranged = false;
@@ -26,7 +26,7 @@ class SkellyEnemy extends Enemy{
     fire() {
        
         var angle = Phaser.Math.Angle.Between(this.follower.vec.x, this.follower.vec.y, 1856/2, 896/2);
-        this.scene.addEnemyBullet(this.follower.vec.x, this.follower.vec.y, angle);
+        this.scene.addEnemyBullet(this.follower.vec.x, this.follower.vec.y, angle, this.damageAmmount);
 
     }
 

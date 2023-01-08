@@ -23,11 +23,12 @@ class Nucleus {
 
     takeDamage(damage){
         this.currentHp -= damage;
-        console.log(damage);
-        if(this.adan!=undefined){
+        this.adan.setFrame(this.maxHp - this.currentHp);
+        
+        /*if(this.adan!=undefined){
             this.adan.setTint(0xff0000);
             this.deltaDamage = this.damageTimer;
-        }
+        }*/
     }
 
     update (time, delta) {

@@ -29,7 +29,7 @@ class TurretEnemy extends Enemy{
         this.speed = 8/100000;
         this.maxHP = 100;
         this.currentHP = this.maxHP;
-        this.damageAmmount = 0; // TO CHANGE
+        this.damageAmmount = 1; // TO CHANGE
         this.moneyGiven = 10;
         this.range = 350;
         this.ranged = true;
@@ -50,7 +50,7 @@ class TurretEnemy extends Enemy{
             this.anims.stop('walking');
             this.anims.play('fire', true);
             var angle = Phaser.Math.Angle.Between(this.follower.vec.x, this.follower.vec.y, 1856/2, 896/2);
-            this.scene.addEnemyBullet(this.follower.vec.x, this.follower.vec.y, angle);
+            this.scene.addEnemyBullet(this.follower.vec.x, this.follower.vec.y, angle, this.damageAmmount);
             this.scene.sound.play('shoot', {volume: 0.1});
             //this.angle = (angle, Math.PI/2) * Phaser.Math.RAD_TO_DEG;
     }

@@ -31,7 +31,7 @@ class BigBotEnemy extends Enemy{
         this.maxHP = 200;
         this.currentHP = this.maxHP;
         this.damageAmmount = 20;
-        this.moneyGiven = 15;
+        this.moneyGiven = 4;
         this.range = 128;
         this.ranged = false;
         this.attackSpeed = 15;
@@ -47,7 +47,7 @@ class BigBotEnemy extends Enemy{
         this.anims.play('attackBigBot', true);
         //this.anims.playAfterDelay('attackBigBot', 1500);
         var angle = Phaser.Math.Angle.Between(this.follower.vec.x, this.follower.vec.y, 1856/2, 896/2);
-        this.scene.addEnemyBullet(this.follower.vec.x, this.follower.vec.y, angle);
+        this.scene.addEnemyBullet(this.follower.vec.x, this.follower.vec.y, angle, this.damageAmmount);
 
     }
 

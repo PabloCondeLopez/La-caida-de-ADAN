@@ -115,7 +115,14 @@ class SelectLevel extends Phaser.Scene {
     
     startLevel1(){
         game.scene.stop('SelectLevel');
-        game.scene.start('Level');
+       
+        if(mode===false) {
+            game.scene.start('Level1');
+            activeScene = 'Level1';
+        } else {
+            game.scene.start('Level');
+            activeScene = 'Level';
+        }
     }    
 
     exitLevels(){
