@@ -58,13 +58,21 @@ class Turret extends Phaser.GameObjects.Image {
     }
 
     getUpgradeCost(){
-        return 0;
+        return 10;
         //return this.upgradeRate * this.cost * this.level; 
     }
 
     getUpgradeEnergy(){
         return 0;
         //return this.upgradeRate * this.energy * this.level; 
+    }
+
+    getLevel(){
+        return this.level;
+    }
+
+    getMaxLevel(){
+        return this.maxLevel;
     }
     
     getEnergy(){

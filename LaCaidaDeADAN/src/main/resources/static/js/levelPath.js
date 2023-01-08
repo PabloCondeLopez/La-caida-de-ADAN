@@ -130,8 +130,8 @@ class LevelPath extends Phaser.Scene {
         this.load.image('adan', 'assets/cuadrado.png');
 
         this.load.spritesheet('enemyWalkin', 'assets/turretRobot.png', { frameWidth: 64, frameHeight: 64 });
-        this.load.spritesheet('bigRobot', 'assets/Robotitan spritesheet final.png', {frameWidth: 64, frameHeight: 120});
-        
+        this.load.spritesheet('bigRobot', 'assets/Robotitan spritesheet final.png', { frameWidth: 64, frameHeight: 120 });
+
 
         // botones
         this.load.image('square', 'assets/cuadrado.png');
@@ -410,7 +410,7 @@ class LevelPath extends Phaser.Scene {
                 rightEnemy.setVisible(true);
 
                 rightEnemy.startOnPath(rightPath, firstPlayer, firstPlayer);
-                
+
             }
 
             this.nextEnemy = time + this.SPAWN_SPEED;
@@ -451,10 +451,10 @@ class LevelPath extends Phaser.Scene {
     }
 
     onKeyboardHandler(event) {
-        switch(event.key) {
+        switch (event.key) {
 
-            case('a' || 'A'):
-                if(keyPosX - 1 >= 0) { 
+            case ('a' || 'A'):
+                if (keyPosX - 1 >= 0) {
                     keyPosX--;
                 }
                 break;
@@ -530,7 +530,7 @@ class LevelPath extends Phaser.Scene {
         let bullet = bullets.get();
 
         if (bullet) {
-            
+
             bullet.fire(x, y, angle, damage);
         }
     }
@@ -580,7 +580,6 @@ function canPlaceTurretRight(i, j, turretcost, turretEnergy) {
     if (secondPlayer.getMoney() >= turretcost && secondPlayer.getEnergy() >= turretEnergy && rightMap[i][j] === 0) {
         canPlace = true;
     }
-
     return canPlace
 }
 
@@ -590,7 +589,9 @@ function damageEnemy(enemy, bullet) {
 
         bullet.setActive(false);
         bullet.setVisible(false);
-        updateCosts();
+        //updateCosts();
+        updateCostsRight();
+        updateCostsLeft();
     }
 }
 
@@ -609,7 +610,7 @@ function onRightClick(pointer) {
     let j = Math.floor(pointer.x / 64);
 
     if (rightMap[i][j % 16] !== -1 && rightMap[i][j % 16] !== undefined) openCloseMenu(i, j, false);
-    else if (i === menuRightOpenX + 1 && j % 16 === menuRightOpenY - 1 && buyMenuRightOpen) openCloseWeapons(false);
+    else if (i === menuRightOpenX + 1 && j % 16 === menuRightOpenY - 1 && buyMenuRightOpen && rightMap[menuRightOpenX][menuRightOpenY]===0) openCloseWeapons(false);
     else if (i === menuRightOpenX + 2 && j % 16 === menuRightOpenY - 1 && weaponMenuRightOpen) PlaceLaserTurret(false);
     else if (i === menuRightOpenX + 3 && j % 16 === menuRightOpenY - 1 && weaponMenuRightOpen) PlaceEnergyTurret(false);
     else if (i === menuRightOpenX + 1 && j % 16 === menuRightOpenY + 1 && buyMenuRightOpen) sellTurret(false);
@@ -622,7 +623,7 @@ function onEnter() {
     let j = keyPosX;
 
     if (leftMap[i][j] !== -1 && leftMap[i][j] !== undefined) openCloseMenu(i, j, true);
-    else if (i === menuLeftOpenX + 1 && j === menuLeftOpenY - 1 && buyMenuLeftOpen) openCloseWeapons(true);
+    else if (i === menuLeftOpenX + 1 && j === menuLeftOpenY - 1 && buyMenuLeftOpen && leftMap[menuLeftOpenX][menuLeftOpenY]===0) openCloseWeapons(true);
     else if (i === menuLeftOpenX + 2 && j === menuLeftOpenY - 1 && weaponMenuLeftOpen) PlaceLaserTurret(true);
     else if (i === menuLeftOpenX + 3 && j === menuLeftOpenY - 1 && weaponMenuLeftOpen) PlaceEnergyTurret(true);
     else if (i === menuLeftOpenX + 1 && j === menuLeftOpenY + 1 && buyMenuLeftOpen) sellTurret(true);
@@ -661,6 +662,8 @@ function openCloseMenu(i, j, menu) {
 
         if (buyButton.active) buyMenuRightOpen = true;
         weaponMenuRightOpen = false;
+        updateCostsRight();
+        
     }
     else {
         console.log("openCloseMenu2");
@@ -693,6 +696,7 @@ function openCloseMenu(i, j, menu) {
         energyWeapon1Button1.setVisible(false);
 
         weaponMenuLeftOpen = false;
+        updateCostsLeft();
     }
 
 }
@@ -735,6 +739,7 @@ function openCloseWeapons(menu) {
 
         if (laserWeapon1Button1.active) weaponMenuLeftOpen = true;
     }
+    //updateCosts();
 }
 
 function keyPlaceTurret(turret, player) {
@@ -752,7 +757,7 @@ function keyPlaceTurret(turret, player) {
         }
         openCloseMenu(menuLeftOpenX, menuLeftOpenY, true);
     }
-    updateCosts();
+    //updateCosts();
 }
 
 function clickPlaceTurret(turret, player) {
@@ -782,7 +787,7 @@ function clickPlaceTurret(turret, player) {
         openCloseMenu(menuRightOpenX, menuRightOpenY, false);
     }
 
-    updateCosts();
+    //updateCosts();
 }
 
 function PlaceLaserTurret(isKeyOrClick) {
@@ -807,14 +812,123 @@ function PlaceEnergyTurret(isKeyOrClick) {
     }
 }
 
-function updateCosts() {
-    let turret = turrets.get();
-    if (secondPlayer.money < turret.getCost()) laserWeapon1Button.setTint(0x808080);
-    else laserWeapon1Button.clearTint();
+function updateCostsRight(){
+    let t = turrets.get();
+    let eT = energyTurrets.get();
+    let ts = turrets.getChildren();
+    let eTs = energyTurrets.getChildren();
 
-    let energyTurret = energyTurrets.get();
-    if (secondPlayer.money < energyTurret.getCost()) bulletWeapon1Button.setTint(0x808080);
-    else bulletWeapon1Button.clearTint();
+    if(buyMenuRightOpen){ 
+
+        // MENU GENERAL
+        if(rightMap[menuRightOpenX][menuRightOpenY]===0) { buyButton.clearTint(); }
+        else {  buyButton.setTint(0x808080); }
+
+        console.log("---------------------- UPDATE COSTS ----------------------");
+        // MENU DE ARMAS 
+        if(t.getCost() > secondPlayer.money){ laserWeapon1Button.setTint(0x808080); }
+        else if (t.getEnergy() > secondPlayer.energy){ laserWeapon1Button.setTint(0x808080); }
+        else{ laserWeapon1Button.clearTint(); }
+    
+        if(eT.getCost() > secondPlayer.money){ bulletWeapon1Button.setTint(0x808080); }
+        else{ bulletWeapon1Button.clearTint(); }
+
+        // MENU DE MEJORA Y DE VENTA
+        if(rightMap[menuRightOpenX][menuRightOpenY]!==1) {
+            sellButton.setTint(0x808080);
+            upgradeButton.setTint(0x808080);
+        } else {
+            sellButton.clearTint();
+            upgradeButton.clearTint();
+        }
+
+        if(ts != undefined || eTs !=undefined){
+            console.log("UPGRADE UPGRADE BUTTON");
+            let turret;
+            let energyTurret;
+            for (let i = 0; i < ts.length; i++) {
+                if (ts[i].getCoordX() === menuRightOpenX && ts[i].getCoordY() === menuRightOpenY) {
+                    turret = ts[i];
+                    console.log(turret);
+                }
+            }
+            for (let i = 0; i < eTs.length; i++) {
+                if (eTs[i].getCoordX() === menuRightOpenX && eTs[i].getCoordY() === menuRightOpenY) {
+                    energyTurret = eTs[i];
+                }
+            }
+            if(turret!=undefined){
+                console.log("Level:" + turret.getLevel());
+                if(turret.getUpgradeCost() > secondPlayer.money || turret.getMaxLevel() <= turret.getLevel()) { upgradeButton.setTint(0x808080); }
+                else { upgradeButton.clearTint(); }
+            }
+            if(energyTurret!=undefined){
+                if(energyTurret.getUpgradeCost() > secondPlayer.money) { upgradeButton.setTint(0x808080); }
+                else { upgradeButton.clearTint(); }
+            }
+
+        }
+        
+    }
+ 
+}
+
+function updateCostsLeft(){
+    let t = turrets.get();
+    let eT = energyTurrets.get();
+    let ts = turrets.getChildren();
+    let eTs = energyTurrets.getChildren();
+
+    if(buyMenuLeftOpen){ 
+        // MENU GENERAL
+        if(leftMap[menuLeftOpenX][menuLeftOpenY]===0) { buyButton1.clearTint(); }
+        else {  buyButton1.setTint(0x808080); }
+
+        console.log("---------------------- UPDATE COSTS ----------------------");
+        // MENU DE ARMAS 
+        if(t.getCost() > firstPlayer.money){ laserWeapon1Button1.setTint(0x808080); }
+        else if (t.getEnergy() > firstPlayer.energy){ laserWeapon1Button1.setTint(0x808080); }
+        else{ laserWeapon1Button1.clearTint(); }
+    
+        if(eT.getCost() > firstPlayer.money){ bulletWeapon1Button1.setTint(0x808080); }
+        else{ bulletWeapon1Button1.clearTint(); }
+
+        // MENU DE MEJORA Y DE VENTA
+        if(leftMap[menuLeftOpenX][menuLeftOpenY]!==1) {
+            sellButton1.setTint(0x808080);
+            upgradeButton1.setTint(0x808080);
+        } else {
+            sellButton1.clearTint();
+            upgradeButton1.clearTint();
+        }
+
+        if(ts != undefined || eTs !=undefined){
+            console.log("UPGRADE UPGRADE BUTTON");
+            let turret;
+            let energyTurret;
+            for (let i = 0; i < ts.length; i++) {
+                if (ts[i].getCoordX() === menuLeftOpenX && ts[i].getCoordY() === menuLeftOpenY) {
+                    turret = ts[i];
+                }
+            }
+            for (let i = 0; i < eTs.length; i++) {
+                if (eTs[i].getCoordX() === menuLeftOpenX && eTs[i].getCoordY() === menuLeftOpenY) {
+                    energyTurret = eTs[i];
+                }
+            }
+            if(turret!=undefined){
+                if(turret.getUpgradeCost() > firstPlayer.money || turret.getMaxLevel() <= turret.getLevel()) { upgradeButton1.setTint(0x808080); }
+                else { upgradeButton1.clearTint(); }
+            }
+            if(energyTurret!=undefined){
+                if(energyTurret.getUpgradeCost() > firstPlayer.money) { upgradeButton1.setTint(0x808080); }
+                else { upgradeButton1.clearTint(); }
+            }
+
+        }
+        
+    }
+ 
 }
 
 function upgradeTurret(menu) {
