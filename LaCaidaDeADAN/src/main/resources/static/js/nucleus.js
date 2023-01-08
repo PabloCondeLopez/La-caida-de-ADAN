@@ -1,4 +1,4 @@
-class Nucleus extends Phaser.GameObjects.Sprite {
+class Nucleus {
     constructor(maxHp){
         this.maxHp = maxHp;
         this.currentHp = this.maxHp;
@@ -23,6 +23,7 @@ class Nucleus extends Phaser.GameObjects.Sprite {
 
     takeDamage(damage){
         this.currentHp -= damage;
+        console.log(damage);
         if(this.adan!=undefined){
             this.adan.setTint(0xff0000);
             this.deltaDamage = this.damageTimer;

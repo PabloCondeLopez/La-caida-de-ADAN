@@ -5,6 +5,7 @@ import BigBotEnemy from './bigBotEnemy.js';
 import GunTurret from './gunTurret.js';
 import Player from './player.js';
 import EnergyTurret from './energyTurret.js';
+import Nucleus from './nucleus.js';
 
 
 var leftMap = [[-1, -1, -1, -1, -1, -1, -1, -1, -1, -1, -1, -1, -1],
@@ -61,9 +62,11 @@ let enemyBullets;
 let enemyHP = 1.05;
 
 let bullets;
+let input;
 
 let firstPlayer = new Player(100);
 let secondPlayer = new Player(100);
+let nucleus = new Nucleus(50);
 
 let keyPosX = 0;
 let keyPosY = 0;
@@ -72,9 +75,6 @@ let selectImage;
 
 let levelPaused = false;
 
-var input;
-let rect;
-let rect1;
 let buyButton;
 let upgradeButton;
 let sellButton;
@@ -102,6 +102,8 @@ let damageTimer = 100;
 let deltaDamage = 0;
 
 let cellSize = 64;
+
+
 
 class LevelPath extends Phaser.Scene {
     constructor(screenWidth, screenHeight, game) {
@@ -152,7 +154,7 @@ class LevelPath extends Phaser.Scene {
 
         this.add.image(this.screenWidth / 2, this.screenHeight / 2, 'map');
         selectImage = this.add.image(keyPosX * 64 + 32, keyPosY * 64 + 32, 'select').setScale(3);
-        adan = this.physics.add.image(this.screenWidth / 2, this.screenHeight / 2 - 32, 'adan').setScale(0.15);
+        nucleus.adan = this.physics.add.image(this.screenWidth / 2, this.screenHeight / 2 - 32, 'adan').setScale(0.15);
 
         graphics = this.add.graphics();
         graphics.lineStyle(3, 0xffffff, 1);
@@ -179,7 +181,7 @@ class LevelPath extends Phaser.Scene {
 
         this.firstPlayerMoneyText = this.add.text(90, 13, '50', { fontSize: '30px', fill: '#fff', fontFamily: 'Pixeled' }).setStroke('#000', 4);
         let firstPlayerMoneyImage = this.add.image(50, 50, 'coin').setScale(0.08);
-        this.firstPlayerHPText = this.add.text((this.screenWidth / 2) - 80, 16, 'Vida: ' + firstPlayer.getMaxHp(), { fontSize: '20px', fill: '#fff', fontFamily: 'Pixeled' }).setStroke('#000', 4);
+        this.nucleusHPText = this.add.text((this.screenWidth / 2) - 80, 16, 'Vida: ' + nucleus.getMaxHp(), { fontSize: '20px', fill: '#fff', fontFamily: 'Pixeled' }).setStroke('#000', 4);
         let firstPlayerEnergyImage = this.add.image(50, this.screenHeight - 50, 'energy').setScale(0.8);
         this.firstPlayerEnergyText = this.add.text(90, this.screenHeight - 85, firstPlayer.getEnergy(), { fontSize: '30px', fill: '#fff', fontFamily: 'Pixeled' }).setStroke('#000', 4);
 
@@ -188,6 +190,7 @@ class LevelPath extends Phaser.Scene {
         //this.secondPlayerHPText = this.add.text((this.screenWidth/2) + 128, 16, 'Vida: ' + firstPlayer.getMaxHp(), {fontSize: '20px', fill: '#fff', fontFamily: 'Pixeled'}).setStroke('#000', 4);
         let secondPlayerEnergyImage = this.add.image(this.screenWidth - 50, this.screenHeight - 53, 'energy').setScale(0.8);
         this.secondPlayerEnergyText = this.add.text(this.screenWidth - 152, this.screenHeight - 85, secondPlayer.getEnergy(), { fontSize: '30px', fill: '#fff', fontFamily: 'Pixeled' }).setStroke('#000', 4);
+
 
         leftEnemies1 = this.physics.add.group({
             classType: TurretEnemy,
@@ -248,7 +251,7 @@ class LevelPath extends Phaser.Scene {
         this.physics.add.overlap(rightEnemies2, bullets, damageEnemy);
         this.physics.add.overlap(rightEnemies3, bullets, damageEnemy);
 
-        this.physics.add.overlap(enemyBullets, adan, damagePlayer);
+        this.physics.add.overlap(enemyBullets, nucleus.adan, damagePlayer);
 
         this.nextEnemy = 0;
         this.pauseOnScene = false;
@@ -256,8 +259,7 @@ class LevelPath extends Phaser.Scene {
         this.input.on('pointerdown', this.onClickHandler);
         this.input.keyboard.on('keydown', this.onKeyboardHandler);
 
-        firstPlayer.setHP(200);
-        secondPlayer.setHP(100);
+        nucleus.setCurrentHP(nucleus.getMaxHp());
 
         firstPlayer.setEnergy(20);
         secondPlayer.setEnergy(20);
@@ -320,11 +322,10 @@ class LevelPath extends Phaser.Scene {
     }
 
     update(time, delta) {
-        deltaDamage -= delta;
-        if (deltaDamage <= 0) adan.clearTint();
+        nucleus.update(time, delta);
 
         this.firstPlayerMoneyText.setText(firstPlayer.getMoney());
-        this.firstPlayerHPText.setText("Vida: " + firstPlayer.getCurrentHP());
+        this.nucleusHPText.setText("Vida: " + nucleus.getCurrentHP());
         this.firstPlayerEnergyText.setText(firstPlayer.getEnergy());
 
         this.secondPlayerMoneyText.setText(secondPlayer.getMoney());
@@ -351,7 +352,7 @@ class LevelPath extends Phaser.Scene {
             this.scene.pause();
         }
 
-        if (firstPlayer.getCurrentHP() <= 0 || secondPlayer.getCurrentHP() <= 0) {
+        if (nucleus.getCurrentHP() <= 0) {
             this.endGame();
         }
 
@@ -589,18 +590,17 @@ function damageEnemy(enemy, bullet) {
 
         bullet.setActive(false);
         bullet.setVisible(false);
-        //updateCosts();
         updateCostsRight();
         updateCostsLeft();
     }
 }
 
 function damagePlayer(adan, bullet) {
+    //pregunta
     if (bullet.active === true && adan.active === true) {
         bullet.setActive(false);
         bullet.setVisible(false);
-        adan.setTint(0xff0000);
-        deltaDamage = damageTimer;
+        nucleus.takeDamage(bullet.getDamage());
     }
 }
 
