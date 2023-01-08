@@ -59,7 +59,6 @@ class Lobby extends Phaser.Scene {
 		
 		echoHandler.onmessage = function(message) {
 			let msg = message.data;
-			console.log(msg);
 			
 			if(msg === "start"){
 				self.scene.stop("Lobby");
@@ -107,8 +106,11 @@ class Lobby extends Phaser.Scene {
 	}
 	
 	onStartButton() {
-		self.scene.stop("Lobby");
-		self.scene.start("Level");
+		this.connectionCheck = false;
+		this.playersReady = false;
+		
+		this.scene.stop("Lobby");
+		this.scene.start("Level");
 		echoHandler.send("start");
 	}
 }

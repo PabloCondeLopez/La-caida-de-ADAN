@@ -1,6 +1,3 @@
-
-let quitGame = false;
-
 class GameOver extends Phaser.Scene {
     constructor(gameWidth, gameHeight){
         super();
@@ -26,19 +23,14 @@ class GameOver extends Phaser.Scene {
         this.resumeButton = this.add.image(this.gameWidth/2, this.gameHeigth/1.5, 'resumeButton').setOrigin(0.5,0.5);
         this.quitText = this.add.text(this.gameWidth/2, this.gameHeigth/1.5, 'Salir', { fontSize: '30px', color: '#fff', fontFamily: 'Pixeled'}).setStroke('#000', 5).setOrigin(0.5, 0.5);
         this.quitText.setInteractive();
-        this.quitText.on('pointerdown', this.goToMainMenu);
+        this.quitText.on('pointerdown', this.goToMainMenu, this);
     }
 
     goToMainMenu(){
-        quitGame=true;
-    }
-
-    update(){
-        if(quitGame===true){
-            quitGame = false;
-            this.scene.stop('Level');
-            this.scene.start('MainMenu');
-        }
+		echoHandler.close();
+		playerID = 0;
+        this.scene.stop('Level');
+        this.scene.start('MainMenu');
     }
 }
 

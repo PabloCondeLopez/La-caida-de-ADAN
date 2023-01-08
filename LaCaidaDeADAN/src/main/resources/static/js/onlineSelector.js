@@ -57,7 +57,11 @@ class OnlineSelector extends Phaser.Scene {
 	}
 	
 	onOnlineButton() {
-		echoHandler.send("registrar");
+		if(echoHandler.readyState === 3) echoHandler = new WebSocket('ws://localhost:8080/echo');
+		
+		do	{
+			echoHandler.send("registrar");
+		} while(echoHandler.readyState === 0);
 		
 		echoHandler.onmessage = function(message) {
 			const msg = JSON.parse(message.data);
@@ -81,6 +85,7 @@ class OnlineSelector extends Phaser.Scene {
 		playerID = this.playerID;
 		this.scene.stop("OnlineSelector");
 		this.scene.start("Lobby");
+		this.playerID = 0;
 	}
 	
 	onBackButton() {

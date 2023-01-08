@@ -304,11 +304,11 @@ class OnlineLevel extends Phaser.Scene {
 		if (jsonMsg.info === "enemy") {
 			self.handleEnemyCreation(jsonMsg.enemy, jsonMsg.side);
 		} else if (jsonMsg.info === "build") {
-			console.log("TO DO - handleBuildTurretWS()");
+			self.handleBuildTurretWS(jsonMsg.turret, jsonMsg.side, jsonMsg.cost, jsonMsg.energy, jsonMsg.x, jsonMsg.y);
 		} else if (jsonMsg.info === "upgrade") {
-			console.log("TO DO - handleUpgradeTurretWS()");
+			//self.handleUpgradeTurretWS(jsonMsg.index, jsonMsg.type);
 		} else if (jsonMsg.info === "sell") {
-			console.log("TO DO - handleSellTurretWS()");
+			self.handleSellTurretWS(jsonMsg.index, jsonMsg.type);
 		}
 	}
 
@@ -521,7 +521,7 @@ class OnlineLevel extends Phaser.Scene {
 		if (enemy === "skelly" && side === "right") {
 			createEnemy = rightEnemies2.get();
 			createEnemy.startOnPath(rightPath, firstPlayer, secondPlayer);
-		} else if (enemy === "range" && side === "rigt"){
+		} else if (enemy === "range" && side === "right"){
 			createEnemy = rightEnemies1.get();
 			createEnemy.startOnPath(rightPath, firstPlayer, secondPlayer);
 		} else if (enemy === "skelly" && side === "left") {
@@ -530,10 +530,56 @@ class OnlineLevel extends Phaser.Scene {
 		} else if (enemy === "range" && side === "left") {
 			createEnemy = leftEnemies1.get();
 			createEnemy.startOnPath(leftPath, secondPlayer, firstPlayer);
+		} else {
+			console.log("Error. Enemy: " + enemy + ", side: " + side);
 		}
 		
-		createEnemy.setVisible(true);
-		createEnemy.setActive(true);
+		if(createEnemy != null) {
+			createEnemy.setVisible(true);
+			createEnemy.setActive(true);
+		}
+	}
+	
+	handleBuildTurretWS(turret, side, cost, energy, x, y) {
+		let createTurret;
+
+		if(turret === 'normal'){
+			createTurret = turrets.get();
+		} else if (turret === 'energy'){
+			createTurret = energyTurrets.get();
+		}
+		
+		createTurret.setActive(true);
+		createTurret.setVisible(true);
+		createTurret.setSide(side);
+		
+		if(createTurret.side === "right") {
+			createTurret.placeRight(x, y, rightMap);
+			firstPlayer.addMoney(-cost);
+			firstPlayer.addEnergy(-energy);
+		}
+		else if (createTurret.side === "left") {
+			createTurret.placeLeft(x, y, leftMap);
+			secondPlayer.addMoney(-cost);
+			secondPlayer.addEnergy(-energy);
+		}
+		
+	}
+	
+	handleSellTurretWS(index, type) {
+		let normalTurretsChildren;
+		let energyTurretsChildren;
+		
+		if(type === 'normal')
+			normalTurretsChildren = turrets.getChildren();
+		else if (type === 'energy')
+			energyTurretsChildren = energyTurrets.getChildren();
+			
+		if(normalTurretsChildren != null)
+			normalTurretsChildren[index].destroy();
+		
+		if(energyTurretsChildren != null)
+			energyTurretsChildren[index].destroy();
 	}
 
 }
@@ -578,11 +624,29 @@ function onRightClick(pointer) {
 	let i = Math.floor(pointer.y / 64);
 	let j = Math.floor(pointer.x / 64);
 
-	if (rightMap[i][j % 16] !== -1 && rightMap[i][j % 16] !== undefined) openCloseMenu(i, j, false);
-	else if (i === menuRightOpenX + 1 && j % 16 === menuRightOpenY - 1 && buyMenuRightOpen) openCloseWeapons(false);
-	else if (i === menuRightOpenX + 2 && j % 16 === menuRightOpenY - 1 && weaponMenuRightOpen) PlaceLaserTurret(false);
-	else if (i === menuRightOpenX + 3 && j % 16 === menuRightOpenY - 1 && weaponMenuRightOpen) PlaceEnergyTurret(false);
-	else if (i === menuRightOpenX + 1 && j % 16 === menuRightOpenY + 1 && buyMenuRightOpen) sellTurret(i, j, rightMap, menuRightOpenX, menuRightOpenY);
+	if(playerID === 2) {
+		if (rightMap[i][j % 16] !== -1 && rightMap[i][j % 16] !== undefined) openCloseMenu(i, j, false);
+		else if (i === menuRightOpenX + 1 && j % 16 === menuRightOpenY - 1 && buyMenuRightOpen) {
+			openCloseWeapons(false);
+		} else if (i === menuRightOpenX + 2 && j % 16 === menuRightOpenY - 1 && weaponMenuRightOpen) {
+			PlaceLaserTurret(false);
+		} else if (i === menuRightOpenX + 3 && j % 16 === menuRightOpenY - 1 && weaponMenuRightOpen) {
+			PlaceEnergyTurret(false);
+		} else if (i === menuRightOpenX + 1 && j % 16 === menuRightOpenY + 1 && buyMenuRightOpen) {
+			sellTurret(i, j, rightMap, menuRightOpenX, menuRightOpenY);
+		}
+	} else if (playerID === 1){
+		if (leftMap[i][j % 16] !== -1 && leftMap[i][j % 16] != undefined) openCloseMenu(i, j, true);
+		else if (i === menuLeftOpenX + 1 && j === menuLeftOpenY - 1 && buyMenuLeftOpen){
+			openCloseWeapons(true);
+		} else if (i === menuLeftOpenX + 2 && j === menuLeftOpenY - 1 && weaponMenuLeftOpen) {
+			PlaceLaserTurret(true);
+		} else if (i === menuLeftOpenX + 3 && j === menuLeftOpenY - 1 && weaponMenuLeftOpen) {
+			PlaceEnergyTurret(true);
+		} else if (i === menuLeftOpenX + 1 && j === menuLeftOpenY - 1 && buyMenuLeftOpen) {
+			sellTurret(i, j, leftMap, menuLeftOpenX, menuLeftOpenY);
+		}
+	}
 }
 
 
@@ -690,9 +754,10 @@ function openCloseWeapons(menu) {
 	}
 }
 
-function keyPlaceTurret(turret, player) {
-
+function leftPlaceTurret(turret, player) {
 	if (canPlaceTurretLeft(menuLeftOpenX, menuLeftOpenY, turret.cost, turret.energy)) {
+		let turretInfo;
+		
 		if (turret) {
 			turret.setActive(true);
 			turret.setVisible(true);
@@ -700,17 +765,29 @@ function keyPlaceTurret(turret, player) {
 			turret.placeLeft(menuLeftOpenX, menuLeftOpenY, leftMap);
 			player.addMoney(-turret.getCost());
 			player.addEnergy(-turret.getEnergy());
+			
+			turretInfo = {
+				info: "build",
+				turret: turret.getType(),
+				side: "left",
+				cost: turret.getCost(),
+				energy: turret.getEnergy(),
+				x: menuLeftOpenX,
+				y: menuLeftOpenY
+			};
+			
+			echoHandler.send(JSON.stringify(turretInfo));
 		}
 
 		openCloseMenu(menuLeftOpenX, menuLeftOpenY, true);
 	}
 
-	updateCosts(secondPlayer);
+	updateCosts();
 }
 
-function clickPlaceTurret(turret, player) {
-
+function rightPlaceTurret(turret, player) {
 	if (canPlaceTurretRight(menuRightOpenX, menuRightOpenY, turret.cost, turret.energy)) {
+		let turretInfo;
 
 		if (turret) {
 			turret.setActive(true);
@@ -719,15 +796,18 @@ function clickPlaceTurret(turret, player) {
 			turret.placeRight(menuRightOpenX, menuRightOpenY, rightMap);
 			player.addMoney(-turret.getCost());
 			player.addEnergy(-turret.getEnergy());
-
-			let turretInfo = {
-				type: turret.getType(),
-				posX: menuRightOpenX,
-				posY: menuRightOpenY,
+			
+			turretInfo = {
+				info: "build",
+				turret: turret.getType(),
+				side: "right",
 				cost: turret.getCost(),
 				energy: turret.getEnergy(),
-			}
-
+				player: player,
+				x: menuRightOpenX,
+				y: menuRightOpenY
+			};
+			
 			echoHandler.send(JSON.stringify(turretInfo));
 		}
 		openCloseMenu(menuLeftOpenX, menuLeftOpenY, true);
@@ -739,10 +819,10 @@ function PlaceLaserTurret(isKeyOrClick) {
 	let turret = turrets.get();
 
 	if (isKeyOrClick === true) {
-		keyPlaceTurret(turret, firstPlayer);
+		leftPlaceTurret(turret, firstPlayer);
 	}
 	else {
-		clickPlaceTurret(turret, secondPlayer);
+		rightPlaceTurret(turret, secondPlayer);
 	}
 }
 
@@ -750,10 +830,10 @@ function PlaceEnergyTurret(isKeyOrClick) {
 	let turret = energyTurrets.get();
 
 	if (isKeyOrClick === true) {
-		keyPlaceTurret(turret, firstPlayer);
+		leftPlaceTurret(turret, firstPlayer);
 	}
 	else {
-		clickPlaceTurret(turret, secondPlayer);
+		rightPlaceTurret(turret, secondPlayer);
 	}
 }
 
@@ -772,20 +852,26 @@ function sellTurret(x, y, map, menuX, menuY) {
 	if (map[menuX][menuY] === 1) {
 		let turret = turrets.getChildren();
 		let energyTurret = energyTurrets.getChildren();
+		let turretType;
+		let index;
+		
 		for (var i = 0; i < turret.length; i++) {
 			if (turret[i].getCoordX() === menuX && turret[i].getCoordY() === menuY) {
 
 				if (map === rightMap) {
 					secondPlayer.money += turret[i].getCost() / 2;
 					secondPlayer.energy += turret[i].energy;
-					updateCosts(secondPlayer);
+					updateCosts();
 				} else {
 					firstPlayer.money += turret[i].getCost() / 2;
 					firstPlayer.energy += turret[i].energy;
-					updateCosts(firstPlayer);
+					updateCosts();
 				}
 				map[menuX][menuY] = 0;
+				turretType = turret[i].getType();
 				turret[i].destroy();
+				index = i;
+				
 				if (menuX === menuLeftOpenX) openCloseMenu(x, y, true);
 				else openCloseMenu(x, y, false);
 
@@ -794,18 +880,27 @@ function sellTurret(x, y, map, menuX, menuY) {
 				if (map === rightMap) {
 					secondPlayer.money += energyTurret[i].getCost() / 2;
 					secondPlayer.energy += energyTurret[i].getEnergy();
-					updateCosts(secondPlayer);
+					updateCosts();
 				} else {
 					firstPlayer.money += energyTurret[i].getCost() / 2;
 					firstPlayer.energy += energyTurret[i].getEnergy();
-					updateCosts(firstPlayer);
+					updateCosts();
 				}
 				map[menuX][menuY] = 0;
 				energyTurret[i].destroy();
+				turretType = energyTurret[i].getType();
 				if (menuX === menuLeftOpenX) openCloseMenu(x, y, true);
 				else openCloseMenu(x, y, false);
 			}
 		}
+		
+		let sellInfo = {
+			info: "sell",
+			index: index,
+			type: turretType,
+		}
+		
+		echoHandler.send(JSON.stringify(sellInfo));
 	}
 }
 

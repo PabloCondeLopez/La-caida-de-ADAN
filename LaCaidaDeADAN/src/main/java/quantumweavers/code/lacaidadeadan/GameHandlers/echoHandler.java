@@ -24,9 +24,6 @@ public class echoHandler extends TextWebSocketHandler {
 	protected void handleTextMessage(WebSocketSession session, TextMessage message) throws Exception {
 		System.out.println("---------- NUEVO MENSAJE ----------");
 		System.out.println("Mensaje recibido: '" + message.getPayload() + "', sesión: " + session.getId());
-		System.out.println("ID Player 1: " + IDs[0]);
-		System.out.println("ID Player 2: " + IDs[1]);
-		System.out.println("-----------------------------------");
 		ObjectMapper mapper = new ObjectMapper();
 		ObjectNode node = mapper.createObjectNode();
 		String json = "";
@@ -63,24 +60,26 @@ public class echoHandler extends TextWebSocketHandler {
 			IDs[currentSession] = session.getId();
 			
 			if(currentSession == 0) {
-				node.put("jugador", 1);
+				node.put("jugador", currentSession + 1);
 				
 				if(IDs[1] != null) currentSession = 2;
 				else currentSession = 1;
 			}
 			else if (currentSession == 1) {
-				node.put("jugador", 2);
+				node.put("jugador", currentSession + 1);
 				currentSession++;
 			}
 			
 			node.put("estado", "registrado");
 			json = mapper.writeValueAsString(node);
+			System.out.println("JUGADOR " + (currentSession) + " REGISTRADO");
 			session.sendMessage(new TextMessage(json));
 			return;
 		}
 		else if (message.getPayload().equals("registrar") && currentSession >= 2) {
 			node.put("estado", "lleno");
 			json = mapper.writeValueAsString(node);
+			System.out.println("SALA LLENA");
 			session.sendMessage(new TextMessage(json));
 			return;
 		}
@@ -101,7 +100,6 @@ public class echoHandler extends TextWebSocketHandler {
 	@Override
 	public void afterConnectionClosed(WebSocketSession session, CloseStatus status) throws Exception {
 		session.close();
-		System.out.println(currentSession);
 		if(currentSession == 0 && (IDs[0] == null && IDs[1] == null)) return;
 		
 		if(session.getId().equals(IDs[0])) {
@@ -116,7 +114,11 @@ public class echoHandler extends TextWebSocketHandler {
 		if(IDs[1] != null) {
 			if (session.getId().equals(IDs[1])) {
 				IDs[1] = null;
-				currentSession = 1;
+				
+				if(currentSession == 2)
+					currentSession = 1;
+				else
+					currentSession = 0;
 				
 				if(IDs[0] != null) {
 					sessions.get(IDs[0]).sendMessage(new TextMessage("p2Disconnected"));
@@ -126,10 +128,6 @@ public class echoHandler extends TextWebSocketHandler {
 		
 		System.out.println("---------- DESCONEXION ----------");
 		System.out.println("Jugador desconectado con la id " + session.getId());
-		System.out.println("ID Player 1: " + IDs[0]);
-		System.out.println("ID Player 2: " + IDs[1]);
-		System.out.println(currentSession);
-		System.out.println("---------------------------------");
 		sessions.remove(session.getId());
 	}
 }
