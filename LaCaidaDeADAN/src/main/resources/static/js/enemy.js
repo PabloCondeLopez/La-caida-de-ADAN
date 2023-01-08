@@ -1,9 +1,9 @@
-class Enemy extends Phaser.GameObjects.Image {
+class Enemy extends Phaser.GameObjects.Sprite {
 
      constructor(scene){
          super(scene, 0, 0)
  
-         Phaser.GameObjects.Image.call(this, scene, 0, 0, 'enemy');
+         Phaser.GameObjects.Image.call(this, scene, 0, 0, 'deadEnemy');
  
          this.follower = {
              t: 0,
@@ -20,13 +20,17 @@ class Enemy extends Phaser.GameObjects.Image {
          this.range = undefined;
          this.attackSpeed = undefined;
          this.ranged = undefined;
+         this.offset = undefined;
          this.nextAttack = 0;
+         
          this.scene = scene;
-         this.hpBar = undefined;
+         
          this.hpBar = this.scene.add.graphics();
          this.hpBar.fillStyle(255, 1);
          this.hpBar.fillRect(0, 0, 100, 10);
          this.type = "";
+
+         this.side = undefined;
      }
 
      update (time, delta) {
@@ -36,20 +40,19 @@ class Enemy extends Phaser.GameObjects.Image {
         if(this.currentHP <= 0) this.die();
      
         this.hpBar.x = this.follower.vec.x - 50;
-        this.hpBar.y = this.follower.vec.y - 50;
+        this.hpBar.y = this.follower.vec.y - 50 - this.offset;
 
         
         if(Phaser.Math.Distance.Between(this.follower.vec.x, this.follower.vec.y, 1856/2, 896/2)>this.range){
             this.follower.t += this.speed * delta;
             this.path.getPoint(this.follower.t, this.follower.vec);
-            this.setPosition(this.follower.vec.x, this.follower.vec.y);
+            this.setPosition(this.follower.vec.x, this.follower.vec.y-this.offset);
          }
          
          else{
             if(time > this.nextAttack){
-                if(this.ranged){
-                    this.fire();
-                }
+               
+                this.fire();
                 this.damagedPlayer.takeDamage(this.damageAmmount);
                 this.nextAttack = time + this.attackSpeed*100;
             }
@@ -71,9 +74,17 @@ class Enemy extends Phaser.GameObjects.Image {
          return this.currentHP;
      }
 
+    setSide(side){
+        this.side = side;
+    }
+
      setMaxHP(hp){
-        this.maxHP = hp
-        this.currentHP = hp;
+        this.maxHP *= hp
+        this.currentHP *= hp;
+     }
+
+     flip(){
+        this.setFlipX(true);
      }
  
      takeDamage(damage, bullet){
