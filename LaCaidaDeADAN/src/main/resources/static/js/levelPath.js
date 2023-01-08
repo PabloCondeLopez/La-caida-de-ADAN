@@ -142,6 +142,7 @@ class LevelPath extends Phaser.Scene {
 
         // Sonidos
         this.load.audio('shoot', 'assets/turret_shoot.mp3');
+        this.load.audio('musicote rave', 'assets/musicote.wav');
 
         this.load.image('energy', 'assets/energy.png');
         this.load.image('coin', 'assets/coin.png');
@@ -152,7 +153,7 @@ class LevelPath extends Phaser.Scene {
         this.SPAWN_SPEED = 4000;
         enemyHP = 1.05;
 
-
+        this.sound.play('musicote rave', {volume: 0.1, loop:true});
         this.add.image(this.screenWidth / 2, this.screenHeight / 2, 'map');
         selectImage = this.add.image(keyPosX * 64 + 32, keyPosY * 64 + 32, 'select').setScale(3);
         nucleus.adan = this.physics.add.sprite(this.screenWidth / 2 - 2, this.screenHeight / 2 - 94, 'adan');
@@ -336,7 +337,7 @@ class LevelPath extends Phaser.Scene {
                 tur[p].destroy();
             }
         }
-
+        
         if (levelPaused) {
             levelPaused = false;
 
@@ -346,8 +347,12 @@ class LevelPath extends Phaser.Scene {
             } else {
                 this.scene.wake('PauseMenu');
             }
-
+            this.sound.setMute(true);
             this.scene.pause();
+            
+        }
+        else{
+            this.sound.setMute(false);
         }
 
         if (nucleus.getCurrentHP() <= 0) {
@@ -560,6 +565,7 @@ class LevelPath extends Phaser.Scene {
 
     endGame() {
         nucleus.adan.setFrame(50);
+        this.sound.stopAll();
         this.scene.launch('GameOver');
         this.scene.pause();
     }
