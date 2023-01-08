@@ -133,6 +133,7 @@ class LevelPath extends Phaser.Scene {
 
         this.load.spritesheet('enemyWalkin', 'assets/turretRobot.png', { frameWidth: 64, frameHeight: 64 });
         this.load.spritesheet('bigRobot', 'assets/Robotitan spritesheet final.png', { frameWidth: 64, frameHeight: 120 });
+        this.load.spritesheet('skellyBot', 'assets/squelebot stripe.png', {frameWidth: 64, frameHeight: 80});
 
 
         // botones
@@ -361,12 +362,13 @@ class LevelPath extends Phaser.Scene {
             let x = Math.random();
             let y = Math.random();
             let leftEnemy;
-            if (x <= 0.4) {
+            if (x <= 0.0) {
                 leftEnemy = leftEnemies1.get();
                 leftEnemy.animateWalk();
             }
-            else if (x <= 0.8) {
+            else if (x <= 0.999) {
                 leftEnemy = leftEnemies2.get();
+                leftEnemy.animateWalk();
             }
             else {
                 leftEnemy = leftEnemies3.get();
@@ -386,6 +388,7 @@ class LevelPath extends Phaser.Scene {
             }
             else if (y <= 0.8) {
                 rightEnemy = rightEnemies2.get();
+                rightEnemy.animateWalk();
             }
 
             else {
@@ -506,7 +509,7 @@ class LevelPath extends Phaser.Scene {
 
     getEnemy(x, y, distance, side) {
         var leftEnemyUnits = leftEnemies1.getChildren().concat(leftEnemies2.getChildren().concat(leftEnemies3.getChildren()));
-        var rightEnemyUnits = rightEnemies1.getChildren().concat(rightEnemies2.getChildren().concat(leftEnemies3.getChildren()));
+        var rightEnemyUnits = rightEnemies1.getChildren().concat(rightEnemies2.getChildren().concat(rightEnemies3.getChildren()));
 
         if (side === 'left') {
             for (var i = 0; i < leftEnemyUnits.length; i++) {

@@ -30,7 +30,7 @@ class BigBotEnemy extends Enemy{
         this.speed = 5/100000;
         this.maxHP = 200;
         this.currentHP = this.maxHP;
-        this.damageAmmount = 20;
+        this.damageAmmount = 4;
         this.moneyGiven = 4;
         this.range = 128;
         this.ranged = false;
