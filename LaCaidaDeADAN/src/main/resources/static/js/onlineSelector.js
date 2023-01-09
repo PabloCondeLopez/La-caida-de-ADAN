@@ -36,9 +36,9 @@ class OnlineSelector extends Phaser.Scene {
         this.backText.setInteractive();
         this.backText.on('pointerdown', this.onBackButton, this);
         
-        this.fullText = this.add.text(this.screenWidth / 2 + 500, this.screenHeight / 2 + 300, 'Sala llena', {fontSize: '40px', fill: '#ff0000', fontFamily: 'Pixeled'}).setStroke("#000", 4).setOrigin(0.5, 0.5).setVisible(false);
-        this.connectingText = this.add.text(this.screenWidth / 2 + 500, this.screenHeight / 2 + 300, 'Conectando, intentalo de nuevo.', {fontSize: '40px', fill: '#fff', fontFamily: 'Pixeled'}).setStroke("#000", 4).setOrigin(0.5, 0.5).setVisible(false);
-        
+        this.fullText = this.add.text(this.screenWidth - 150, this.screenHeight - 50, 'Sala llena.', {fontSize: '30px', fill: '#ff0000', fontFamily: 'Pixeled'}).setStroke("#000", 4).setOrigin(0.5, 0.5).setVisible(false);
+		this.connectingText = this.add.text(this.screenWidth - 400, this.screenHeight - 50, 'Servidor desconectado, intentelo de nuevo.', {fontSize: '20px', fill: '#ff0000', fontFamily: 'Pixeled'}).setStroke("#000", 4).setOrigin(0.5, 0.5).setVisible(false);
+       
         this.onlineText.on("pointerover", () => {
             this.onlineButton.setTint(0xDDDDDD);
             this.onlineText.setTint(0xFFFFFF);
@@ -76,7 +76,7 @@ class OnlineSelector extends Phaser.Scene {
 		try	{
 			echoHandler.send("registrar");
 		} catch(e) {
-			self.connecting.setVisible(true);
+			self.connectingText.setVisible(true);
 		}
 		
 		echoHandler.onmessage = function(message) {
