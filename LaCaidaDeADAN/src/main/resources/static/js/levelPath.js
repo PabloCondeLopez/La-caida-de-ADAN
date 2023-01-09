@@ -1017,6 +1017,7 @@ function upgradeTurret(menu) {
     if (map[menuX][menuY] === 1) {
         let turret = turrets.getChildren();
         let energyTurret = energyTurrets.getChildren();
+        let laserTurret = laserTurrets.getChildren();
 
         for (var i = 0; i < turret.length; i++) {
             if (turret[i].getCoordX() === menuX && turret[i].getCoordY() === menuY
@@ -1040,11 +1041,24 @@ function upgradeTurret(menu) {
                 openCloseMenu(menuX, menuY, menu);
             }
         }
+        for (var i = 0; i < laserTurret.length; i++) {
+            if (laserTurret[i].getCoordX() === menuX && laserTurret[i].getCoordY() === menuY
+                && player.getMoney() >= laserTurret[i].getUpgradeCost() && player.getEnergy() >= laserTurret[i].getUpgradeEnergy()) {
+                console.log("upgradeTurret");
+                laserTurret[i].upgradeTurret(this);
+                console.log(laserTurret[i].getUpgradeCost());
+                player.money -= laserTurret[i].getUpgradeCost();
+                player.energy -= laserTurret[i].getUpgradeEnergy();
+                openCloseMenu(menuX, menuY, menu);
+            }
+        }
     }
 
 }
 
 function sellTurret(menu) {
+
+    console.log("Sell turret");
     let menuX;
     let menuY;
     let map;
@@ -1064,6 +1078,7 @@ function sellTurret(menu) {
     if (map[menuX][menuY] === 1) {
         let turret = turrets.getChildren();
         let energyTurret = energyTurrets.getChildren();
+        let laserTurret = laserTurrets.getChildren();
 
         for (var i = 0; i < turret.length; i++) {
             if (turret[i].getCoordX() === menuX && turret[i].getCoordY() === menuY) {
@@ -1084,6 +1099,17 @@ function sellTurret(menu) {
 
                 map[menuX][menuY] = 0;
                 energyTurret[i].destroy();
+                openCloseMenu(menuX, menuY, menu);
+            }
+        }
+        for (var i = 0; i < laserTurret.length; i++) {
+            if (laserTurret[i].getCoordX() === menuX && laserTurret[i].getCoordY() === menuY) {
+
+                player.money += laserTurret[i].getCost() / 2;
+                player.energy += laserTurret[i].getEnergy();
+
+                map[menuX][menuY] = 0;
+                laserTurret[i].destroy();
                 openCloseMenu(menuX, menuY, menu);
             }
         }

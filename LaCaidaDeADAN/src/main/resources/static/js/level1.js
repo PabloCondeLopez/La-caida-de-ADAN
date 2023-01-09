@@ -142,7 +142,7 @@ class Level1 extends Phaser.Scene {
 
         // botones
         this.load.image('square', 'assets/cuadrado.png');
-        this.load.image('storeIcons', 'assets/iconos_tienda.png');
+        this.load.spritesheet('storeIcons', 'assets/iconos.png', {frameWidth: 90, frameHeight: 90});
 
         // Sonidos
         this.load.audio('shoot', 'assets/turret_shoot.mp3');
@@ -286,46 +286,58 @@ class Level1 extends Phaser.Scene {
         input = this.input;
 
         //TIENDA DERECHA
-        buyButton = this.add.image(1000, 200, 'storeIcons').setCrop(288 * 8, 0, 288, 288).setScale(0.2).setActive(false).setVisible(false);
+        buyButton = this.add.sprite(1000, 200, 'storeIcons').setActive(false).setVisible(false).setScale(0.65);
+        buyButton.setFrame(0);
         buyButton.setInteractive();
 
-        upgradeButton = this.add.image(1000 - 50 * 3, 200, 'storeIcons').setCrop(288 * 9, 0, 288, 288).setScale(0.2).setActive(false).setVisible(false);
+        upgradeButton = this.add.sprite(1000 - 50 * 3, 200, 'storeIcons').setActive(false).setVisible(false).setScale(0.65);
+        upgradeButton.setFrame(1)
         upgradeButton.setInteractive();
 
-        sellButton = this.add.image(1000 - 50 * 6, 200, 'storeIcons').setCrop(288 * 10, 0, 288, 288).setScale(0.2).setActive(false).setVisible(false);
+        sellButton = this.add.sprite(1000 - 50 * 6, 200, 'storeIcons').setActive(false).setVisible(false).setScale(0.65);
+        sellButton.setFrame(2);
         sellButton.setInteractive();
 
 
         //ARMAS
-        laserWeapon1Button = this.add.image(1000, 200, 'storeIcons').setCrop(0, 0, 288, 288).setScale(0.2).setActive(false).setVisible(false);
+        laserWeapon1Button = this.add.image(1000, 200, 'storeIcons').setScale(0.65).setActive(false).setVisible(false);
+        laserWeapon1Button.setFrame(3);
         laserWeapon1Button.setInteractive();
 
-        bulletWeapon1Button = this.add.image(1000 - 50 * 3, 200, 'storeIcons').setCrop(288 * 3, 0, 288, 288).setScale(0.2).setActive(false).setVisible(false);
+        bulletWeapon1Button = this.add.image(1000 - 50 * 3, 200, 'storeIcons').setScale(0.65).setActive(false).setVisible(false);
+        bulletWeapon1Button.setFrame(5);
         bulletWeapon1Button.setInteractive();
 
-        energyWeapon1Button = this.add.image(1000 - 50 * 6, 200, 'storeIcons').setCrop(288 * 6, 0, 288, 288).setScale(0.2).setActive(false).setVisible(false).setTint(0x808080);
+        energyWeapon1Button = this.add.image(1000 - 50 * 6, 200, 'storeIcons').setScale(0.65).setActive(false).setVisible(false).setTint(0x808080);
+        energyWeapon1Button.setFrame(4);
         energyWeapon1Button.setInteractive();
 
 
         //TIENDA IZQUIERDA
-        buyButton1 = this.add.image(1000, 200, 'storeIcons').setCrop(288 * 8, 0, 288, 288).setScale(0.2).setActive(false).setVisible(false);
+        buyButton1 = this.add.sprite(1000, 200, 'storeIcons').setActive(false).setVisible(false).setScale(0.65);
+        buyButton1.setFrame(0);
         buyButton1.setInteractive();
 
-        upgradeButton1 = this.add.image(1000 - 50 * 3, 200, 'storeIcons').setCrop(288 * 9, 0, 288, 288).setScale(0.2).setActive(false).setVisible(false);
+        upgradeButton1 = this.add.sprite(1000 - 50 * 3, 200, 'storeIcons').setActive(false).setVisible(false).setScale(0.65);
+        upgradeButton1.setFrame(1)
         upgradeButton1.setInteractive();
 
-        sellButton1 = this.add.image(1000 - 50 * 6, 200, 'storeIcons').setCrop(288 * 10, 0, 288, 288).setScale(0.2).setActive(false).setVisible(false);
+        sellButton1 = this.add.sprite(1000 - 50 * 6, 200, 'storeIcons').setActive(false).setVisible(false).setScale(0.65);
+        sellButton1.setFrame(2);
         sellButton1.setInteractive();
 
 
         //ARMAS
-        laserWeapon1Button1 = this.add.image(1000, 200, 'storeIcons').setCrop(0, 0, 288, 288).setScale(0.2).setActive(false).setVisible(false);
+        laserWeapon1Button1 = this.add.image(1000, 200, 'storeIcons').setScale(0.65).setActive(false).setVisible(false);
+        laserWeapon1Button1.setFrame(3);
         laserWeapon1Button1.setInteractive();
 
-        bulletWeapon1Button1 = this.add.image(1000 - 50 * 3, 200, 'storeIcons').setCrop(288 * 3, 0, 288, 288).setScale(0.2).setActive(false).setVisible(false);
+        bulletWeapon1Button1 = this.add.image(1000 - 50 * 3, 200, 'storeIcons').setScale(0.65).setActive(false).setVisible(false);
+        bulletWeapon1Button1.setFrame(5);
         bulletWeapon1Button1.setInteractive();
 
-        energyWeapon1Button1 = this.add.image(1000 - 50 * 6, 200, 'storeIcons').setCrop(288 * 6, 0, 288, 288).setScale(0.2).setActive(false).setVisible(false).setTint(0x808080);
+        energyWeapon1Button1 = this.add.image(1000 - 50 * 6, 200, 'storeIcons').setScale(0.65).setActive(false).setVisible(false).setTint(0x808080);
+        energyWeapon1Button1.setFrame(4);
         energyWeapon1Button1.setInteractive();
 
     }
@@ -675,17 +687,14 @@ function openCloseMenu(i, j, menu) {
         menuRightOpenX = i;
         menuRightOpenY = j % 16;
 
-        i *= 64;
-        j *= 64;
+        buyButton.x = 32+(j-1)*64;
+        buyButton.y = ((i+1)*64)+32;
 
-        buyButton.x = j - 200;
-        buyButton.y = i + 96;
+        upgradeButton.x = 32+j*64;
+        upgradeButton.y = 32+(i+1)*64;
 
-        upgradeButton.x = j - 198;
-        upgradeButton.y = i + 96;
-
-        sellButton.x = j - 196;
-        sellButton.y = i + 96;
+        sellButton.x = 32+(j+1)*64;
+        sellButton.y = 32+(i+1)*64;
 
         activeInactive(buyButton, upgradeButton, sellButton);
 
@@ -708,17 +717,14 @@ function openCloseMenu(i, j, menu) {
         menuLeftOpenX = i;
         menuLeftOpenY = j;
 
-        i *= 64;
-        j *= 64;
+        buyButton1.x = 32+(j-1)*64;
+        buyButton1.y = ((i+1)*64)+32;
 
-        buyButton1.x = j - 200;
-        buyButton1.y = i + 96;
+        upgradeButton1.x = 32+j*64;
+        upgradeButton1.y = 32+(i+1)*64;
 
-        upgradeButton1.x = j - 198;
-        upgradeButton1.y = i + 96;
-
-        sellButton1.x = j - 196;
-        sellButton1.y = i + 96;
+        sellButton1.x = 32+(j+1)*64;
+        sellButton1.y = 32+(i+1)*64;
 
         activeInactive(buyButton1, upgradeButton1, sellButton1);
 
@@ -753,11 +759,11 @@ function activeInactive(button1, button2, button3) {
 function openCloseWeapons(menu) {
     if (menu === false) {
         console.log("openCloseWeapons1");
-        laserWeapon1Button.x = buyButton.x + 456;
+        laserWeapon1Button.x = buyButton.x;
         laserWeapon1Button.y = buyButton.y + 64;
-        bulletWeapon1Button.x = buyButton.x + 283;
-        bulletWeapon1Button.y = buyButton.y + 127;
-        energyWeapon1Button.x = buyButton.x + 110;
+        bulletWeapon1Button.x = buyButton.x;
+        bulletWeapon1Button.y = buyButton.y + 128;
+        energyWeapon1Button.x = buyButton.x;
         energyWeapon1Button.y = buyButton.y + 192;
 
         activeInactive(laserWeapon1Button, bulletWeapon1Button, energyWeapon1Button);
@@ -766,12 +772,13 @@ function openCloseWeapons(menu) {
 
     } else {
         console.log("openCloseWeapons2");
-        laserWeapon1Button1.x = buyButton1.x + 456;
+        laserWeapon1Button1.x = buyButton1.x;
         laserWeapon1Button1.y = buyButton1.y + 64;
-        bulletWeapon1Button1.x = buyButton1.x + 283;
-        bulletWeapon1Button1.y = buyButton1.y + 127;
-        energyWeapon1Button1.x = buyButton1.x + 110;
+        bulletWeapon1Button1.x = buyButton1.x;
+        bulletWeapon1Button1.y = buyButton1.y + 128;
+        energyWeapon1Button1.x = buyButton1.x;
         energyWeapon1Button1.y = buyButton1.y + 192;
+
 
         activeInactive(laserWeapon1Button1, bulletWeapon1Button1, energyWeapon1Button1);
 
@@ -1030,6 +1037,7 @@ function upgradeTurret(menu) {
     if (map[menuX][menuY] === 1) {
         let turret = turrets.getChildren();
         let energyTurret = energyTurrets.getChildren();
+        let laserTurret = laserTurrets.getChildren();
 
         for (var i = 0; i < turret.length; i++) {
             if (turret[i].getCoordX() === menuX && turret[i].getCoordY() === menuY
@@ -1050,6 +1058,17 @@ function upgradeTurret(menu) {
                 console.log(energyTurret[i].getUpgradeCost());
                 player.money -= energyTurret[i].getUpgradeCost();
                 player.energy -= energyTurret[i].getUpgradeEnergy();
+                openCloseMenu(menuX, menuY, menu);
+            }
+        }
+        for (var i = 0; i < laserTurret.length; i++) {
+            if (laserTurret[i].getCoordX() === menuX && laserTurret[i].getCoordY() === menuY
+                && player.getMoney() >= laserTurret[i].getUpgradeCost() && player.getEnergy() >= laserTurret[i].getUpgradeEnergy()) {
+                console.log("upgradeTurret");
+                laserTurret[i].upgradeTurret(this);
+                console.log(laserTurret[i].getUpgradeCost());
+                player.money -= laserTurret[i].getUpgradeCost();
+                player.energy -= laserTurret[i].getUpgradeEnergy();
                 openCloseMenu(menuX, menuY, menu);
             }
         }
@@ -1079,6 +1098,7 @@ function sellTurret(menu) {
     if (map[menuX][menuY] === 1) {
         let turret = turrets.getChildren();
         let energyTurret = energyTurrets.getChildren();
+        let laserTurret = laserTurrets.getChildren();
 
         for (var i = 0; i < turret.length; i++) {
             if (turret[i].getCoordX() === menuX && turret[i].getCoordY() === menuY) {
@@ -1099,6 +1119,17 @@ function sellTurret(menu) {
 
                 map[menuX][menuY] = 0;
                 energyTurret[i].destroy();
+                openCloseMenu(menuX, menuY, menu);
+            }
+        }
+        for (var i = 0; i < laserTurret.length; i++) {
+            if (laserTurret[i].getCoordX() === menuX && laserTurret[i].getCoordY() === menuY) {
+
+                player.money += laserTurret[i].getCost() / 2;
+                player.energy += laserTurret[i].getEnergy();
+
+                map[menuX][menuY] = 0;
+                laserTurret[i].destroy();
                 openCloseMenu(menuX, menuY, menu);
             }
         }
