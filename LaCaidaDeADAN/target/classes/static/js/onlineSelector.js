@@ -43,7 +43,7 @@ class OnlineSelector extends Phaser.Scene {
         
         this.fullText = this.add.text(this.screenWidth - 150, this.screenHeight - 50, 'Sala llena.', {fontSize: '30px', fill: '#ff0000', fontFamily: 'Pixeled'}).setStroke("#000", 4).setOrigin(0.5, 0.5).setVisible(false);
 		this.connectingText = this.add.text(this.screenWidth - 400, this.screenHeight - 50, 'Servidor desconectado, intentelo de nuevo.', {fontSize: '20px', fill: '#ff0000', fontFamily: 'Pixeled'}).setStroke("#000", 4).setOrigin(0.5, 0.5).setVisible(false);
-		this.selectingLevelText = this.add.text(this.screenWidth - 450, this.screenHeight - 50, 'El host está seleccionando nivel, intentelo de nuevo.', {fontSize: '20px', fill: '#ff0000', fontFamily: 'Pixeled'}).setStroke("#000", 4).setOrigin(0.5, 0.5).setVisible(false);
+		this.selectingLevelText = this.add.text(this.screenWidth - 450, this.screenHeight - 50, 'El host esta seleccionando nivel, intentelo de nuevo.', {fontSize: '20px', fill: '#ff0000', fontFamily: 'Pixeled'}).setStroke("#000", 4).setOrigin(0.5, 0.5).setVisible(false);
        
         this.onlineText.on("pointerover", () => {
             this.onlineButton.setTint(0xDDDDDD);
@@ -85,18 +85,6 @@ class OnlineSelector extends Phaser.Scene {
 				return;
 			} 
 			
-		}
-	}
-	
-	onOnlineButton() {
-		this.sound.play('click', {volume: 0.2});
-		try {
-			echoHandler.send("registrar");
-		} catch (e) {
-			self.connectingText.setVisible(true);
-		}
-		
-		echoHandler.onmessage = function(message) {
 			const msg = JSON.parse(message.data);
 			
 			if (msg.estado === 'lobby') {
@@ -120,6 +108,7 @@ class OnlineSelector extends Phaser.Scene {
 	}
 	
 	onOnlineButton() {
+		this.sound.play('click', {volume: 0.2});
 		try {
 			echoHandler.send('selector');
 		} catch (e) {
@@ -156,8 +145,6 @@ class OnlineSelector extends Phaser.Scene {
 	
 	onBackButton() {
 		this.sound.play('click', {volume: 0.2});
-		this.fullText.setVisible(false);
-		
 		this.scene.stop('OnlineSelector');
 		this.scene.start('MainMenu');
 	}

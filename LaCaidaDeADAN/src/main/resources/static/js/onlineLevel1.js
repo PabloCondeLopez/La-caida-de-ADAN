@@ -75,6 +75,7 @@ let keyPosY = 0;
 let selectImage;
 
 let levelPaused = false;
+let gameWinned = false;
 
 let buyButton;
 let upgradeButton;
@@ -495,7 +496,7 @@ class OnlineLevel1 extends Phaser.Scene {
 
 	handleMessage(message) {
 		if(message.data === "p1Disconnected" || message.data === "p2Disconnected"){
-			self.endGame();
+			if(gameWinned === false) self.endGame();
 			return;
 		}
 		
@@ -740,6 +741,7 @@ class OnlineLevel1 extends Phaser.Scene {
         this.sound.play('victory', {volume: 1.5});
         this.scene.launch('Victory');
         this.scene.pause();
+        gameWinned = true;
         levelsActive[1] = true;
     }
 }

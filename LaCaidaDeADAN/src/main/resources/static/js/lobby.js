@@ -136,6 +136,7 @@ class Lobby extends Phaser.Scene {
 		this.connectionCheck = false;
 		this.playersReady = false;
 		
+		console.log(activeScene);
 		this.scene.stop("Lobby");
 		this.scene.start(activeScene);
 		echoHandler.send("start");
