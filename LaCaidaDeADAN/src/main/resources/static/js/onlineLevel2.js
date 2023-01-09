@@ -702,10 +702,20 @@ class OnlineLevel2 extends Phaser.Scene {
 	}
 
 	endGame() {
-		this.sound.stopAll();
-		this.scene.launch('GameOver');
-		this.scene.pause();
-	}
+        nucleus.adan.setFrame(50);
+        this.sound.stopAll();
+        this.sound.play('defeat');
+        this.scene.launch('GameOver');
+        this.scene.pause();
+    }
+
+	winGame() {
+        this.sound.stopAll();
+        this.sound.play('victory', {volume: 1.5});
+        this.scene.launch('Victory');
+        this.scene.pause();
+        levelsActive[2] = true;
+    }
 
 }
 

@@ -623,6 +623,7 @@ class Level2 extends Phaser.Scene {
         this.sound.play('victory', {volume: 1.5});
         this.scene.launch('Victory');
         this.scene.pause();
+        levelsActive[2] = true;
     }
 
 }
