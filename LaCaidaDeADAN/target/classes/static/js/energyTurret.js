@@ -1,8 +1,8 @@
-class energyTurret extends Phaser.GameObjects.Image {
+class energyTurret extends Phaser.GameObjects.Sprite {
     constructor(scene) {
         super(scene, 0, 0);
 
-        Phaser.GameObjects.Image.call(this, scene, 0, 0, 'energyTurret');
+        Phaser.GameObjects.Sprite.call(this, scene, 0, 0, 'energyGen');
 
         this.cost = 20;
         this.energy = -40;
@@ -11,8 +11,8 @@ class energyTurret extends Phaser.GameObjects.Image {
         this.type = "energy";
 
         this.level = 0;
-        this.maxLevel = 1;
-        this.upgradeRate = 0.8;
+        this.maxLevel = 2;
+        this.upgradeRate = 1.5;
         this.upgradeImage = undefined;
 
         
@@ -20,8 +20,10 @@ class energyTurret extends Phaser.GameObjects.Image {
 
     upgradeTurret(){
         if(this.level<this.maxLevel){
+            this.scene.sound.play('upgrade');
+            this.energy *= this.upgradeRate;
             this.level++;
-            this.setTexture(this.upgradeImage);
+            this.setFrame(this.level);
         }
     }
 
@@ -43,7 +45,7 @@ class energyTurret extends Phaser.GameObjects.Image {
     }
 
     getUpgradeEnergy(){
-        return 0;
+        return this.energy;
         //return this.upgradeRate * this.energy * this.level; 
     }
 

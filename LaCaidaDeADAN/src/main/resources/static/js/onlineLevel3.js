@@ -104,6 +104,9 @@ let deltaDamage = 0;
 
 let cellSize = 64;
 
+let enemyCounter;
+let maxEnemies;
+
 class OnlineLevel3 extends Phaser.Scene {
 	constructor(screenWidth, screenHeight) {
 		super();
@@ -123,7 +126,7 @@ class OnlineLevel3 extends Phaser.Scene {
         this.load.image('enemy', 'assets/pixil-frame-0.png');
         this.load.image('deadEnemy', 'assets/basic robot dead.png');
         this.load.image('bullet', 'assets/bullet.png');
-        this.load.image('map', 'assets/Nivel1.png');
+        this.load.image('map', 'assets/mapLevel3.png');
         this.load.image('select', 'assets/select.png');
         this.load.image('energyTurret', 'assets/energia.png');
         this.load.image('skelly', 'assets/skelly.png');
@@ -164,6 +167,8 @@ class OnlineLevel3 extends Phaser.Scene {
 		
 		this.SPAWN_SPEED = 4000;
         enemyHP = 1.05;
+        enemyCounter = 0;
+        maxEnemies = 3;
 
 		this.sound.play('musicote rave', {volume: 0.1, loop:true});
         this.add.image(this.screenWidth / 2, this.screenHeight / 2, 'map');
@@ -173,22 +178,32 @@ class OnlineLevel3 extends Phaser.Scene {
         graphics = this.add.graphics();
         graphics.lineStyle(3, 0xffffff, 1);
 
-		leftPath = this.add.path(0, cellSize * 3.5);
-		leftPath.lineTo(cellSize * 3.5, cellSize * 3.5);
-		leftPath.lineTo(cellSize * 3.5, cellSize * 10.5);
-		leftPath.lineTo(cellSize * 9.5, cellSize * 10.5);
-		leftPath.lineTo(cellSize * 9.5, cellSize * 6.5);
-		leftPath.lineTo(cellSize * 12.75, cellSize * 6.5);
+		leftPath = this.add.path(cellSize*4.5, 0);
+        leftPath.lineTo(cellSize * 4.5, cellSize * 5.5);
+        leftPath.lineTo(cellSize * 1.5, cellSize * 5.5);
+        leftPath.lineTo(cellSize * 1.5, cellSize * 10.5);
+        leftPath.lineTo(cellSize * 6.5, cellSize * 10.5);
+        leftPath.lineTo(cellSize * 6.5, cellSize * 1.5);
+        leftPath.lineTo(cellSize * 10.5, cellSize * 1.5);
+        leftPath.lineTo(cellSize * 10.5, cellSize * 3.5);
+        leftPath.lineTo(cellSize * 8.5, cellSize * 3.5);
+        leftPath.lineTo(cellSize * 8.5, cellSize * 6.5);
+        leftPath.lineTo(cellSize * 12.75, cellSize * 6.5);
 
 		//leftPath.draw(graphics);
 		//this.drawLeftGrid();
 
-		rightPath = this.add.path(this.screenWidth, cellSize * 3.5);
-		rightPath.lineTo(this.screenWidth - cellSize * 3.5, cellSize * 3.5);
-		rightPath.lineTo(this.screenWidth - cellSize * 3.5, cellSize * 10.5);
-		rightPath.lineTo(this.screenWidth - cellSize * 9.5, cellSize * 10.5);
-		rightPath.lineTo(this.screenWidth - cellSize * 9.5, cellSize * 6.5);
-		rightPath.lineTo(this.screenWidth - cellSize * 12.75, cellSize * 6.5);
+		rightPath = this.add.path(this.screenWidth - cellSize*4.5, 0);
+        rightPath.lineTo(this.screenWidth - cellSize * 4.5, cellSize * 5.5);
+        rightPath.lineTo(this.screenWidth - cellSize * 1.5, cellSize * 5.5);
+        rightPath.lineTo(this.screenWidth - cellSize * 1.5, cellSize * 10.5);
+        rightPath.lineTo(this.screenWidth - cellSize * 6.5, cellSize * 10.5);
+        rightPath.lineTo(this.screenWidth - cellSize * 6.5, cellSize * 1.5);
+        rightPath.lineTo(this.screenWidth - cellSize * 10.5, cellSize * 1.5);
+        rightPath.lineTo(this.screenWidth - cellSize * 10.5, cellSize * 3.5);
+        rightPath.lineTo(this.screenWidth - cellSize * 8.5, cellSize * 3.5);
+        rightPath.lineTo(this.screenWidth - cellSize * 8.5, cellSize * 6.5);
+        rightPath.lineTo(this.screenWidth - cellSize * 12.75, cellSize * 6.5);
 
 		//rightPath.draw(graphics);
 		//this.drawRightGrid();
@@ -379,6 +394,7 @@ class OnlineLevel3 extends Phaser.Scene {
 			createEnemy.setActive(true);
 			createEnemy.setMaxHP(hp);
 			createEnemy.animateWalk();
+			enemyCounter++;
 		}
 	}
 	
@@ -530,9 +546,13 @@ class OnlineLevel3 extends Phaser.Scene {
 			this.endGame();
 		}
 		
+		if(enemyCounter>= maxEnemies && this.enemiesAlive()<=0) {
+            this.winGame();
+        }
+		
 		if(playerID === 2) return;
 
-		if (time > this.nextEnemy) {
+		if (time > this.nextEnemy && enemyCounter < maxEnemies) {
 			enemyHP *= 1.05;
 			let leftEnemy;
 			let rightEnemy;
@@ -606,6 +626,13 @@ class OnlineLevel3 extends Phaser.Scene {
 		}
 
 	}
+	
+	enemiesAlive(){
+        var leftEnemyUnits = leftEnemies1.getChildren().concat(leftEnemies2.getChildren().concat(leftEnemies3.getChildren()));
+        var rightEnemyUnits = rightEnemies1.getChildren().concat(rightEnemies2.getChildren().concat(rightEnemies3.getChildren()));
+        var units = leftEnemyUnits.concat(rightEnemyUnits);
+        return units.length;
+    }
 
 	drawLeftGrid() {
 		graphics.lineStyle(1, 0x0000ff, 0.8);
@@ -1122,6 +1149,9 @@ function upgradeTurret(menu) {
     let menuY;
     let map;
     let player;
+    let turretType;
+    let index;
+    
     if (menu === false) {
         menuX = menuRightOpenX;
         menuY = menuRightOpenY;
@@ -1143,11 +1173,15 @@ function upgradeTurret(menu) {
             if (turret[i].getCoordX() === menuX && turret[i].getCoordY() === menuY
                 && player.getMoney() >= turret[i].getUpgradeCost() && player.getEnergy() >= turret[i].getUpgradeEnergy()
                 && turret[i].getLevel() < turret[i].getMaxLevel()) {
-                console.log("upgradeTurret");
                 turret[i].upgradeTurret(this);
-                console.log(turret[i].getUpgradeCost());
                 player.money -= turret[i].getUpgradeCost();
                 player.energy -= turret[i].getUpgradeEnergy();
+               
+                 // WEBSOCKETS INFO
+                turretType = turret[i].getType();
+                index = i;
+                // --------------------
+                
                 openCloseMenu(menuX, menuY, menu);
             }
         }
@@ -1155,11 +1189,15 @@ function upgradeTurret(menu) {
             if (energyTurret[i].getCoordX() === menuX && energyTurret[i].getCoordY() === menuY
                 && player.getMoney() >= energyTurret[i].getUpgradeCost() && player.getEnergy() >= energyTurret[i].getUpgradeEnergy() 
                 && energyTurret[i].getLevel() < energyTurret[i].getMaxLevel()) {
-                console.log("upgradeTurret");
                 energyTurret[i].upgradeTurret(this);
-                console.log(energyTurret[i].getUpgradeCost());
                 player.money -= energyTurret[i].getUpgradeCost();
                 player.energy -= energyTurret[i].getUpgradeEnergy();
+                
+                 // WEBSOCKETS INFO
+                turretType = energyTurret[i].getType();
+                index = i;
+                // --------------------
+                
                 openCloseMenu(menuX, menuY, menu);
             }
         }
@@ -1167,14 +1205,28 @@ function upgradeTurret(menu) {
             if (laserTurret[i].getCoordX() === menuX && laserTurret[i].getCoordY() === menuY
                 && player.getMoney() >= laserTurret[i].getUpgradeCost() && player.getEnergy() >= laserTurret[i].getUpgradeEnergy()&& 
                 laserTurret[i].getLevel() < laserTurret[i].getMaxLevel()) {
-                console.log("upgradeTurret");
                 laserTurret[i].upgradeTurret(this);
-                console.log(laserTurret[i].getUpgradeCost());
                 player.money -= laserTurret[i].getUpgradeCost();
                 player.energy -= laserTurret[i].getUpgradeEnergy();
+                
+                 // WEBSOCKETS INFO
+                turretType = laserTurret[i].getType();
+                index = i;
+                // --------------------
+                
                 openCloseMenu(menuX, menuY, menu);
             }
         }
+        
+         let upgradeInfo = {
+			info: "upgrade",
+			index: index,
+			type: turretType,
+			x: menuX,
+			y: menuY
+		}
+		
+		echoHandler.send(JSON.stringify(upgradeInfo));
     }
 
 }

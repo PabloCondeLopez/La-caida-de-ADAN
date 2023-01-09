@@ -59,7 +59,6 @@ class SelectLevel extends Phaser.Scene {
         
         
         if(levelsActive[1]===true){
-            console.log('nivel 2');
             this.setLevel2Active();
         } 
         if(levelsActive[2]===true){
@@ -113,6 +112,7 @@ class SelectLevel extends Phaser.Scene {
     
     startLevel1(){
         this.scene.stop('SelectLevel');
+        let levelInfo;
        
         if(mode===false) {
             if(online===false){
@@ -121,6 +121,11 @@ class SelectLevel extends Phaser.Scene {
             } else{
                 this.scene.start('Lobby');
                 activeScene = 'OnlineLevel1';
+                
+                levelInfo = {
+					info: 'level',
+					selected: 'OnlineLevel1'
+				}
             }
         } else {
             if(online===false){
@@ -129,12 +134,20 @@ class SelectLevel extends Phaser.Scene {
             } else{
                 this.scene.start('Lobby');
                 activeScene = 'InfiniteOnlineLevel1';
+                
+                levelInfo = {
+					info: 'level',
+					selected: 'InfiniteOnlineLevel1'
+				}
             }
         }
+        
+        if(online === true) echoHandler.send(JSON.stringify(levelInfo));
     }    
 
     startLevel2(){
         this.scene.stop('SelectLevel');
+        let levelInfo;
        
         if(mode===false) {
             if(online===false){
@@ -143,6 +156,11 @@ class SelectLevel extends Phaser.Scene {
             } else{
                 this.scene.start('Lobby');
                 activeScene = 'OnlineLevel2';
+                
+                levelInfo = {
+					info: 'level',
+					selected: 'OnlineLevel2'
+				}
             }
         } else {
             if(online===false){
@@ -151,12 +169,20 @@ class SelectLevel extends Phaser.Scene {
             } else{
                 this.scene.start('Lobby');
                 activeScene = 'InfiniteOnlineLevel2';
+                
+                levelInfo = {
+					info: 'level',
+					selected: 'InfiniteOnlineLevel2'
+				}
             }
         }
+        
+        if(online === true) echoHandler.send(JSON.stringify(levelInfo));
     }
 
     startLevel3(){
         this.scene.stop('SelectLevel');
+        let levelInfo;
        
         if(mode===false) {
             if(online===false){
@@ -165,6 +191,11 @@ class SelectLevel extends Phaser.Scene {
             } else{
                 this.scene.start('Lobby');
                 activeScene = 'OnlineLevel3';
+                
+                levelInfo = {
+					info: 'level',
+					selected: 'OnlineLevel3'
+				}
             }
         } else {
             if(online===false){
@@ -173,8 +204,15 @@ class SelectLevel extends Phaser.Scene {
             } else{
                 this.scene.start('Lobby');
                 activeScene = 'InfiniteOnlineLevel3';
+                
+                levelInfo = {
+					info: 'level',
+					selected: 'OnlineLevel2'
+				}
             }
         }
+        
+        if(online === true) echoHandler.send(JSON.stringify(levelInfo));
     }
 
     exitLevels(){

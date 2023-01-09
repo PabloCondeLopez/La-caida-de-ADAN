@@ -9,6 +9,8 @@ class OnlineSelector extends Phaser.Scene {
 		this.screenWidth = screenWidth;
 		this.screenHeight = screenHeight;
 		this.playerID = 0;
+		this.selectLevel = false;
+		this.levelSelected = '';
 	}
 	
 	preload() {
@@ -39,6 +41,7 @@ class OnlineSelector extends Phaser.Scene {
         
         this.fullText = this.add.text(this.screenWidth - 150, this.screenHeight - 50, 'Sala llena.', {fontSize: '30px', fill: '#ff0000', fontFamily: 'Pixeled'}).setStroke("#000", 4).setOrigin(0.5, 0.5).setVisible(false);
 		this.connectingText = this.add.text(this.screenWidth - 400, this.screenHeight - 50, 'Servidor desconectado, intentelo de nuevo.', {fontSize: '20px', fill: '#ff0000', fontFamily: 'Pixeled'}).setStroke("#000", 4).setOrigin(0.5, 0.5).setVisible(false);
+		this.selectingLevelText = this.add.text(this.screenWidth - 450, this.screenHeight - 50, 'El host está seleccionando nivel, intentelo de nuevo.', {fontSize: '20px', fill: '#ff0000', fontFamily: 'Pixeled'}).setStroke("#000", 4).setOrigin(0.5, 0.5).setVisible(false);
        
         this.onlineText.on("pointerover", () => {
             this.onlineButton.setTint(0xDDDDDD);
@@ -69,17 +72,25 @@ class OnlineSelector extends Phaser.Scene {
             this.backButton.clearTint();
             this.backText.clearTint();
         })
-	}
-	
-	onOnlineButton() {
-		try {
-			echoHandler.send("registrar");
-		} catch (e) {
-			self.connectingText.setVisible(true);
-		}
-		
-		echoHandler.onmessage = function(message) {
+        
+        echoHandler.onmessage = function(message) {
+			if(message.data === 'selector') {
+				echoHandler.send('registrar');
+				self.selectLevel = true;
+				return;
+			} else if (message.data === 'wait') {
+				self.selectingLevelText.setVisible(true);
+				return;
+			} 
+			
 			const msg = JSON.parse(message.data);
+			
+			if (msg.estado === 'lobby') {
+				self.levelSelected = msg.level;
+				self.selectLevel = false;
+				echoHandler.send('registrar');
+				return;
+			}
 			
 			if(msg.estado === "registrado") {
 				if(msg.jugador === 1){
@@ -87,11 +98,18 @@ class OnlineSelector extends Phaser.Scene {
 				} else if (msg.jugador === 2) {
 					self.playerID = 2;
 				}
-				
 			} 
 			else if (msg.estado === "lleno") {
 				self.fullText.setVisible(true);
 			}
+		}
+	}
+	
+	onOnlineButton() {
+		try {
+			echoHandler.send('selector');
+		} catch (e) {
+			self.connectingText.setVisible(true);
 		}
 	}
 
@@ -107,14 +125,21 @@ class OnlineSelector extends Phaser.Scene {
 		
 		playerID = this.playerID;
 		online = true;
-		this.scene.stop("OnlineSelector");
-		this.scene.start("SelectLevel");
+		
+		if(playerID === 1 && this.selectLevel === true){
+			this.scene.stop("OnlineSelector");
+			this.scene.start("SelectLevel");
+			activeScene = 'SelectLevel';
+		} else if ((playerID === 1 || playerID === 2) && this.selectLevel === false) {
+			this.scene.stop("OnlineSelector");
+			this.scene.start("Lobby");
+			activeScene = this.levelSelected;
+		}
+		
 		this.playerID = 0;
 	}
 	
 	onBackButton() {
-		this.fullText.setVisible(false);
-		
 		this.scene.stop('OnlineSelector');
 		this.scene.start('MainMenu');
 	}

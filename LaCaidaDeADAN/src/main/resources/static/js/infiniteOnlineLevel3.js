@@ -123,7 +123,7 @@ class InfiniteOnlineLevel3 extends Phaser.Scene {
         this.load.image('enemy', 'assets/pixil-frame-0.png');
         this.load.image('deadEnemy', 'assets/basic robot dead.png');
         this.load.image('bullet', 'assets/bullet.png');
-        this.load.image('map', 'assets/Nivel1.png');
+        this.load.image('map', 'assets/mapLevel3.png');
         this.load.image('select', 'assets/select.png');
         this.load.image('energyTurret', 'assets/energia.png');
         this.load.image('skelly', 'assets/skelly.png');
@@ -173,22 +173,32 @@ class InfiniteOnlineLevel3 extends Phaser.Scene {
         graphics = this.add.graphics();
         graphics.lineStyle(3, 0xffffff, 1);
 
-		leftPath = this.add.path(0, cellSize * 3.5);
-		leftPath.lineTo(cellSize * 3.5, cellSize * 3.5);
-		leftPath.lineTo(cellSize * 3.5, cellSize * 10.5);
-		leftPath.lineTo(cellSize * 9.5, cellSize * 10.5);
-		leftPath.lineTo(cellSize * 9.5, cellSize * 6.5);
-		leftPath.lineTo(cellSize * 12.75, cellSize * 6.5);
+		leftPath = this.add.path(cellSize*4.5, 0);
+        leftPath.lineTo(cellSize * 4.5, cellSize * 5.5);
+        leftPath.lineTo(cellSize * 1.5, cellSize * 5.5);
+        leftPath.lineTo(cellSize * 1.5, cellSize * 10.5);
+        leftPath.lineTo(cellSize * 6.5, cellSize * 10.5);
+        leftPath.lineTo(cellSize * 6.5, cellSize * 1.5);
+        leftPath.lineTo(cellSize * 10.5, cellSize * 1.5);
+        leftPath.lineTo(cellSize * 10.5, cellSize * 3.5);
+        leftPath.lineTo(cellSize * 8.5, cellSize * 3.5);
+        leftPath.lineTo(cellSize * 8.5, cellSize * 6.5);
+        leftPath.lineTo(cellSize * 12.75, cellSize * 6.5);
 
 		//leftPath.draw(graphics);
 		//this.drawLeftGrid();
 
-		rightPath = this.add.path(this.screenWidth, cellSize * 3.5);
-		rightPath.lineTo(this.screenWidth - cellSize * 3.5, cellSize * 3.5);
-		rightPath.lineTo(this.screenWidth - cellSize * 3.5, cellSize * 10.5);
-		rightPath.lineTo(this.screenWidth - cellSize * 9.5, cellSize * 10.5);
-		rightPath.lineTo(this.screenWidth - cellSize * 9.5, cellSize * 6.5);
-		rightPath.lineTo(this.screenWidth - cellSize * 12.75, cellSize * 6.5);
+		rightPath = this.add.path(this.screenWidth - cellSize*4.5, 0);
+        rightPath.lineTo(this.screenWidth - cellSize * 4.5, cellSize * 5.5);
+        rightPath.lineTo(this.screenWidth - cellSize * 1.5, cellSize * 5.5);
+        rightPath.lineTo(this.screenWidth - cellSize * 1.5, cellSize * 10.5);
+        rightPath.lineTo(this.screenWidth - cellSize * 6.5, cellSize * 10.5);
+        rightPath.lineTo(this.screenWidth - cellSize * 6.5, cellSize * 1.5);
+        rightPath.lineTo(this.screenWidth - cellSize * 10.5, cellSize * 1.5);
+        rightPath.lineTo(this.screenWidth - cellSize * 10.5, cellSize * 3.5);
+        rightPath.lineTo(this.screenWidth - cellSize * 8.5, cellSize * 3.5);
+        rightPath.lineTo(this.screenWidth - cellSize * 8.5, cellSize * 6.5);
+        rightPath.lineTo(this.screenWidth - cellSize * 12.75, cellSize * 6.5);
 
 		//rightPath.draw(graphics);
 		//this.drawRightGrid();
@@ -1114,6 +1124,9 @@ function upgradeTurret(menu) {
     let menuY;
     let map;
     let player;
+    let turretType;
+    let index;
+    
     if (menu === false) {
         menuX = menuRightOpenX;
         menuY = menuRightOpenY;
@@ -1135,11 +1148,15 @@ function upgradeTurret(menu) {
             if (turret[i].getCoordX() === menuX && turret[i].getCoordY() === menuY
                 && player.getMoney() >= turret[i].getUpgradeCost() && player.getEnergy() >= turret[i].getUpgradeEnergy()
                 && turret[i].getLevel() < turret[i].getMaxLevel()) {
-                console.log("upgradeTurret");
                 turret[i].upgradeTurret(this);
-                console.log(turret[i].getUpgradeCost());
                 player.money -= turret[i].getUpgradeCost();
                 player.energy -= turret[i].getUpgradeEnergy();
+               
+                 // WEBSOCKETS INFO
+                turretType = turret[i].getType();
+                index = i;
+                // --------------------
+                
                 openCloseMenu(menuX, menuY, menu);
             }
         }
@@ -1147,11 +1164,15 @@ function upgradeTurret(menu) {
             if (energyTurret[i].getCoordX() === menuX && energyTurret[i].getCoordY() === menuY
                 && player.getMoney() >= energyTurret[i].getUpgradeCost() && player.getEnergy() >= energyTurret[i].getUpgradeEnergy() 
                 && energyTurret[i].getLevel() < energyTurret[i].getMaxLevel()) {
-                console.log("upgradeTurret");
                 energyTurret[i].upgradeTurret(this);
-                console.log(energyTurret[i].getUpgradeCost());
                 player.money -= energyTurret[i].getUpgradeCost();
                 player.energy -= energyTurret[i].getUpgradeEnergy();
+                
+                 // WEBSOCKETS INFO
+                turretType = energyTurret[i].getType();
+                index = i;
+                // --------------------
+                
                 openCloseMenu(menuX, menuY, menu);
             }
         }
@@ -1159,16 +1180,29 @@ function upgradeTurret(menu) {
             if (laserTurret[i].getCoordX() === menuX && laserTurret[i].getCoordY() === menuY
                 && player.getMoney() >= laserTurret[i].getUpgradeCost() && player.getEnergy() >= laserTurret[i].getUpgradeEnergy()&& 
                 laserTurret[i].getLevel() < laserTurret[i].getMaxLevel()) {
-                console.log("upgradeTurret");
                 laserTurret[i].upgradeTurret(this);
-                console.log(laserTurret[i].getUpgradeCost());
                 player.money -= laserTurret[i].getUpgradeCost();
                 player.energy -= laserTurret[i].getUpgradeEnergy();
+                
+                 // WEBSOCKETS INFO
+                turretType = laserTurret[i].getType();
+                index = i;
+                // --------------------
+                
                 openCloseMenu(menuX, menuY, menu);
             }
         }
+        
+         let upgradeInfo = {
+			info: "upgrade",
+			index: index,
+			type: turretType,
+			x: menuX,
+			y: menuY
+		}
+		
+		echoHandler.send(JSON.stringify(upgradeInfo));
     }
-
 }
 
 function sellTurret(menu) {

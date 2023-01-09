@@ -104,6 +104,9 @@ let deltaDamage = 0;
 
 let cellSize = 64;
 
+let enemyCounter;
+let maxEnemies;
+
 class OnlineLevel1 extends Phaser.Scene {
 	constructor(screenWidth, screenHeight) {
 		super();
@@ -164,6 +167,8 @@ class OnlineLevel1 extends Phaser.Scene {
 		
 		this.SPAWN_SPEED = 4000;
         enemyHP = 1.05;
+        enemyCounter = 0;
+        maxEnemies = 3;
 
 		this.sound.play('musicote rave', {volume: 0.1, loop:true});
         this.add.image(this.screenWidth / 2, this.screenHeight / 2, 'map');
@@ -379,6 +384,7 @@ class OnlineLevel1 extends Phaser.Scene {
 			createEnemy.setActive(true);
 			createEnemy.setMaxHP(hp);
 			createEnemy.animateWalk();
+			enemyCounter++;
 		}
 	}
 	
@@ -530,10 +536,15 @@ class OnlineLevel1 extends Phaser.Scene {
 			this.endGame();
 		}
 		
+		if(enemyCounter>= maxEnemies && this.enemiesAlive()<=0){
+            this.winGame();
+        }
+		
 		if(playerID === 2) return;
 
-		if (time > this.nextEnemy) {
+		if (time > this.nextEnemy && enemyCounter < maxEnemies) {
 			enemyHP *= 1.05;
+			enemyCounter++;
 			let leftEnemy;
 			let rightEnemy;
 			
@@ -606,6 +617,13 @@ class OnlineLevel1 extends Phaser.Scene {
 		}
 
 	}
+	
+	enemiesAlive(){
+        var leftEnemyUnits = leftEnemies1.getChildren().concat(leftEnemies2.getChildren().concat(leftEnemies3.getChildren()));
+        var rightEnemyUnits = rightEnemies1.getChildren().concat(rightEnemies2.getChildren().concat(rightEnemies3.getChildren()));
+        var units = leftEnemyUnits.concat(rightEnemyUnits);
+        return units.length;
+    }
 
 	drawLeftGrid() {
 		graphics.lineStyle(1, 0x0000ff, 0.8);
@@ -1123,6 +1141,9 @@ function upgradeTurret(menu) {
     let menuY;
     let map;
     let player;
+    let turretType;
+    let index;
+    
     if (menu === false) {
         menuX = menuRightOpenX;
         menuY = menuRightOpenY;
@@ -1144,11 +1165,15 @@ function upgradeTurret(menu) {
             if (turret[i].getCoordX() === menuX && turret[i].getCoordY() === menuY
                 && player.getMoney() >= turret[i].getUpgradeCost() && player.getEnergy() >= turret[i].getUpgradeEnergy()
                 && turret[i].getLevel() < turret[i].getMaxLevel()) {
-                console.log("upgradeTurret");
                 turret[i].upgradeTurret(this);
-                console.log(turret[i].getUpgradeCost());
                 player.money -= turret[i].getUpgradeCost();
                 player.energy -= turret[i].getUpgradeEnergy();
+               
+                 // WEBSOCKETS INFO
+                turretType = turret[i].getType();
+                index = i;
+                // --------------------
+                
                 openCloseMenu(menuX, menuY, menu);
             }
         }
@@ -1156,11 +1181,15 @@ function upgradeTurret(menu) {
             if (energyTurret[i].getCoordX() === menuX && energyTurret[i].getCoordY() === menuY
                 && player.getMoney() >= energyTurret[i].getUpgradeCost() && player.getEnergy() >= energyTurret[i].getUpgradeEnergy() 
                 && energyTurret[i].getLevel() < energyTurret[i].getMaxLevel()) {
-                console.log("upgradeTurret");
                 energyTurret[i].upgradeTurret(this);
-                console.log(energyTurret[i].getUpgradeCost());
                 player.money -= energyTurret[i].getUpgradeCost();
                 player.energy -= energyTurret[i].getUpgradeEnergy();
+                
+                 // WEBSOCKETS INFO
+                turretType = energyTurret[i].getType();
+                index = i;
+                // --------------------
+                
                 openCloseMenu(menuX, menuY, menu);
             }
         }
@@ -1168,16 +1197,29 @@ function upgradeTurret(menu) {
             if (laserTurret[i].getCoordX() === menuX && laserTurret[i].getCoordY() === menuY
                 && player.getMoney() >= laserTurret[i].getUpgradeCost() && player.getEnergy() >= laserTurret[i].getUpgradeEnergy()&& 
                 laserTurret[i].getLevel() < laserTurret[i].getMaxLevel()) {
-                console.log("upgradeTurret");
                 laserTurret[i].upgradeTurret(this);
-                console.log(laserTurret[i].getUpgradeCost());
                 player.money -= laserTurret[i].getUpgradeCost();
                 player.energy -= laserTurret[i].getUpgradeEnergy();
+                
+                 // WEBSOCKETS INFO
+                turretType = laserTurret[i].getType();
+                index = i;
+                // --------------------
+                
                 openCloseMenu(menuX, menuY, menu);
             }
         }
+        
+         let upgradeInfo = {
+			info: "upgrade",
+			index: index,
+			type: turretType,
+			x: menuX,
+			y: menuY
+		}
+		
+		echoHandler.send(JSON.stringify(upgradeInfo));
     }
-
 }
 
 function sellTurret(menu) {

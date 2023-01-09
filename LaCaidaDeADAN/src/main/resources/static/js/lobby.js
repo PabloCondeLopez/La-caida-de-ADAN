@@ -17,6 +17,8 @@ class Lobby extends Phaser.Scene {
 		this.load.image('map2', 'assets/Nivel1.png');
 		this.load.image('map3', 'assets/Nivel1.png');
 		this.load.image('button', 'assets/boton_menu_principal.png');
+		this.load.image('player1', 'assets/oficial-high_res.png');
+		this.load.image('player2', 'assets/rosales-high_res.png');
 		this.load.image('exit', 'assets/exit.png');
 	}
 	
@@ -26,14 +28,17 @@ class Lobby extends Phaser.Scene {
 		else if (activeScene==='InfiniteOnlineLevel2' || activeScene === 'OnlineLevel2') this.add.image(this.screenWidth / 2, this.screenHeight / 2, 'map2');
 		else if (activeScene==='InfiniteOnlineLevel3' || activeScene === 'OnlineLevel3') this.add.image(this.screenWidth / 2, this.screenHeight / 2, 'map3');
 		
-		let rect = new Phaser.Geom.Rectangle(75, 50, 1700, 810);
+		let rect = new Phaser.Geom.Rectangle(100, 50, 1650, 810);
 
         let graphics = this.add.graphics({ fillStyle: { color: '#000'} } );
         graphics.alpha = 0.75;
         graphics.fillRectShape(rect);
+        
+        this.add.image(this.screenWidth / 2 - 550, this.screenHeight / 2 + 100, 'player1');
+        this.add.image(this.screenWidth / 2 + 550, this.screenHeight / 2 + 100, 'player2');
 		
-		this.player1Text = this.add.text(this.screenWidth / 2 - 500, this.screenHeight / 2 - 300, 'Jugador 1: ', {fontSize: '40px', fill: '#fff', fontFamily: 'Pixeled'}).setStroke("#000", 4).setOrigin(0.5, 0.5);
-		this.player2Text = this.add.text(this.screenWidth / 2 + 500, this.screenHeight / 2 - 300, 'Jugador 2: ', {fontSize: '40px', fill: '#fff', fontFamily: 'Pixeled'}).setStroke("#000", 4).setOrigin(0.5, 0.5);
+		this.player1Text = this.add.text(this.screenWidth / 2 - 500, this.screenHeight / 2 - 300, 'Marta: ', {fontSize: '40px', fill: '#fff', fontFamily: 'Pixeled'}).setStroke("#000", 4).setOrigin(0.5, 0.5);
+		this.player2Text = this.add.text(this.screenWidth / 2 + 500, this.screenHeight / 2 - 300, 'Javier: ', {fontSize: '40px', fill: '#fff', fontFamily: 'Pixeled'}).setStroke("#000", 4).setOrigin(0.5, 0.5);
 		
 		this.player1Connected = this.add.text(this.screenWidth / 2 - 500, this.screenHeight / 2 - 200, 'Desconectado.', {fontSize: '40px', fill: '#ff0000', fontFamily: 'Pixeled'}).setStroke("#000", 4).setOrigin(0.5, 0.5);
 		this.player2Connected = this.add.text(this.screenWidth / 2 + 500, this.screenHeight / 2 - 200, 'Desconectado.', {fontSize: '40px', fill: '#ff0000', fontFamily: 'Pixeled'}).setStroke("#000", 4).setOrigin(0.5, 0.5);
@@ -67,8 +72,10 @@ class Lobby extends Phaser.Scene {
         })
 				
 		if(playerID === 1) {
+			this.player1Text.setColor('#ffff00');
 			this.player1Connected.setText('Conectado.').setColor('#00ff00');
 		} else {
+			this.player2Text.setColor('#ffff00');
 			this.player2Connected.setText('Conectado.').setColor('#00ff00');
 			this.player1Connected.setText('Conectado.').setColor('#00ff00');
 			this.playersReadyText.setText('Esperando al host para comenzar.');
