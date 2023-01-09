@@ -11,6 +11,8 @@ class Controls extends Phaser.Scene {
     preload() {
         this.load.image('controls_background', 'assets/pantalla_controles.png');
         this.load.image('button', 'assets/pantalla_controles.png');
+
+        this.load.audio('click', 'assets/click.wav');
     }
 
     create() {
@@ -34,6 +36,7 @@ class Controls extends Phaser.Scene {
     }
 
     backToMenu(){
+        this.sound.play('click', {volume: 1});
         this.scene.stop('Controls');
         this.scene.start('MainMenu');
     }

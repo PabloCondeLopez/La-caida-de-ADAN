@@ -126,7 +126,7 @@ class OnlineLevel3 extends Phaser.Scene {
         this.load.image('enemy', 'assets/pixil-frame-0.png');
         this.load.image('deadEnemy', 'assets/basic robot dead.png');
         this.load.image('bullet', 'assets/bullet.png');
-        this.load.image('map', 'assets/mapLevel3.png');
+        this.load.image('map3', 'assets/mapLevel3.png');
         this.load.image('select', 'assets/select.png');
         this.load.image('energyTurret', 'assets/energia.png');
         this.load.image('skelly', 'assets/skelly.png');
@@ -171,7 +171,7 @@ class OnlineLevel3 extends Phaser.Scene {
         maxEnemies = 3;
 
 		this.sound.play('musicote rave', {volume: 0.1, loop:true});
-        this.add.image(this.screenWidth / 2, this.screenHeight / 2, 'map');
+        this.add.image(this.screenWidth / 2, this.screenHeight / 2, 'map3');
         selectImage = this.add.image(keyPosX * 64 + 32, keyPosY * 64 + 32, 'select').setScale(3);
         nucleus.adan = this.physics.add.sprite(this.screenWidth / 2 - 2, this.screenHeight / 2 - 94, 'adan');
         

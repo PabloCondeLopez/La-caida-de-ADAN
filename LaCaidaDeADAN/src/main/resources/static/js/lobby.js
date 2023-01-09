@@ -20,6 +20,8 @@ class Lobby extends Phaser.Scene {
 		this.load.image('player1', 'assets/oficial-high_res.png');
 		this.load.image('player2', 'assets/rosales-high_res.png');
 		this.load.image('exit', 'assets/exit.png');
+
+		this.load.audio('click', 'assets/click.wav');
 	}
 	
 	create() {
@@ -130,6 +132,7 @@ class Lobby extends Phaser.Scene {
 	}
 	
 	onStartButton() {
+		this.sound.play('click', {volume: 1});
 		this.connectionCheck = false;
 		this.playersReady = false;
 		
