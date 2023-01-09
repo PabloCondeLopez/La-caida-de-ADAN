@@ -75,6 +75,7 @@ Para usar el jar se necesita una aplicacion 7z, se descomprime y se abre el proy
 4º Practica
 Se ha implementado una clase en java,llamada "echohanlder", se encarga de manejar los mensajes que le llega al servidor, y ademas, se encarga de gestionar lo que ocurre cuando un usuario se desconecta. Por otro lado, en js hay ciertas funciones que envian un determinado mensaje al servidor, como pueden ser la creacion de los enemigos, la creacion,la mejora,la venta de torretas,etc...
 Ademas, en cierto mismos js hay una funciones llamadas con "onmessage" que se encargan de gestionar lo que ocurre con los mensajes que le llegan al cliente.
+Para poder hacer todo esto, se debe abrir una nueva conexion websocket
 ![image](Enlace de la imagen)<br>
 Video de presentacion de websocket
 https://www.youtube.com/watch?v=ssGobM5iRIc
