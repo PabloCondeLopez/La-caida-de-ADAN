@@ -46,6 +46,7 @@ class SkellyEnemy extends Enemy{
         this.anims.play('attackSkelly', true);
         var angle = Phaser.Math.Angle.Between(this.follower.vec.x, this.follower.vec.y, 1856/2, 896/2);
         this.scene.addEnemyBullet(this.follower.vec.x, this.follower.vec.y, angle, this.damageAmmount);
+        this.scene.sound.play('drill', {volume: 0.2});
 
     }
  }
