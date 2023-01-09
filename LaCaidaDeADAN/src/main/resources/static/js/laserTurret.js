@@ -4,7 +4,7 @@ class LaserTurret extends Turret {
     constructor(scene) {
         super(scene, 0, 0);
 
-        Phaser.GameObjects.Image.call(this, scene, 0, 0, 'laser');
+        Phaser.GameObjects.Sprite.call(this, scene, 0, 0, 'laserTurret');
 
         this.nextTick = 0;
         this.bullets = this.scene.getBullets();
@@ -30,6 +30,14 @@ class LaserTurret extends Turret {
 
     playBuildSound(){
         this.scene.sound.play('shootBuild', {volume: 0.2});
+    }
+
+    upgradeTurret(){
+        if(this.level<this.maxLevel){
+            this.level++;
+            this.setFrame(this.level);
+            this.damage *=this.upgradeRate;
+        }
     }
     
 }

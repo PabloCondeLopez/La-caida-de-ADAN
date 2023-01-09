@@ -140,6 +140,7 @@ class InfiniteLevel3 extends Phaser.Scene {
         this.load.spritesheet('bigRobot', 'assets/Robotitan spritesheet final.png', { frameWidth: 64, frameHeight: 120 });
         this.load.spritesheet('skellyBot', 'assets/squelebot stripe.png', {frameWidth: 64, frameHeight: 80});
 
+        this.load.spritesheet('gunTurret', 'assets/TorretaBalistica.png', {frameWidth: 64, frameHeight: 64});
         // botones
         this.load.image('square', 'assets/cuadrado.png');
         this.load.spritesheet('storeIcons', 'assets/iconos.png', {frameWidth: 90, frameHeight: 90});

@@ -1,8 +1,8 @@
-class Turret extends Phaser.GameObjects.Image {
+class Turret extends Phaser.GameObjects.Sprite {
     constructor(scene) {
         super(scene, 0, 0);
 
-        Phaser.GameObjects.Image.call(this, scene, 0, 0, 'turret');
+        //Phaser.GameObjects.Sprite.call(this, scene, 0, 0, 'turret');
 
         this.nextTick = 0;
         this.bullets = this.scene.getBullets();
@@ -14,7 +14,7 @@ class Turret extends Phaser.GameObjects.Image {
         this.damage = undefined;
         
         this.level = 0;
-        this.maxLevel = 4;
+        this.maxLevel = 2;
         this.upgradeRate = 1.5;
         this.upgradeImage = undefined;
     }
@@ -52,7 +52,6 @@ class Turret extends Phaser.GameObjects.Image {
     upgradeTurret(){
         if(this.level<this.maxLevel){
             this.level++;
-            this.setTexture(this.upgradeImage);
             this.damage *=this.upgradeRate;
         }
     }
