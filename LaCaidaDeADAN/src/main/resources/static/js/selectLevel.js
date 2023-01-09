@@ -75,7 +75,7 @@ class SelectLevel extends Phaser.Scene {
         this.level2.setTint(0x9A9A9A);
         this.level2button.setVisible(true);
         this.play2Text.setInteractive();
-        this.play2Text.on('pointerdown', this.startLevel2);
+        this.play2Text.on('pointerdown', this.startLevel2, this);
 
         
         this.play2Text.on("pointerover", () => {
@@ -92,10 +92,11 @@ class SelectLevel extends Phaser.Scene {
 
     setLevel3Active(){
         this.play3Text.text = 'Jugar';
+        this.play2Text.setFontSize(40);
         this.level3.setTint(0x9A9A9A);
         this.level3button.setVisible(true);
-        this.play3Text.setInteractive(true);
-        this.play3Text.on('pointerdown', this.startLevel3);
+        this.play3Text.setInteractive();
+        this.play3Text.on('pointerdown', this.startLevel3, this);
 
         
         this.play3Text.on("pointerover", () => {
