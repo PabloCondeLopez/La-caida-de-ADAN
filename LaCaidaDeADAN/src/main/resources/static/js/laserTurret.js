@@ -13,8 +13,8 @@ class LaserTurret extends Turret {
         this.side = undefined;
         this.coord = undefined;
         this.type = "laser";
-        this.damage = 5;
-        this.attackSpeed = 0.1;
+        this.damage = 0.5;
+        this.attackSpeed = 0.00001;
         this.range = 200;
     }
 

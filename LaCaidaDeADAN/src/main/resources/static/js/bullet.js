@@ -19,6 +19,7 @@ class Bullet extends Phaser.GameObjects.Image {
         this.setPosition(x, y);
         if(type === 'laser'){
             this.setTint(0xff0000);
+            this.setScale(1.5);
         }
         this.damage = damage;
 
