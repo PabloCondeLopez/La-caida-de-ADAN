@@ -13,11 +13,13 @@ class Bullet extends Phaser.GameObjects.Image {
         this.speed = Phaser.Math.GetSpeed(1200, 1);
     }
 
-    fire(x, y, angle, damage) {
+    fire(x, y, angle, damage, type) {
         this.setActive(true);
         this.setVisible(true);
         this.setPosition(x, y);
-
+        if(type === 'laser'){
+            this.setTint(0xff0000);
+        }
         this.damage = damage;
 
         this.dx = Math.cos(angle);

@@ -479,10 +479,10 @@ class OnlineLevel extends Phaser.Scene {
             let x = Math.random();
             let y = Math.random();
             
-			if (x <= 0.0) {
+			if (x <= 0.4) {
 				leftEnemy = leftEnemies1.get();
 				leftEnemy.animateWalk();
-			} else if (x <= 0.999) {
+			} else if (x <= 0.8) {
 				leftEnemy = leftEnemies2.get();
 				leftEnemy.animateWalk();
 			}
@@ -640,6 +640,7 @@ class OnlineLevel extends Phaser.Scene {
 	}
 
 	endGame() {
+		this.sound.stopAll();
 		this.scene.launch('GameOver');
 		this.scene.pause();
 	}

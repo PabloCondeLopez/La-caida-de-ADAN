@@ -3,6 +3,7 @@ import TurretEnemy from './turretEnemy.js';
 import SkellyEnemy from './skellyEnemy.js';
 import BigBotEnemy from './bigBotEnemy.js';
 import GunTurret from './gunTurret.js';
+import LaserTurret from './laserTurret.js';
 import Player from './player.js';
 import EnergyTurret from './energyTurret.js';
 import Nucleus from './nucleus.js';
@@ -58,6 +59,7 @@ let rightEnemies1;
 let rightEnemies2;
 let rightEnemies3;
 let energyTurrets;
+let laserTurrets
 let enemyBullets;
 let enemyHP = 1.05;
 
@@ -129,6 +131,7 @@ class LevelPath extends Phaser.Scene {
         this.load.image('select', 'assets/select.png');
         this.load.image('energyTurret', 'assets/energia.png');
         this.load.image('skelly', 'assets/skelly.png');
+        this.load.image('laser', 'assets/laser rafaga.png');
         this.load.spritesheet('adan', 'assets/nucleo.png', {frameWidth: 192, frameHeight: 320 });
 
         this.load.spritesheet('enemyWalkin', 'assets/turretRobot.png', { frameWidth: 64, frameHeight: 64 });
@@ -233,6 +236,11 @@ class LevelPath extends Phaser.Scene {
             runChildUpdate: true
         });
 
+        laserTurrets = this.add.group({
+            classType: LaserTurret,
+            runChildUpdate: true
+        });
+
         bullets = this.physics.add.group({
             classType: Bullet,
             runChildUpdate: true
@@ -331,7 +339,7 @@ class LevelPath extends Phaser.Scene {
         this.secondPlayerMoneyText.setText(secondPlayer.getMoney());
         this.secondPlayerEnergyText.setText(secondPlayer.getEnergy());
 
-        let tur = turrets.getChildren().concat(energyTurrets.getChildren());
+        let tur = turrets.getChildren().concat(energyTurrets.getChildren().concat(laserTurrets.getChildren()));
         for (var p = 0; p < tur.length; p++) {
             if (tur[p].x === 0) {
                 tur[p].destroy();
@@ -367,11 +375,11 @@ class LevelPath extends Phaser.Scene {
             let x = Math.random();
             let y = Math.random();
             let leftEnemy;
-            if (x <= 0.0) {
+            if (x <= 0.4) {
                 leftEnemy = leftEnemies1.get();
                 leftEnemy.animateWalk();
             }
-            else if (x <= 0.999) {
+            else if (x <= 0.8) {
                 leftEnemy = leftEnemies2.get();
                 leftEnemy.animateWalk();
             }
@@ -532,12 +540,12 @@ class LevelPath extends Phaser.Scene {
         return false;
     }
 
-    addBullet(x, y, angle, damage) {
+    addBullet(x, y, angle, damage, type) {
         let bullet = bullets.get();
 
         if (bullet) {
-
-            bullet.fire(x, y, angle, damage);
+            
+            bullet.fire(x, y, angle, damage, type);
         }
     }
 
@@ -618,8 +626,9 @@ function onRightClick(pointer) {
 
     if (rightMap[i][j % 16] !== -1 && rightMap[i][j % 16] !== undefined) openCloseMenu(i, j, false);
     else if (i === menuRightOpenX + 1 && j % 16 === menuRightOpenY - 1 && buyMenuRightOpen && rightMap[menuRightOpenX][menuRightOpenY]===0) openCloseWeapons(false);
-    else if (i === menuRightOpenX + 2 && j % 16 === menuRightOpenY - 1 && weaponMenuRightOpen) PlaceLaserTurret(false);
+    else if (i === menuRightOpenX + 2 && j % 16 === menuRightOpenY - 1 && weaponMenuRightOpen) PlaceGunTurret(false);
     else if (i === menuRightOpenX + 3 && j % 16 === menuRightOpenY - 1 && weaponMenuRightOpen) PlaceEnergyTurret(false);
+    else if (i === menuRightOpenX + 4 && j % 16 === menuRightOpenY - 1 && weaponMenuRightOpen) PlaceLaserTurret(false);
     else if (i === menuRightOpenX + 1 && j % 16 === menuRightOpenY + 1 && buyMenuRightOpen) sellTurret(false);
     else if (i === menuRightOpenX + 1 && j % 16 === menuRightOpenY && buyMenuRightOpen) upgradeTurret(false);
 }
@@ -631,8 +640,9 @@ function onEnter() {
 
     if (leftMap[i][j] !== -1 && leftMap[i][j] !== undefined) openCloseMenu(i, j, true);
     else if (i === menuLeftOpenX + 1 && j === menuLeftOpenY - 1 && buyMenuLeftOpen && leftMap[menuLeftOpenX][menuLeftOpenY]===0) openCloseWeapons(true);
-    else if (i === menuLeftOpenX + 2 && j === menuLeftOpenY - 1 && weaponMenuLeftOpen) PlaceLaserTurret(true);
+    else if (i === menuLeftOpenX + 2 && j === menuLeftOpenY - 1 && weaponMenuLeftOpen) PlaceGunTurret(true);
     else if (i === menuLeftOpenX + 3 && j === menuLeftOpenY - 1 && weaponMenuLeftOpen) PlaceEnergyTurret(true);
+    else if (i === menuLeftOpenX + 4 && j === menuLeftOpenY - 1 && weaponMenuLeftOpen) PlaceLaserTurret(true);
     else if (i === menuLeftOpenX + 1 && j === menuLeftOpenY + 1 && buyMenuLeftOpen) sellTurret(true);
     else if (i === menuLeftOpenX + 1 && j === menuLeftOpenY && buyMenuLeftOpen) upgradeTurret(true);
 }
@@ -797,7 +807,7 @@ function clickPlaceTurret(turret, player) {
     //updateCosts();
 }
 
-function PlaceLaserTurret(isKeyOrClick) {
+function PlaceGunTurret(isKeyOrClick) {
     let turret = turrets.get();
 
     if (isKeyOrClick === true) {
@@ -810,6 +820,17 @@ function PlaceLaserTurret(isKeyOrClick) {
 
 function PlaceEnergyTurret(isKeyOrClick) {
     let turret = energyTurrets.get();
+
+    if (isKeyOrClick === true) {
+        keyPlaceTurret(turret, firstPlayer);
+    }
+    else {
+        clickPlaceTurret(turret, secondPlayer);
+    }
+}
+
+function PlaceLaserTurret(isKeyOrClick) {
+    let turret = laserTurrets.get();
 
     if (isKeyOrClick === true) {
         keyPlaceTurret(turret, firstPlayer);

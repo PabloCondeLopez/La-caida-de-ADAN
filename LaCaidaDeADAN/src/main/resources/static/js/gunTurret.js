@@ -14,6 +14,12 @@ class GunTurret extends Turret {
         this.coord = undefined;
         this.type = "normal";
         this.damage = 50;
+        this.attackSpeed = 1.5;
+        this.range = 400;
+    }
+    
+    playSound(){
+        this.scene.sound.play('shoot', {volume: 0.2});
     }
 }
 
