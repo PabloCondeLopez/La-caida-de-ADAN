@@ -13,13 +13,18 @@ class Lobby extends Phaser.Scene {
 	}
 	
 	preload() {
-		this.load.image('map', 'assets/Nivel 1 oscuras.png');
+		this.load.image('map1', 'assets/Nivel1.png');
+		this.load.image('map2', 'assets/Nivel1.png');
+		this.load.image('map3', 'assets/Nivel1.png');
 		this.load.image('button', 'assets/boton_menu_principal.png');
+		this.load.image('exit', 'assets/exit.png');
 	}
 	
 	create() {
 		self = this;
-		this.add.image(this.screenWidth / 2, this.screenHeight / 2, 'map');
+		if(activeScene==='InfiniteOnlineLevel1' || activeScene === 'OnlineLevel1') this.add.image(this.screenWidth / 2, this.screenHeight / 2, 'map1');
+		else if (activeScene==='InfiniteOnlineLevel2' || activeScene === 'OnlineLevel2') this.add.image(this.screenWidth / 2, this.screenHeight / 2, 'map2');
+		else if (activeScene==='InfiniteOnlineLevel3' || activeScene === 'OnlineLevel3') this.add.image(this.screenWidth / 2, this.screenHeight / 2, 'map3');
 		
 		let rect = new Phaser.Geom.Rectangle(75, 50, 1700, 810);
 
@@ -39,6 +44,10 @@ class Lobby extends Phaser.Scene {
 		this.playButtonText = this.add.text(this.screenWidth / 2, this.screenHeight - 180, 'Comenzar', {fontSize: '22px', fill: '#fff', fontFamily: 'Pixeled'}).setStroke("#000", 4).setOrigin(0.5, 0.5).setVisible(false).setActive(false);
 		this.playButtonText.on('pointerdown', this.onStartButton, this)
 		
+		this.exit = this.add.image(1800, 60, 'exit').setScale(0.3);
+        this.exit.setInteractive();
+        this.exit.on('pointerdown', this.disconnect, this);
+		
 		this.playButtonText.on("pointerover", () => {
             this.playButton.setTint(0xDDDDDD);
             this.playButtonText.setTint(0xFFFFFF);
@@ -47,6 +56,14 @@ class Lobby extends Phaser.Scene {
         this.playButtonText.on("pointerout", () => {
             this.playButton.clearTint();
             this.playButtonText.clearTint();
+        })
+        
+        this.exit.on("pointerover", () => {
+            this.exit.setTint(0x606060);
+        })
+
+        this.exit.on("pointerout", () => {
+            this.exit.clearTint();
         })
 				
 		if(playerID === 1) {
@@ -62,7 +79,7 @@ class Lobby extends Phaser.Scene {
 			
 			if(msg === "start"){
 				self.scene.stop("Lobby");
-				self.scene.start("OnlineLevel");
+				self.scene.start(activeScene);
 				return;
 			}
 			
@@ -110,9 +127,17 @@ class Lobby extends Phaser.Scene {
 		this.playersReady = false;
 		
 		this.scene.stop("Lobby");
-		this.scene.start("OnlineLevel");
+		this.scene.start(activeScene);
 		echoHandler.send("start");
 	}
+	
+	disconnect(){
+		echoHandler.close();
+		playerID = 0;
+		this.connectionCheck = false;
+        this.scene.stop('Lobby');
+        this.scene.start('MainMenu');
+    }
 }
 
 export default Lobby;

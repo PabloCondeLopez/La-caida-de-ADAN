@@ -119,7 +119,7 @@ class SelectLevel extends Phaser.Scene {
                 activeScene = 'Level1';
             } else{
                 this.scene.start('Lobby');
-                activeScene = 'OnlineLevel';
+                activeScene = 'InfiniteOnlineLevel1';
             }
         } else {
             if(online===false){
@@ -127,7 +127,7 @@ class SelectLevel extends Phaser.Scene {
                 activeScene = 'Level';
             } else{
                 this.scene.start('Lobby');
-                activeScene = 'OnlineLevel';
+                activeScene = 'InfiniteOnlineLevel1';
             }
         }
     }    
@@ -141,6 +141,11 @@ class SelectLevel extends Phaser.Scene {
     }
 
     exitLevels(){
+		if(playerID != 0){
+			echoHandler.close();
+			playerID = 0;
+		}
+		
         this.scene.stop('SelectLevel');
         this.scene.start('MainMenu');
     }

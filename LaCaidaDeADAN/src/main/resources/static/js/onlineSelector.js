@@ -18,6 +18,7 @@ class OnlineSelector extends Phaser.Scene {
 	
 	create() {
 		self = this;
+		if(echoHandler.readyState === 3) echoHandler = new WebSocket('ws://localhost:8080/echo');
 		this.add.image(this.screenWidth / 2, this.screenHeight / 2, 'background');
 		
 		this.offlineButton = this.add.image(this.screenWidth / 2 + 620, this.screenHeight / 2 - 150, 'button').setScale(4);
@@ -71,11 +72,9 @@ class OnlineSelector extends Phaser.Scene {
 	}
 	
 	onOnlineButton() {
-		if(echoHandler.readyState === 3) echoHandler = new WebSocket('ws://localhost:8080/echo');
-		
-		try	{
+		try {
 			echoHandler.send("registrar");
-		} catch(e) {
+		} catch (e) {
 			self.connectingText.setVisible(true);
 		}
 		
@@ -103,7 +102,7 @@ class OnlineSelector extends Phaser.Scene {
 		activeScene = 'SelectLevel';
 	}
 	
-	update() {
+	update(time, delta) {
 		if(this.playerID === 0) return;
 		
 		playerID = this.playerID;

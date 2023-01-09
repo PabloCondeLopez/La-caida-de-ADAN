@@ -18,6 +18,7 @@ class OnlineSelector extends Phaser.Scene {
 	
 	create() {
 		self = this;
+		if(echoHandler.readyState === 3) echoHandler = new WebSocket('ws://localhost:8080/echo');
 		this.add.image(this.screenWidth / 2, this.screenHeight / 2, 'background');
 		
 		this.offlineButton = this.add.image(this.screenWidth / 2 + 620, this.screenHeight / 2 - 150, 'button').setScale(4);
@@ -36,9 +37,9 @@ class OnlineSelector extends Phaser.Scene {
         this.backText.setInteractive();
         this.backText.on('pointerdown', this.onBackButton, this);
         
-        this.fullText = this.add.text(this.screenWidth / 2 + 500, this.screenHeight / 2 + 300, 'Sala llena', {fontSize: '40px', fill: '#ff0000', fontFamily: 'Pixeled'}).setStroke("#000", 4).setOrigin(0.5, 0.5).setVisible(false);
-        this.connectingText = this.add.text(this.screenWidth / 2 + 500, this.screenHeight / 2 + 300, 'Conectando, intentalo de nuevo.', {fontSize: '40px', fill: '#fff', fontFamily: 'Pixeled'}).setStroke("#000", 4).setOrigin(0.5, 0.5).setVisible(false);
-        
+        this.fullText = this.add.text(this.screenWidth - 150, this.screenHeight - 50, 'Sala llena.', {fontSize: '30px', fill: '#ff0000', fontFamily: 'Pixeled'}).setStroke("#000", 4).setOrigin(0.5, 0.5).setVisible(false);
+		this.connectingText = this.add.text(this.screenWidth - 400, this.screenHeight - 50, 'Servidor desconectado, intentelo de nuevo.', {fontSize: '20px', fill: '#ff0000', fontFamily: 'Pixeled'}).setStroke("#000", 4).setOrigin(0.5, 0.5).setVisible(false);
+       
         this.onlineText.on("pointerover", () => {
             this.onlineButton.setTint(0xDDDDDD);
             this.onlineText.setTint(0xFFFFFF);
@@ -71,12 +72,10 @@ class OnlineSelector extends Phaser.Scene {
 	}
 	
 	onOnlineButton() {
-		if(echoHandler.readyState === 3) echoHandler = new WebSocket('ws://localhost:8080/echo');
-		
-		try	{
+		try {
 			echoHandler.send("registrar");
-		} catch(e) {
-			self.connecting.setVisible(true);
+		} catch (e) {
+			self.connectingText.setVisible(true);
 		}
 		
 		echoHandler.onmessage = function(message) {
@@ -88,6 +87,7 @@ class OnlineSelector extends Phaser.Scene {
 				} else if (msg.jugador === 2) {
 					self.playerID = 2;
 				}
+				
 			} 
 			else if (msg.estado === "lleno") {
 				self.fullText.setVisible(true);
@@ -98,15 +98,17 @@ class OnlineSelector extends Phaser.Scene {
 	onOfflineButton(){
 		this.game.scene.stop('OnlineSelector');
 		this.game.scene.start('SelectLevel');
+		online = false;
 		activeScene = 'SelectLevel';
 	}
 	
-	update() {
+	update(time, delta) {
 		if(this.playerID === 0) return;
 		
 		playerID = this.playerID;
+		online = true;
 		this.scene.stop("OnlineSelector");
-		this.scene.start("Lobby");
+		this.scene.start("SelectLevel");
 		this.playerID = 0;
 	}
 	
