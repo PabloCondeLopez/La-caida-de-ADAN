@@ -168,7 +168,7 @@ class OnlineLevel1 extends Phaser.Scene {
 		this.SPAWN_SPEED = 4000;
         enemyHP = 1.05;
         enemyCounter = 0;
-        maxEnemies = 3;
+        maxEnemies = 15;
 
 		this.sound.play('musicote rave', {volume: 0.1, loop:true});
         this.add.image(this.screenWidth / 2, this.screenHeight / 2, 'map');
@@ -543,6 +543,9 @@ class OnlineLevel1 extends Phaser.Scene {
 		if(playerID === 2) return;
 
 		if (time > this.nextEnemy && enemyCounter < maxEnemies) {
+			if (this.SPAWN_SPEED > 500) {
+                this.SPAWN_SPEED -= 50;
+            }
 			enemyHP *= 1.05;
 			enemyCounter++;
 			let leftEnemy;
@@ -555,10 +558,10 @@ class OnlineLevel1 extends Phaser.Scene {
             let x = Math.random();
             let y = Math.random();
             
-			if (x <= 0.4) {
+			if (x <= 0.5) {
 				leftEnemy = leftEnemies1.get();
 				leftEnemy.animateWalk();
-			} else if (x <= 0.8) {
+			} else if (x <= 1) {
 				leftEnemy = leftEnemies2.get();
 				leftEnemy.animateWalk();
 			}
