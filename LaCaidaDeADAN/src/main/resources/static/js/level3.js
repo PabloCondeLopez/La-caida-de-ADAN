@@ -169,9 +169,9 @@ class Level3 extends Phaser.Scene {
     create() {
 
         this.SPAWN_SPEED = 4000;
-        enemyHP = 1.05;
+        enemyHP = 1.5;
         enemyCounter = 0;
-        maxEnemies = 3;
+        maxEnemies = 30;
 
         this.sound.play('musicote rave', {volume: 0.1, loop:true});
 
@@ -410,7 +410,7 @@ class Level3 extends Phaser.Scene {
             enemyHP *= 1.05
             enemyCounter++;
             if (this.SPAWN_SPEED > 500) {
-                this.SPAWN_SPEED -= 50;
+                this.SPAWN_SPEED -= 250;
             }
             let x = Math.random();
             let y = Math.random();

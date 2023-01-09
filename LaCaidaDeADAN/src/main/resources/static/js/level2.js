@@ -168,9 +168,9 @@ class Level2 extends Phaser.Scene {
     create() {
 
         this.SPAWN_SPEED = 4000;
-        enemyHP = 1.05;
+        enemyHP = 1.25;
         enemyCounter = 0;
-        maxEnemies = 3;
+        maxEnemies = 20;
 
         this.sound.play('musicote rave', {volume: 0.1, loop:true});
 
@@ -198,8 +198,8 @@ class Level2 extends Phaser.Scene {
         rightPath.lineTo(this.screenWidth - cellSize * 1.5, cellSize * 10.5);
         rightPath.lineTo(this.screenWidth - cellSize * 5.5, cellSize * 10.5);
         rightPath.lineTo(this.screenWidth - cellSize * 5.5, cellSize * 2.5);
-        rightPath.lineTo(this.screenWidth - cellSize * 9.75, cellSize * 2.5);
-        rightPath.lineTo(this.screenWidth - cellSize * 9.75, cellSize * 6.5);
+        rightPath.lineTo(this.screenWidth - cellSize * 9.5, cellSize * 2.5);
+        rightPath.lineTo(this.screenWidth - cellSize * 9.5, cellSize * 6.5);
         rightPath.lineTo(this.screenWidth - cellSize * 12.75, cellSize * 6.5);
 
         //rightPath.draw(graphics);
@@ -403,7 +403,7 @@ class Level2 extends Phaser.Scene {
             enemyHP *= 1.05
             enemyCounter++;
             if (this.SPAWN_SPEED > 500) {
-                this.SPAWN_SPEED -= 50;
+                this.SPAWN_SPEED -= 150;
             }
             let x = Math.random();
             let y = Math.random();
