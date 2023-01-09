@@ -43,10 +43,13 @@ class BigBotEnemy extends Enemy{
         this.anims.play('walkingBot', true);
     }
 
+    
+
     fire() {
         this.anims.stop('walkingBot');
         this.anims.play('attackBigBot', true);
         //this.anims.playAfterDelay('attackBigBot', 1500);
+        this.scene.sound.play('bonk', {volume: 0.5});
         var angle = Phaser.Math.Angle.Between(this.follower.vec.x, this.follower.vec.y, 1856/2, 896/2);
         this.scene.addEnemyBullet(this.follower.vec.x, this.follower.vec.y, angle, this.damageAmmount);
 

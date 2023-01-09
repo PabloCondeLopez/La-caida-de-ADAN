@@ -19,7 +19,11 @@ class GunTurret extends Turret {
     }
     
     playSound(){
-        this.scene.sound.play('shoot', {volume: 0.2});
+        this.scene.sound.play('turretShoot', {volume: 0.2});
+    }
+
+    playBuildSound(){
+        this.scene.sound.play('shootBuild', {volume: 0.2});
     }
 }
 

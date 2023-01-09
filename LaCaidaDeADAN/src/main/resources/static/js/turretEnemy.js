@@ -51,7 +51,7 @@ class TurretEnemy extends Enemy{
             this.anims.play('fire', true);
             var angle = Phaser.Math.Angle.Between(this.follower.vec.x, this.follower.vec.y, 1856/2, 896/2);
             this.scene.addEnemyBullet(this.follower.vec.x, this.follower.vec.y, angle, this.damageAmmount);
-            this.scene.sound.play('shoot', {volume: 0.1});
+            this.scene.sound.play('turretShoot', {volume: 0.2});
             //this.angle = (angle, Math.PI/2) * Phaser.Math.RAD_TO_DEG;
     }
  }

@@ -10,15 +10,15 @@ import Nucleus from './nucleus.js';
 
 
 var leftMap = [[-1, -1, -1, -1, -1, -1, -1, -1, -1, -1, -1, -1, -1],
-               [-1, -1, -1, -1, -1, -1, -1, -1, -1, -1, -1, -1, -1],
                [-1, -1,  0, -1, -1, -1, -1, -1, -1, -1, -1, -1, -1],
-               [-1, -1, -1, -1, -1, -1, -1, -1, -1, -1, -1, -1, -1],
+               [-1, -1, -1, -1, -1, -1, -1, -1,  0, -1, -1, -1, -1],
                [-1, -1,  0, -1, -1, -1, -1, -1, -1, -1, -1, -1, -1],
+               [-1, -1, -1, -1, -1, -1, -1,  0, -1, -1, -1, -1, -1],
                [-1, -1, -1, -1, -1, -1, -1, -1, -1, -1, -1,  0, -1],
                [-1, -1, -1, -1, -1, -1, -1, -1, -1, -1, -1, -1, -1],
-               [-1, -1, -1, -1,  0, -1, -1, -1, -1, -1, -1,  0, -1],
+               [-1, -1, -1,  0,  0, -1, -1, -1, -1, -1, -1,  0, -1],
+               [-1, -1, -1,  0,  0, -1, -1, -1, -1, -1, -1, -1, -1],
                [-1, -1, -1, -1, -1, -1, -1, -1, -1, -1, -1, -1, -1],
-               [-1, -1,  0, -1, -1, -1, -1, -1,  0, -1, -1, -1, -1],
                [-1, -1, -1, -1, -1, -1, -1, -1, -1, -1, -1, -1, -1],
                [-1, -1, -1, -1, -1, -1, -1, -1, -1, -1, -1, -1, -1],
                [-1, -1, -1, -1, -1, -1, -1, -1, -1, -1, -1, -1, -1],
@@ -27,15 +27,15 @@ var leftMap = [[-1, -1, -1, -1, -1, -1, -1, -1, -1, -1, -1, -1, -1],
 
 var rightMap = [
     [-1, -1, -1, -1, -1, -1, -1, -1, -1, -1, -1, -1, -1],
+    [-1, -1, -1, -1, -1, -1, -1, -1, -1, -1,  0, -1, -1],
+    [-1, -1, -1, -1,  0, -1, -1, -1, -1, -1, -1, -1, -1],
+    [-1, -1, -1, -1, -1, -1, -1, -1, -1, -1,  0, -1, -1],
+    [-1, -1, -1, -1, -1,  0, -1, -1, -1, -1, -1, -1, -1],
+    [-1,  0, -1, -1, -1, -1, -1, -1, -1, -1, -1, -1, -1],
     [-1, -1, -1, -1, -1, -1, -1, -1, -1, -1, -1, -1, -1],
-    [-1, -1, -1, -1, -1, -1, -1, -1, -1, -1, 0, -1, -1],
+    [-1,  0, -1, -1, -1, -1, -1, -1,  0,  0, -1, -1, -1],
+    [-1, -1, -1, -1, -1, -1, -1, -1,  0,  0, -1, -1, -1],
     [-1, -1, -1, -1, -1, -1, -1, -1, -1, -1, -1, -1, -1],
-    [-1, -1, -1, -1, -1, -1, -1, -1, -1, -1, 0, -1, -1],
-    [-1, 0, -1, -1, -1, -1, -1, -1, -1, -1, -1, -1, -1],
-    [-1, -1, -1, -1, -1, -1, -1, -1, -1, -1, -1, -1, -1],
-    [-1, 0, -1, -1, -1, -1, -1, -1, 0, -1, -1, -1, -1],
-    [-1, -1, -1, -1, -1, -1, -1, -1, -1, -1, -1, -1, -1],
-    [-1, -1, -1, -1, 0, -1, -1, -1, -1, -1,  0, -1, -1],
     [-1, -1, -1, -1, -1, -1, -1, -1, -1, -1, -1, -1, -1],
     [-1, -1, -1, -1, -1, -1, -1, -1, -1, -1, -1, -1, -1],
     [-1, -1, -1, -1, -1, -1, -1, -1, -1, -1, -1, -1, -1],
@@ -59,7 +59,7 @@ let rightEnemies1;
 let rightEnemies2;
 let rightEnemies3;
 let energyTurrets;
-let laserTurrets
+let laserTurrets;
 let enemyBullets;
 let enemyHP = 1.05;
 
@@ -105,13 +105,15 @@ let deltaDamage = 0;
 
 let cellSize = 64;
 
+let enemyCounter;
+let maxEnemies;
 
 
-class LevelPath extends Phaser.Scene {
+class Level3 extends Phaser.Scene {
     constructor(screenWidth, screenHeight, game) {
         super();
 
-        Phaser.Scene.call(this, { key: 'Level' })
+        Phaser.Scene.call(this, { key: 'Level3' })
 
         this.game = game;
         this.screenWidth = screenWidth;
@@ -127,7 +129,7 @@ class LevelPath extends Phaser.Scene {
         this.load.image('enemy', 'assets/pixil-frame-0.png');
         this.load.image('deadEnemy', 'assets/basic robot dead.png');
         this.load.image('bullet', 'assets/bullet.png');
-        this.load.image('map', 'assets/Nivel1.png');
+        this.load.image('map', 'assets/mapLevel2.png');
         this.load.image('select', 'assets/select.png');
         this.load.image('energyTurret', 'assets/energia.png');
         this.load.image('skelly', 'assets/skelly.png');
@@ -138,10 +140,8 @@ class LevelPath extends Phaser.Scene {
         this.load.spritesheet('bigRobot', 'assets/Robotitan spritesheet final.png', { frameWidth: 64, frameHeight: 120 });
         this.load.spritesheet('skellyBot', 'assets/squelebot stripe.png', {frameWidth: 64, frameHeight: 80});
 
-
         // botones
         this.load.image('square', 'assets/cuadrado.png');
-        //this.load.image('storeIcons', 'assets/iconos_tienda.png');
         this.load.spritesheet('storeIcons', 'assets/iconos.png', {frameWidth: 90, frameHeight: 90});
 
         // Sonidos
@@ -163,8 +163,11 @@ class LevelPath extends Phaser.Scene {
 
         this.SPAWN_SPEED = 4000;
         enemyHP = 1.05;
+        enemyCounter = 0;
+        maxEnemies = 3;
 
         this.sound.play('musicote rave', {volume: 0.1, loop:true});
+
         this.add.image(this.screenWidth / 2, this.screenHeight / 2, 'map');
         selectImage = this.add.image(keyPosX * 64 + 32, keyPosY * 64 + 32, 'select').setScale(3);
         nucleus.adan = this.physics.add.sprite(this.screenWidth / 2 - 2, this.screenHeight / 2 - 94, 'adan');
@@ -172,21 +175,31 @@ class LevelPath extends Phaser.Scene {
         graphics = this.add.graphics();
         graphics.lineStyle(3, 0xffffff, 1);
 
-        leftPath = this.add.path(0, cellSize * 3.5);
-        leftPath.lineTo(cellSize * 3.5, cellSize * 3.5);
-        leftPath.lineTo(cellSize * 3.5, cellSize * 10.5);
-        leftPath.lineTo(cellSize * 9.5, cellSize * 10.5);
-        leftPath.lineTo(cellSize * 9.5, cellSize * 6.5);
+        leftPath = this.add.path(cellSize*4.5, 0);
+        leftPath.lineTo(cellSize * 4.5, cellSize * 5.5);
+        leftPath.lineTo(cellSize * 1.5, cellSize * 5.5);
+        leftPath.lineTo(cellSize * 1.5, cellSize * 10.5);
+        leftPath.lineTo(cellSize * 6.5, cellSize * 10.5);
+        leftPath.lineTo(cellSize * 6.5, cellSize * 1.5);
+        leftPath.lineTo(cellSize * 10.5, cellSize * 1.5);
+        leftPath.lineTo(cellSize * 10.5, cellSize * 3.5);
+        leftPath.lineTo(cellSize * 8.5, cellSize * 3.5);
+        leftPath.lineTo(cellSize * 8.5, cellSize * 6.5);
         leftPath.lineTo(cellSize * 12.75, cellSize * 6.5);
 
         //leftPath.draw(graphics);
         //this.drawLeftGrid();
 
-        rightPath = this.add.path(this.screenWidth, cellSize * 3.5);
-        rightPath.lineTo(this.screenWidth - cellSize * 3.5, cellSize * 3.5);
-        rightPath.lineTo(this.screenWidth - cellSize * 3.5, cellSize * 10.5);
-        rightPath.lineTo(this.screenWidth - cellSize * 9.5, cellSize * 10.5);
-        rightPath.lineTo(this.screenWidth - cellSize * 9.5, cellSize * 6.5);
+        rightPath = this.add.path(this.screenWidth - cellSize*4.5, 0);
+        rightPath.lineTo(this.screenWidth - cellSize * 4.5, cellSize * 5.5);
+        rightPath.lineTo(this.screenWidth - cellSize * 1.5, cellSize * 5.5);
+        rightPath.lineTo(this.screenWidth - cellSize * 1.5, cellSize * 10.5);
+        rightPath.lineTo(this.screenWidth - cellSize * 6.5, cellSize * 10.5);
+        rightPath.lineTo(this.screenWidth - cellSize * 6.5, cellSize * 1.5);
+        rightPath.lineTo(this.screenWidth - cellSize * 10.5, cellSize * 1.5);
+        rightPath.lineTo(this.screenWidth - cellSize * 10.5, cellSize * 3.5);
+        rightPath.lineTo(this.screenWidth - cellSize * 8.5, cellSize * 3.5);
+        rightPath.lineTo(this.screenWidth - cellSize * 8.5, cellSize * 6.5);
         rightPath.lineTo(this.screenWidth - cellSize * 12.75, cellSize * 6.5);
 
         //rightPath.draw(graphics);
@@ -359,13 +372,13 @@ class LevelPath extends Phaser.Scene {
         this.secondPlayerMoneyText.setText(secondPlayer.getMoney());
         this.secondPlayerEnergyText.setText(secondPlayer.getEnergy());
 
-        let tur = turrets.getChildren().concat(energyTurrets.getChildren().concat(laserTurrets.getChildren()));
+        let tur = turrets.getChildren().concat(energyTurrets.getChildren());
         for (var p = 0; p < tur.length; p++) {
             if (tur[p].x === 0) {
                 tur[p].destroy();
             }
         }
-        
+
         if (levelPaused) {
             levelPaused = false;
 
@@ -377,7 +390,6 @@ class LevelPath extends Phaser.Scene {
             }
             this.sound.setMute(true);
             this.scene.pause();
-            
         }
         else{
             this.sound.setMute(false);
@@ -387,19 +399,20 @@ class LevelPath extends Phaser.Scene {
             this.endGame();
         }
 
-        if (time > this.nextEnemy) {
+        if (time > this.nextEnemy && enemyCounter < maxEnemies) {
             enemyHP *= 1.05
+            enemyCounter++;
             if (this.SPAWN_SPEED > 500) {
                 this.SPAWN_SPEED -= 50;
             }
             let x = Math.random();
             let y = Math.random();
             let leftEnemy;
-            if (x <= 0.4) {
+            if (x <= 0.45) {
                 leftEnemy = leftEnemies1.get();
                 leftEnemy.animateWalk();
             }
-            else if (x <= 0.8) {
+            else if (x <= 0.9) {
                 leftEnemy = leftEnemies2.get();
                 leftEnemy.animateWalk();
             }
@@ -415,11 +428,11 @@ class LevelPath extends Phaser.Scene {
             //echoHandler.send(JSON.stringify(enemy))
 
             let rightEnemy;
-            if (y < 0.4) {
+            if (y < 0.45) {
                 rightEnemy = rightEnemies1.get();
                 rightEnemy.animateWalk();
             }
-            else if (y <= 0.8) {
+            else if (y <= 0.9) {
                 rightEnemy = rightEnemies2.get();
                 rightEnemy.animateWalk();
             }
@@ -450,6 +463,17 @@ class LevelPath extends Phaser.Scene {
             this.nextEnemy = time + this.SPAWN_SPEED;
         }
 
+        if(enemyCounter>= maxEnemies && this.enemiesAlive()<=0){
+            this.winGame();
+        }
+
+    }
+
+    enemiesAlive(){
+        var leftEnemyUnits = leftEnemies1.getChildren().concat(leftEnemies2.getChildren().concat(leftEnemies3.getChildren()));
+        var rightEnemyUnits = rightEnemies1.getChildren().concat(rightEnemies2.getChildren().concat(rightEnemies3.getChildren()));
+        var units = leftEnemyUnits.concat(rightEnemyUnits);
+        return units.length;
     }
 
     drawLeftGrid() {
@@ -592,11 +616,17 @@ class LevelPath extends Phaser.Scene {
     }
 
     endGame() {
-        
         nucleus.adan.setFrame(50);
         this.sound.stopAll();
         this.sound.play('defeat');
         this.scene.launch('GameOver');
+        this.scene.pause();
+    }
+
+    winGame() {
+        this.sound.stopAll();
+        this.sound.play('victory', {volume: 1.5});
+        this.scene.launch('Victory');
         this.scene.pause();
     }
 
@@ -856,7 +886,6 @@ function PlaceLaserTurret(isKeyOrClick) {
     let turret = laserTurrets.get();
 
     
-
 
     if (isKeyOrClick === true) {
         keyPlaceTurret(turret, firstPlayer);
@@ -1134,4 +1163,4 @@ function sellTurret(menu) {
     }
 }
 
-export default LevelPath;
+export default Level3;

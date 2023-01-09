@@ -147,6 +147,13 @@ class Level1 extends Phaser.Scene {
         // Sonidos
         this.load.audio('shoot', 'assets/turret_shoot.mp3');
         this.load.audio('musicote rave', 'assets/musicote.wav');
+        this.load.audio('bonk', 'assets/Robot Tocho.mp3');
+        this.load.audio('turretShoot', 'assets/Robot lejano.mp3');
+        this.load.audio('laserShoot', 'assets/Laser.mp3');
+        this.load.audio('buildEnergy', 'assets/buildEnergy.wav');
+        this.load.audio('shootBuild', 'assets/shootBuild.wav');
+        this.load.audio('defeat', 'assets/defeat.wav');
+        this.load.audio('victory', 'assets/Victoria.mp3');
 
         this.load.image('energy', 'assets/energy.png');
         this.load.image('coin', 'assets/coin.png');
@@ -601,12 +608,14 @@ class Level1 extends Phaser.Scene {
     endGame() {
         nucleus.adan.setFrame(50);
         this.sound.stopAll();
+        this.sound.play('defeat');
         this.scene.launch('GameOver');
         this.scene.pause();
     }
 
     winGame() {
         this.sound.stopAll();
+        this.sound.play('victory', {volume: 1.5});
         this.scene.launch('Victory');
         this.scene.pause();
     }
@@ -792,6 +801,7 @@ function keyPlaceTurret(turret, player) {
 
     if (canPlaceTurretLeft(menuLeftOpenX, menuLeftOpenY, turret.cost, turret.energy)) {
         if (turret) {
+            turret.playBuildSound();
             turret.setActive(true);
             turret.setVisible(true);
             turret.setSide('left');
@@ -810,6 +820,7 @@ function clickPlaceTurret(turret, player) {
     if (canPlaceTurretRight(menuRightOpenX, menuRightOpenY, turret.cost, turret.energy)) {
 
         if (turret) {
+            turret.playBuildSound();
             turret.setActive(true);
             turret.setVisible(true);
             turret.setSide('right');
@@ -838,6 +849,8 @@ function clickPlaceTurret(turret, player) {
 function PlaceGunTurret(isKeyOrClick) {
     let turret = turrets.get();
 
+    
+
     if (isKeyOrClick === true) {
         keyPlaceTurret(turret, firstPlayer);
     }
@@ -849,6 +862,8 @@ function PlaceGunTurret(isKeyOrClick) {
 function PlaceEnergyTurret(isKeyOrClick) {
     let turret = energyTurrets.get();
 
+    
+
     if (isKeyOrClick === true) {
         keyPlaceTurret(turret, firstPlayer);
     }
@@ -859,6 +874,8 @@ function PlaceEnergyTurret(isKeyOrClick) {
 
 function PlaceLaserTurret(isKeyOrClick) {
     let turret = laserTurrets.get();
+
+    
 
     if (isKeyOrClick === true) {
         keyPlaceTurret(turret, firstPlayer);

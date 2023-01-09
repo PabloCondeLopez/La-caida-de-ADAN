@@ -14,6 +14,8 @@ class energyTurret extends Phaser.GameObjects.Image {
         this.maxLevel = 1;
         this.upgradeRate = 0.8;
         this.upgradeImage = undefined;
+
+        
     }
 
     upgradeTurret(){
@@ -21,6 +23,10 @@ class energyTurret extends Phaser.GameObjects.Image {
             this.level++;
             this.setTexture(this.upgradeImage);
         }
+    }
+
+    playBuildSound(){
+        this.scene.sound.play('buildEnergy', {volume: 0.2});
     }
 
     getUpgradeCost(){

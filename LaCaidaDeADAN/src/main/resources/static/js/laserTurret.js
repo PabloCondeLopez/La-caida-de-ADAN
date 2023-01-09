@@ -16,9 +16,21 @@ class LaserTurret extends Turret {
         this.damage = 0.5;
         this.attackSpeed = 0.00001;
         this.range = 200;
+        this.repeatRate = 8;
+        this.countRepeat = 0;
     }
 
-    playSound(){}
+    playSound(){
+        this.countRepeat++;
+        if(this.countRepeat>=this.repeatRate){
+        this.countRepeat = 0;
+        this.scene.sound.play('laserShoot', {volume: 0.1}, );
+        }
+    }
+
+    playBuildSound(){
+        this.scene.sound.play('shootBuild', {volume: 0.2});
+    }
     
 }
 
