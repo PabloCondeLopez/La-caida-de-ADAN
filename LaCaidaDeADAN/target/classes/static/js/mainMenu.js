@@ -97,6 +97,7 @@ class MainMenu extends Phaser.Scene {
     startLevel(){
 		this.game.scene.stop('MainMenu');
 		this.game.scene.start('OnlineSelector');
+        mode = true;
         activeScene = 'OnlineSelector';
     }
 

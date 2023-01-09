@@ -27,9 +27,12 @@ class GameOver extends Phaser.Scene {
     }
 
     goToMainMenu(){
-		echoHandler.close();
-		playerID = 0;
-        this.scene.stop('Level');
+		if(playerID != 0){
+			echoHandler.close();
+			playerID = 0;
+		}
+		
+        this.scene.stop(activeScene);
         this.scene.start('MainMenu');
     }
 }
