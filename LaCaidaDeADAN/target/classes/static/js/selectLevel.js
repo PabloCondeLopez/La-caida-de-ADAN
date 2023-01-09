@@ -12,6 +12,8 @@ class SelectLevel extends Phaser.Scene {
         this.load.image('nivel', 'assets/Nivel_1.png');
         this.load.image('button', 'assets/boton_menu_principal.png');
         this.load.image('exit', 'assets/exit.png');
+
+        this.load.audio('click', 'assets/click.wav');
     }
 
     create() {
@@ -111,6 +113,7 @@ class SelectLevel extends Phaser.Scene {
     }
     
     startLevel1(){
+        this.sound.play('click', {volume: 0.2});
         this.scene.stop('SelectLevel');
         let levelInfo;
        
@@ -146,6 +149,7 @@ class SelectLevel extends Phaser.Scene {
     }    
 
     startLevel2(){
+        this.sound.play('click', {volume: 0.2});
         this.scene.stop('SelectLevel');
         let levelInfo;
        
@@ -181,6 +185,7 @@ class SelectLevel extends Phaser.Scene {
     }
 
     startLevel3(){
+        this.sound.play('click', {volume: 0.2});
         this.scene.stop('SelectLevel');
         let levelInfo;
        
@@ -216,6 +221,7 @@ class SelectLevel extends Phaser.Scene {
     }
 
     exitLevels(){
+        this.sound.play('click', {volume: 0.2});
 		if(playerID != 0){
 			echoHandler.close();
 			playerID = 0;

@@ -434,25 +434,25 @@ class OnlineLevel1 extends Phaser.Scene {
 			laserTurretsChildren = laserTurretsChildren.getChildren();
 			
 		if(normalTurretsChildren != null) {
+			player.addMoney((normalTurretsChildren[index].getCost())/2);
+			player.addEnergy(normalTurretsChildren[index].getEnergy());
 			normalTurretsChildren[index].destroy();
-			player.money += normalTurretsChildren[i].getCost() / 2;
-            player.energy += normalTurretsChildren[i].energy;
 		}
 		
 		if(energyTurretsChildren != null) {
+			player.addMoney((energyTurretsChildren[index].getCost())/2);
+			player.addEnergy(energyTurretsChildren[index].getEnergy());
 			energyTurretsChildren[index].destroy();
-			player.money += energyTurretsChildren[i].getCost() / 2;
-            player.energy += energyTurretsChildren[i].energy;
         }
 		
 		if(laserTurretsChildren != null) {
+			player.addMoney((laserTurretsChildren[index].getCost())/2);
+			player.addEnergy(laserTurretsChildren[index].getEnergy());
 			laserTurretsChildren[index].destroy();
-			player.money += laserTurretsChildren[i].getCost() / 2;
-            player.energy += laserTurretsChildren[i].energy;
 		}
 			
-		if(playerID === 1 && buyMenuLeftOpen === true) openCloseMenu(x, y, true);
-		else if (playerID === 2 && buyMenuRightOpen === true) openCloseMenu(x, y, false);
+		if(playerID === 2 && buyMenuLeftOpen === true) openCloseMenu(x, y, true);
+		else if (playerID === 1 && buyMenuRightOpen === true) openCloseMenu(x, y, false);
 	}
 	
 	handleUpgradeTurretWS(index, type, x, y) {
@@ -489,8 +489,8 @@ class OnlineLevel1 extends Phaser.Scene {
 			player.addEnergy(-laserTurretsChildren[index].getUpgradeEnergy());
 		}
 		
-		if(playerID === 1 && buyMenuLeftOpen === true) openCloseMenu(x, y, true);
-		else if (playerID === 2 && buyMenuRightOpen === true) openCloseMenu(x, y, false);
+		if(playerID === 2 && buyMenuLeftOpen === true) openCloseMenu(x, y, true);
+		else if (playerID === 1 && buyMenuRightOpen === true) openCloseMenu(x, y, false);
 	}
 
 	handleMessage(message) {
@@ -1248,15 +1248,17 @@ function sellTurret(menu) {
 	if (map[menuX][menuY] === 1) {
         let turret = turrets.getChildren();
         let energyTurret = energyTurrets.getChildren();
+        let laserTurret = laserTurrets.getChildren();
 
         for (var i = 0; i < turret.length; i++) {
             if (turret[i].getCoordX() === menuX && turret[i].getCoordY() === menuY) {
+				index = i;
 
-                player.money += turret[i].getCost() / 2;
-                player.energy += turret[i].energy;
+                player.addMoney((turret[index].getCost())/2);
+				player.addEnergy(turret[index].getEnergy());
 
                 map[menuX][menuY] = 0;
-                index = i;
+                
                 turretType = turret[i].getType();
                 turret[i].destroy();
                 openCloseMenu(menuX, menuY, menu);
@@ -1264,14 +1266,27 @@ function sellTurret(menu) {
         }
         for (var i = 0; i < energyTurret.length; i++) {
             if (energyTurret[i].getCoordX() === menuX && energyTurret[i].getCoordY() === menuY) {
-
-                player.money += energyTurret[i].getCost() / 2;
-                player.energy += energyTurret[i].getEnergy();
+				index = i;
+				
+                player.addMoney((energyTurret[index].getCost())/2);
+				player.addEnergy(energyTurret[index].getEnergy());
 
                 map[menuX][menuY] = 0;
-                index = i;
                 turretType = energyTurret[i].getType();
                 energyTurret[i].destroy();
+                openCloseMenu(menuX, menuY, menu);
+            }
+        }
+        for (var i = 0; i < laserTurret.length; i++) {
+            if (laserTurret[i].getCoordX() === menuX && laserTurret[i].getCoordY() === menuY) {
+				index = i;
+
+                player.addMoney(laserTurret[i].getCost() / 2);
+                player.addEnergy(laserTurret[i].getEnergy());
+
+                map[menuX][menuY] = 0;
+                turretType = laserTurret[i].getType();
+                laserTurret[i].destroy();
                 openCloseMenu(menuX, menuY, menu);
             }
         }

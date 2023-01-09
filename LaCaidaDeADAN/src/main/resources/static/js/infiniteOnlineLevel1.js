@@ -428,28 +428,25 @@ class InfiniteOnlineLevel1 extends Phaser.Scene {
 			laserTurretsChildren = laserTurretsChildren.getChildren();
 			
 		if(normalTurretsChildren != null) {
-			normalTurretsChildren[index].destroy();
 			player.addMoney((normalTurretsChildren[index].getCost())/2);
 			player.addEnergy(normalTurretsChildren[index].getEnergy());
-			console.log(normalTurretsChildren[index].getCost());
+			normalTurretsChildren[index].destroy();
 		}
 		
 		if(energyTurretsChildren != null) {
-			energyTurretsChildren[index].destroy();
 			player.addMoney((energyTurretsChildren[index].getCost())/2);
 			player.addEnergy(energyTurretsChildren[index].getEnergy());
-			console.log(energyTurretsChildren[index].getCost());
+			energyTurretsChildren[index].destroy();
         }
 		
 		if(laserTurretsChildren != null) {
-			laserTurretsChildren[index].destroy();
 			player.addMoney((laserTurretsChildren[index].getCost())/2);
 			player.addEnergy(laserTurretsChildren[index].getEnergy());
-			console.log(laserTurretsChildren[index].getCost());
+			laserTurretsChildren[index].destroy();
 		}
 			
-		if(playerID === 1 && buyMenuLeftOpen === true) openCloseMenu(x, y, true);
-		else if (playerID === 2 && buyMenuRightOpen === true) openCloseMenu(x, y, false);
+		if(playerID === 2 && buyMenuLeftOpen === true) openCloseMenu(x, y, true);
+		else if (playerID === 1 && buyMenuRightOpen === true) openCloseMenu(x, y, false);
 	}
 	
 	handleUpgradeTurretWS(index, type, x, y) {
@@ -486,8 +483,8 @@ class InfiniteOnlineLevel1 extends Phaser.Scene {
 			player.addEnergy(-laserTurretsChildren[index].getUpgradeEnergy());
 		}
 		
-		if(playerID === 1 && buyMenuLeftOpen === true) openCloseMenu(x, y, true);
-		else if (playerID === 2 && buyMenuRightOpen === true) openCloseMenu(x, y, false);
+		if(playerID === 2 && buyMenuLeftOpen === true) openCloseMenu(x, y, true);
+		else if (playerID === 1 && buyMenuRightOpen === true) openCloseMenu(x, y, false);
 	}
 
 	handleMessage(message) {
@@ -1202,7 +1199,6 @@ function sellTurret(menu) {
     let menuY;
     let map;
     let player;
-    let turret;
     let turretType;
     let index;
     if (menu === false) {
@@ -1220,6 +1216,7 @@ function sellTurret(menu) {
 	if (map[menuX][menuY] === 1) {
         let turret = turrets.getChildren();
         let energyTurret = energyTurrets.getChildren();
+        let laserTurret = laserTurrets.getChildren();
 
         for (var i = 0; i < turret.length; i++) {
             if (turret[i].getCoordX() === menuX && turret[i].getCoordY() === menuY) {
@@ -1245,6 +1242,18 @@ function sellTurret(menu) {
                 map[menuX][menuY] = 0;
                 turretType = energyTurret[i].getType();
                 energyTurret[i].destroy();
+                openCloseMenu(menuX, menuY, menu);
+            }
+        }
+        for (var i = 0; i < laserTurret.length; i++) {
+            if (laserTurret[i].getCoordX() === menuX && laserTurret[i].getCoordY() === menuY) {
+				index = i;
+
+                player.addMoney(laserTurret[i].getCost() / 2);
+                player.addEnergy(laserTurret[i].getEnergy());
+
+                map[menuX][menuY] = 0;
+                laserTurret[i].destroy();
                 openCloseMenu(menuX, menuY, menu);
             }
         }

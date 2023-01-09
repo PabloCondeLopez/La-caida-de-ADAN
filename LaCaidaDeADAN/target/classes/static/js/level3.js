@@ -129,7 +129,7 @@ class Level3 extends Phaser.Scene {
         this.load.image('enemy', 'assets/pixil-frame-0.png');
         this.load.image('deadEnemy', 'assets/basic robot dead.png');
         this.load.image('bullet', 'assets/bullet.png');
-        this.load.image('map', 'assets/mapLevel3.png');
+        this.load.image('map3', 'assets/mapLevel3.png');
         this.load.image('select', 'assets/select.png');
         this.load.image('energyTurret', 'assets/energia.png');
         this.load.image('skelly', 'assets/skelly.png');
@@ -169,13 +169,13 @@ class Level3 extends Phaser.Scene {
     create() {
 
         this.SPAWN_SPEED = 4000;
-        enemyHP = 1.05;
+        enemyHP = 1.5;
         enemyCounter = 0;
-        maxEnemies = 3;
+        maxEnemies = 30;
 
         this.sound.play('musicote rave', {volume: 0.1, loop:true});
 
-        this.add.image(this.screenWidth / 2, this.screenHeight / 2, 'map');
+        this.add.image(this.screenWidth / 2, this.screenHeight / 2, 'map3');
         selectImage = this.add.image(keyPosX * 64 + 32, keyPosY * 64 + 32, 'select').setScale(3);
         nucleus.adan = this.physics.add.sprite(this.screenWidth / 2 - 2, this.screenHeight / 2 - 94, 'adan');
 
@@ -410,7 +410,7 @@ class Level3 extends Phaser.Scene {
             enemyHP *= 1.05
             enemyCounter++;
             if (this.SPAWN_SPEED > 500) {
-                this.SPAWN_SPEED -= 50;
+                this.SPAWN_SPEED -= 250;
             }
             let x = Math.random();
             let y = Math.random();
