@@ -13,13 +13,17 @@ class Lobby extends Phaser.Scene {
 	}
 	
 	preload() {
-		this.load.image('map', 'assets/Nivel 1 oscuras.png');
+		this.load.image('map1', 'assets/Nivel1');
+		this.load.image('map2', 'assets/Nivel1');
+		this.load.image('map3', 'assets/Nivel1');
 		this.load.image('button', 'assets/boton_menu_principal.png');
 	}
 	
 	create() {
 		self = this;
-		this.add.image(this.screenWidth / 2, this.screenHeight / 2, 'map');
+		if(activeScene==='OnlineLevel') this.add.image(this.screenWidth / 2, this.screenHeight / 2, 'map1');
+		else if (activeScene==='OnlineLevel2') this.add.image(this.screenWidth / 2, this.screenHeight / 2, 'map2');
+		else if (activeScene==='OnlineLevel3') this.add.image(this.screenWidth / 2, this.screenHeight / 2, 'map3');
 		
 		let rect = new Phaser.Geom.Rectangle(75, 50, 1700, 810);
 
@@ -110,7 +114,7 @@ class Lobby extends Phaser.Scene {
 		this.playersReady = false;
 		
 		this.scene.stop("Lobby");
-		this.scene.start("OnlineLevel");
+		this.scene.start(activeScene);
 		echoHandler.send("start");
 	}
 }

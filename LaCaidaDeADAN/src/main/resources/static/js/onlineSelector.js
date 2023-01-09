@@ -88,6 +88,7 @@ class OnlineSelector extends Phaser.Scene {
 				} else if (msg.jugador === 2) {
 					self.playerID = 2;
 				}
+				
 			} 
 			else if (msg.estado === "lleno") {
 				self.fullText.setVisible(true);
@@ -98,6 +99,7 @@ class OnlineSelector extends Phaser.Scene {
 	onOfflineButton(){
 		this.game.scene.stop('OnlineSelector');
 		this.game.scene.start('SelectLevel');
+		online = false;
 		activeScene = 'SelectLevel';
 	}
 	
@@ -105,8 +107,9 @@ class OnlineSelector extends Phaser.Scene {
 		if(this.playerID === 0) return;
 		
 		playerID = this.playerID;
+		online = true;
 		this.scene.stop("OnlineSelector");
-		this.scene.start("Lobby");
+		this.scene.start("SelectLevel");
 		this.playerID = 0;
 	}
 	

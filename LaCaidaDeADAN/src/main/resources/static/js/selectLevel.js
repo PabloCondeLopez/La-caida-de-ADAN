@@ -75,7 +75,7 @@ class SelectLevel extends Phaser.Scene {
         this.level2.setTint(0x9A9A9A);
         this.level2button.setVisible(true);
         this.play2Text.setInteractive();
-        this.play2Text.on('pointerdown', this.startLevel1);
+        this.play2Text.on('pointerdown', this.startLevel2);
 
         
         this.play2Text.on("pointerover", () => {
@@ -95,7 +95,7 @@ class SelectLevel extends Phaser.Scene {
         this.level3.setTint(0x9A9A9A);
         this.level3button.setVisible(true);
         this.play3Text.setInteractive(true);
-        this.play3Text.on('pointerdown', this.startLevel1);
+        this.play3Text.on('pointerdown', this.startLevel3);
 
         
         this.play3Text.on("pointerover", () => {
@@ -114,13 +114,31 @@ class SelectLevel extends Phaser.Scene {
         this.scene.stop('SelectLevel');
        
         if(mode===false) {
-            this.scene.start('Level1');
-            activeScene = 'Level1';
+            if(online===false){
+                this.scene.start('Level1');
+                activeScene = 'Level1';
+            } else{
+                this.scene.start('Lobby');
+                activeScene = 'OnlineLevel';
+            }
         } else {
-            this.scene.start('Level');
-            activeScene = 'Level';
+            if(online===false){
+                this.scene.start('Level');
+                activeScene = 'Level';
+            } else{
+                this.scene.start('Lobby');
+                activeScene = 'OnlineLevel';
+            }
         }
     }    
+
+    startLevel2(){
+
+    }
+
+    startLevel3(){
+
+    }
 
     exitLevels(){
         this.scene.stop('SelectLevel');
