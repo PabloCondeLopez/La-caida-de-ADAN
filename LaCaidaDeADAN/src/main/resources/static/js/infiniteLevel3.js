@@ -1070,7 +1070,8 @@ function upgradeTurret(menu) {
 
         for (var i = 0; i < turret.length; i++) {
             if (turret[i].getCoordX() === menuX && turret[i].getCoordY() === menuY
-                && player.getMoney() >= turret[i].getUpgradeCost() && player.getEnergy() >= turret[i].getUpgradeEnergy()) {
+                && player.getMoney() >= turret[i].getUpgradeCost() && player.getEnergy() >= turret[i].getUpgradeEnergy()
+                && turret[i].getLevel() < turret[i].getMaxLevel()) {
                 console.log("upgradeTurret");
                 turret[i].upgradeTurret(this);
                 console.log(turret[i].getUpgradeCost());
@@ -1081,7 +1082,8 @@ function upgradeTurret(menu) {
         }
         for (var i = 0; i < energyTurret.length; i++) {
             if (energyTurret[i].getCoordX() === menuX && energyTurret[i].getCoordY() === menuY
-                && player.getMoney() >= energyTurret[i].getUpgradeCost() && player.getEnergy() >= energyTurret[i].getUpgradeEnergy()) {
+                && player.getMoney() >= energyTurret[i].getUpgradeCost() && player.getEnergy() >= energyTurret[i].getUpgradeEnergy() 
+                && energyTurret[i].getLevel() < energyTurret[i].getMaxLevel()) {
                 console.log("upgradeTurret");
                 energyTurret[i].upgradeTurret(this);
                 console.log(energyTurret[i].getUpgradeCost());
@@ -1092,7 +1094,8 @@ function upgradeTurret(menu) {
         }
         for (var i = 0; i < laserTurret.length; i++) {
             if (laserTurret[i].getCoordX() === menuX && laserTurret[i].getCoordY() === menuY
-                && player.getMoney() >= laserTurret[i].getUpgradeCost() && player.getEnergy() >= laserTurret[i].getUpgradeEnergy()) {
+                && player.getMoney() >= laserTurret[i].getUpgradeCost() && player.getEnergy() >= laserTurret[i].getUpgradeEnergy()&& 
+                laserTurret[i].getLevel() < laserTurret[i].getMaxLevel()) {
                 console.log("upgradeTurret");
                 laserTurret[i].upgradeTurret(this);
                 console.log(laserTurret[i].getUpgradeCost());

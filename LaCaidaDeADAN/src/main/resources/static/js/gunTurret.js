@@ -28,6 +28,7 @@ class GunTurret extends Turret {
 
     upgradeTurret(){
         if(this.level<this.maxLevel){
+            this.scene.sound.play('upgrade');
             this.level++;
             this.setFrame(this.level);
             this.damage *=this.upgradeRate;

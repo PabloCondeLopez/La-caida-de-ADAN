@@ -153,6 +153,7 @@ class OnlineLevel3 extends Phaser.Scene {
         this.load.audio('defeat', 'assets/defeat.wav');
         this.load.audio('victory', 'assets/Victoria.mp3');
         this.load.audio('drill', 'assets/Enemigo esqueleto.mp3');
+		this.load.audio('upgrade', 'assets/Upgrade.mp3');
 
         this.load.image('energy', 'assets/energy.png');
         this.load.image('coin', 'assets/coin.png');
@@ -1121,9 +1122,6 @@ function upgradeTurret(menu) {
     let menuY;
     let map;
     let player;
-    let turretType;
-    let index;
-    
     if (menu === false) {
         menuX = menuRightOpenX;
         menuY = menuRightOpenY;
@@ -1139,43 +1137,44 @@ function upgradeTurret(menu) {
     if (map[menuX][menuY] === 1) {
         let turret = turrets.getChildren();
         let energyTurret = energyTurrets.getChildren();
+        let laserTurret = laserTurrets.getChildren();
 
         for (var i = 0; i < turret.length; i++) {
             if (turret[i].getCoordX() === menuX && turret[i].getCoordY() === menuY
-                && player.getMoney() >= turret[i].getUpgradeCost() && player.getEnergy() >= turret[i].getUpgradeEnergy()) {
+                && player.getMoney() >= turret[i].getUpgradeCost() && player.getEnergy() >= turret[i].getUpgradeEnergy()
+                && turret[i].getLevel() < turret[i].getMaxLevel()) {
+                console.log("upgradeTurret");
                 turret[i].upgradeTurret(this);
+                console.log(turret[i].getUpgradeCost());
                 player.money -= turret[i].getUpgradeCost();
                 player.energy -= turret[i].getUpgradeEnergy();
-                // WEBSOCKETS INFO
-                turretType = turret[i].getType();
-                index = i;
-                // --------------------
                 openCloseMenu(menuX, menuY, menu);
             }
         }
         for (var i = 0; i < energyTurret.length; i++) {
             if (energyTurret[i].getCoordX() === menuX && energyTurret[i].getCoordY() === menuY
-                && player.getMoney() >= energyTurret[i].getUpgradeCost() && player.getEnergy() >= energyTurret[i].getUpgradeEnergy()) {
+                && player.getMoney() >= energyTurret[i].getUpgradeCost() && player.getEnergy() >= energyTurret[i].getUpgradeEnergy() 
+                && energyTurret[i].getLevel() < energyTurret[i].getMaxLevel()) {
+                console.log("upgradeTurret");
                 energyTurret[i].upgradeTurret(this);
+                console.log(energyTurret[i].getUpgradeCost());
                 player.money -= energyTurret[i].getUpgradeCost();
                 player.energy -= energyTurret[i].getUpgradeEnergy();
-                // WEBSOCKETS INFO
-                turretType = energyTurret[i].getType();
-                index = i;
-                // -------------------
                 openCloseMenu(menuX, menuY, menu);
             }
         }
-        
-        let upgradeInfo = {
-			info: "upgrade",
-			index: index,
-			type: turretType,
-			x: menuX,
-			y: menuY
-		}
-		
-		echoHandler.send(JSON.stringify(upgradeInfo));
+        for (var i = 0; i < laserTurret.length; i++) {
+            if (laserTurret[i].getCoordX() === menuX && laserTurret[i].getCoordY() === menuY
+                && player.getMoney() >= laserTurret[i].getUpgradeCost() && player.getEnergy() >= laserTurret[i].getUpgradeEnergy()&& 
+                laserTurret[i].getLevel() < laserTurret[i].getMaxLevel()) {
+                console.log("upgradeTurret");
+                laserTurret[i].upgradeTurret(this);
+                console.log(laserTurret[i].getUpgradeCost());
+                player.money -= laserTurret[i].getUpgradeCost();
+                player.energy -= laserTurret[i].getUpgradeEnergy();
+                openCloseMenu(menuX, menuY, menu);
+            }
+        }
     }
 
 }

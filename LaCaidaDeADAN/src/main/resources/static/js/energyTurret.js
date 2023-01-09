@@ -20,6 +20,7 @@ class energyTurret extends Phaser.GameObjects.Sprite {
 
     upgradeTurret(){
         if(this.level<this.maxLevel){
+            this.scene.sound.play('upgrade');
             this.energy *= this.upgradeRate;
             this.level++;
             this.setFrame(this.level);
