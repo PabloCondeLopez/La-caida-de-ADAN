@@ -70,14 +70,12 @@ El juego se ha implementado escenas nuevas, una escena para ayuda, y otra escena
 
 Para usar el jar se necesita una aplicacion 7z, se descomprime y se abre el proyecto con SPRING TOOL SUITE 4.0, se hace un run as /spring boot app, y se inicia google chrome con web de localhost:8080
 (foto de la web)
+
 -----------------------------------------------------------------------------------------------------------------------------------------------------------------------
 4º Practica
+
+![image](Enlace de la imagen)
+Video de presentacion de websocket
 https://www.youtube.com/watch?v=ssGobM5iRIc
 
 -----------------------------------------------------------------------------------------------------------------------------------------------------------------------
-5º Practica
-
-
-
-
-
