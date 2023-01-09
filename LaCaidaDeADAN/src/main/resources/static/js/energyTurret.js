@@ -24,11 +24,21 @@ class energyTurret extends Phaser.GameObjects.Image {
     }
 
     getUpgradeCost(){
-        return this.upgradeRate * this.cost * this.level; 
+        return 10;
+        //return this.upgradeRate * this.cost * this.level; 
+    }
+
+    getMaxLevel(){
+        return this.maxLevel;
+    }
+    
+    getLevel(){
+        return this.level;
     }
 
     getUpgradeEnergy(){
-        return this.upgradeRate * this.energy * this.level; 
+        return 0;
+        //return this.upgradeRate * this.energy * this.level; 
     }
 
     setUpgradeImage(image) {
