@@ -10,6 +10,8 @@ class GameOver extends Phaser.Scene {
 
     preload(){
         this.load.image('resumeButton', 'assets/menu_button_amarillo.png');
+
+        this.load.audio('click', 'assets/click.wav');
     }
 
     create(){
@@ -27,7 +29,7 @@ class GameOver extends Phaser.Scene {
     }
 
     goToMainMenu(){
-        
+        this.sound.play('click', {volume: 1});
 		if(playerID != 0){
 			echoHandler.close();
 			playerID = 0;

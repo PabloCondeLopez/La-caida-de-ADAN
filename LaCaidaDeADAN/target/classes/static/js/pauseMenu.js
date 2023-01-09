@@ -14,6 +14,8 @@ class PauseMenu extends Phaser.Scene {
     preload() {
         this.load.image('resumeButton', 'assets/menu_button_amarillo.png');
         this.load.image('quitButton', 'assets/menu_button_azul.png');
+
+        this.load.audio('click', 'assets/click.wav');
     }
 
     create() {
@@ -30,6 +32,7 @@ class PauseMenu extends Phaser.Scene {
         this.quitButton = this.add.image(this.gameWidth / 2, this.gameHeigth / 2 + 200, 'quitButton');
         this.quitButton.setInteractive();
         this.quitButton.on('pointerdown', this.onQuitGameHandler);
+
 
         this.pauseText = this.add.text(this.gameWidth / 2, this.gameHeigth / 2 - 250, 'PAUSA', { fontSize: '60px', color: '#fff', fontFamily: 'Pixeled'}).setStroke('#000', 10).setOrigin(0.5, 0.5);
 
@@ -54,12 +57,15 @@ class PauseMenu extends Phaser.Scene {
     }
 
     onResumeGameHandler(event){
+        this.scene.sound.play('click', {volume: 1});
         gamePaused = false;
     }
 
     onQuitGameHandler(event) {
+        this.scene.sound.play('click', {volume: 1});
         quitGame = true;
     }
+
 }
 
 export default PauseMenu;

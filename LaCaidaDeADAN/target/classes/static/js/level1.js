@@ -170,7 +170,7 @@ class Level1 extends Phaser.Scene {
         this.SPAWN_SPEED = 4000;
         enemyHP = 1.05;
         enemyCounter = 0;
-        maxEnemies = 3;
+        maxEnemies = 15;
 
         this.sound.play('musicote rave', {volume: 0.1, loop:true});
 
