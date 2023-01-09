@@ -74,7 +74,7 @@ Para usar el jar se necesita una aplicacion 7z, se descomprime y se abre el proy
 -----------------------------------------------------------------------------------------------------------------------------------------------------------------------
 4º Practica
 
-![image](Enlace de la imagen)
+![image](Enlace de la imagen)<br>
 Video de presentacion de websocket
 https://www.youtube.com/watch?v=ssGobM5iRIc
 
