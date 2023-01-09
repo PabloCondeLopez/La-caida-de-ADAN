@@ -1,14 +1,11 @@
-let game;
-
 class SelectLevel extends Phaser.Scene {
-    constructor(screenWidth, screenHeight, gameConfig) {
+    constructor(screenWidth, screenHeight) {
         super();
 
         Phaser.Scene.call(this, {key: 'SelectLevel'});
 
         this.screenWidth = screenWidth;
         this.screenHeight = screenHeight;
-        game = gameConfig;
     }
 
     preload() {
@@ -32,14 +29,14 @@ class SelectLevel extends Phaser.Scene {
 
         this.play1Text = this.add.text(this.level1button.x, this.level1button.y-5, 'Jugar', {fontSize: '40px', fill: '#fff', fontFamily: 'Pixeled'}).setStroke("#000", 4).setOrigin(0.5, 0.5);
         this.play1Text.setInteractive();
-        this.play1Text.on('pointerdown', this.startLevel1);
+        this.play1Text.on('pointerdown', this.startLevel1, this);
 
         this.play2Text = this.add.text(this.level2button.x, this.level1button.y-5, 'Sigue jugando para desbloquear', {fontSize: '26px', fill: '#fff', fontFamily: 'Pixeled'}).setStroke("#000", 4).setWordWrapWidth(500).setOrigin(0.5, 0.5);
         this.play3Text = this.add.text(this.level3button.x, this.level1button.y-5, 'Sigue jugando para desbloquear', {fontSize: '26px', fill: '#fff', fontFamily: 'Pixeled'}).setStroke("#000", 4).setWordWrapWidth(500).setOrigin(0.5, 0.5);
        
         this.exit = this.add.image(1800, 60, 'exit').setScale(0.3);
         this.exit.setInteractive();
-        this.exit.on('pointerdown', this.exitLevels);
+        this.exit.on('pointerdown', this.exitLevels, this);
 
         this.exit.on("pointerover", () => {
             this.exit.setTint(0x606060);
@@ -114,20 +111,20 @@ class SelectLevel extends Phaser.Scene {
     }
     
     startLevel1(){
-        game.scene.stop('SelectLevel');
+        this.scene.stop('SelectLevel');
        
         if(mode===false) {
-            game.scene.start('Level1');
+            this.scene.start('Level1');
             activeScene = 'Level1';
         } else {
-            game.scene.start('Level');
+            this.scene.start('Level');
             activeScene = 'Level';
         }
     }    
 
     exitLevels(){
-        game.scene.stop('SelectLevel');
-        game.scene.start('MainMenu');
+        this.scene.stop('SelectLevel');
+        this.scene.start('MainMenu');
     }
     
 }

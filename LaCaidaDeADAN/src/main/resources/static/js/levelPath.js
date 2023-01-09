@@ -986,8 +986,6 @@ function upgradeTurret(menu) {
 }
 
 function sellTurret(menu) {
-
-    console.log("Sell turret");
     let menuX;
     let menuY;
     let map;

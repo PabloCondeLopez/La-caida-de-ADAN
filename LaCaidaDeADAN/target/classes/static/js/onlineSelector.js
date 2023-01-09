@@ -20,11 +20,14 @@ class OnlineSelector extends Phaser.Scene {
 		self = this;
 		this.add.image(this.screenWidth / 2, this.screenHeight / 2, 'background');
 		
-		this.offlineButton = this.add.image(this.screenWidth / 2 + 500, this.screenHeight / 2 - 150, 'button').setScale(4).setTint(0x808080);
-        this.onlineButton = this.add.image(this.screenWidth / 2 + 500, this.screenHeight / 2 + 100, 'button').setScale(4);
+		this.offlineButton = this.add.image(this.screenWidth / 2 + 620, this.screenHeight / 2 - 150, 'button').setScale(4);
+        this.onlineButton = this.add.image(this.screenWidth / 2 + 620, this.screenHeight / 2 + 100, 'button').setScale(4);
         
-        this.offlineText = this.add.text(this.screenWidth / 2 + 505, this.screenHeight / 2 - 150, 'Offline', {fontSize: '40px', fill: '#fff', fontFamily: 'Pixeled'}).setStroke("#000", 4).setOrigin(0.5, 0.5).setTint(0x808080);
-        this.onlineText = this.add.text(this.screenWidth / 2 + 505, this.screenHeight / 2 + 100, 'Online', {fontSize: '40px', fill: '#fff', fontFamily: 'Pixeled'}).setStroke("#000", 4).setOrigin(0.5, 0.5);
+        this.offlineText = this.add.text(this.screenWidth / 2 + 625, this.screenHeight / 2 - 150, 'Offline', {fontSize: '40px', fill: '#fff', fontFamily: 'Pixeled'}).setStroke("#000", 4).setOrigin(0.5, 0.5);
+        this.offlineText.setInteractive();
+		this.offlineText.on('pointerdown', this.onOfflineButton, this);
+
+		this.onlineText = this.add.text(this.screenWidth / 2 + 625, this.screenHeight / 2 + 100, 'Online', {fontSize: '40px', fill: '#fff', fontFamily: 'Pixeled'}).setStroke("#000", 4).setOrigin(0.5, 0.5);
         this.onlineText.setInteractive();
         this.onlineText.on('pointerdown', this.onOnlineButton, this);
         
@@ -34,6 +37,7 @@ class OnlineSelector extends Phaser.Scene {
         this.backText.on('pointerdown', this.onBackButton, this);
         
         this.fullText = this.add.text(this.screenWidth / 2 + 500, this.screenHeight / 2 + 300, 'Sala llena', {fontSize: '40px', fill: '#ff0000', fontFamily: 'Pixeled'}).setStroke("#000", 4).setOrigin(0.5, 0.5).setVisible(false);
+        this.connectingText = this.add.text(this.screenWidth / 2 + 500, this.screenHeight / 2 + 300, 'Conectando, intentalo de nuevo.', {fontSize: '40px', fill: '#fff', fontFamily: 'Pixeled'}).setStroke("#000", 4).setOrigin(0.5, 0.5).setVisible(false);
         
         this.onlineText.on("pointerover", () => {
             this.onlineButton.setTint(0xDDDDDD);
@@ -43,6 +47,16 @@ class OnlineSelector extends Phaser.Scene {
         this.onlineText.on("pointerout", () => {
             this.onlineButton.clearTint();
             this.onlineText.clearTint();
+        })
+        
+        this.offlineText.on("pointerover", () => {
+            this.offlineButton.setTint(0xDDDDDD);
+            this.offlineText.setTint(0xFFFFFF);
+        })
+        
+        this.offlineText.on("pointerout", () => {
+            this.offlineButton.clearTint();
+            this.offlineText.clearTint();
         })
         
         this.backText.on("pointerover", () => {
@@ -59,9 +73,11 @@ class OnlineSelector extends Phaser.Scene {
 	onOnlineButton() {
 		if(echoHandler.readyState === 3) echoHandler = new WebSocket('ws://localhost:8080/echo');
 		
-		do	{
+		try	{
 			echoHandler.send("registrar");
-		} while(echoHandler.readyState === 0);
+		} catch(e) {
+			self.connecting.setVisible(true);
+		}
 		
 		echoHandler.onmessage = function(message) {
 			const msg = JSON.parse(message.data);
@@ -77,6 +93,12 @@ class OnlineSelector extends Phaser.Scene {
 				self.fullText.setVisible(true);
 			}
 		}
+	}
+
+	onOfflineButton(){
+		this.game.scene.stop('OnlineSelector');
+		this.game.scene.start('SelectLevel');
+		activeScene = 'SelectLevel';
 	}
 	
 	update() {

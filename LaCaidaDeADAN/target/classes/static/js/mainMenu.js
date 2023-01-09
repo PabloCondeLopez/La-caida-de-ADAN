@@ -9,7 +9,7 @@ class MainMenu extends Phaser.Scene {
     }
 
     preload() {
-        this.load.image('background', 'assets/menu_principal.png');
+        this.load.image('background', 'assets/mainMenuImage.png');
         this.load.image('button', 'assets/boton_menu_principal.png');
         this.load.image('question', 'assets/interrogation.png');
     }
@@ -17,16 +17,19 @@ class MainMenu extends Phaser.Scene {
     create() {
         this.add.image(this.screenWidth / 2, this.screenHeight / 2, 'background');
 
-        this.historyButton = this.add.image(this.screenWidth / 2 + 450, this.screenHeight / 2 - 250, 'button').setScale(3.5).setTint(0x808080);
-        this.competitiveButton = this.add.image(this.screenWidth / 2 + 450, this.screenHeight / 2 - 50, 'button').setScale(3.5).setTint(0x808080);
-        this.endlessButton = this.add.image(this.screenWidth / 2 + 450, this.screenHeight / 2 + 150, 'button').setScale(3.5);
+        this.historyButton = this.add.image(this.screenWidth / 2 + 600, this.screenHeight / 2 - 250, 'button').setScale(3.5);
+        this.competitiveButton = this.add.image(this.screenWidth / 2 + 600, this.screenHeight / 2 - 50, 'button').setScale(3.5).setTint(0x808080);
+        this.endlessButton = this.add.image(this.screenWidth / 2 + 600, this.screenHeight / 2 + 150, 'button').setScale(3.5);
         this.controlsButton = this.add.image(this.screenWidth / 2 + 730, this.screenHeight / 2 + 370, 'button').setScale(3.5);
         this.chatButton = this.add.image(150, this.screenHeight - 50, 'button').setScale(2);
 
-        this.historyText = this.add.text(this.screenWidth / 2 + 455, this.screenHeight / 2 - 255, 'Historia', {fontSize: '40px', fill: '#fff', fontFamily: 'Pixeled'}).setStroke("#000", 4).setOrigin(0.5, 0.5).setTint(0x808080);
-        this.competitiveText = this.add.text(this.screenWidth / 2 + 452, this.screenHeight / 2 - 55, 'Competitivo', {fontSize: '29px', fill: '#fff', fontFamily: 'Pixeled'}).setStroke("#000", 4).setOrigin(0.5, 0.5).setTint(0x808080);
+        this.historyText = this.add.text(this.screenWidth / 2 + 605, this.screenHeight / 2 - 255, 'Historia', {fontSize: '40px', fill: '#fff', fontFamily: 'Pixeled'}).setStroke("#000", 4).setOrigin(0.5, 0.5);
+        this.historyText.setInteractive();
+        this.historyText.on('pointerdown', this.selectLevelHistory, this);
 
-        this.endlessText = this.add.text(this.screenWidth / 2 + 455, this.screenHeight / 2 + 145, 'Infinito', {fontSize: '40px', fill: '#fff', fontFamily: 'Pixeled'}).setStroke('#000', 4).setOrigin(0.5, 0.5);
+        this.competitiveText = this.add.text(this.screenWidth / 2 + 602, this.screenHeight / 2 - 55, 'Competitivo', {fontSize: '29px', fill: '#fff', fontFamily: 'Pixeled'}).setStroke("#000", 4).setOrigin(0.5, 0.5).setTint(0x808080);
+
+        this.endlessText = this.add.text(this.screenWidth / 2 + 605, this.screenHeight / 2 + 145, 'Infinito', {fontSize: '40px', fill: '#fff', fontFamily: 'Pixeled'}).setStroke('#000', 4).setOrigin(0.5, 0.5);
         this.endlessText.setInteractive();
         this.endlessText.on('pointerdown', this.startLevel, this);
 
@@ -41,6 +44,16 @@ class MainMenu extends Phaser.Scene {
         this.chatText = this.add.text(150, this.screenHeight - 50, 'Chat', {fontSize: '25px', fill: '#fff', fontFamily: 'Pixeled'}).setStroke('#000', 4).setOrigin(0.5, 0.5);
         this.chatText.setInteractive();
         this.chatText.on('pointerdown', this.chatScene, this);
+
+        this.historyText.on("pointerover", () => {
+            this.historyButton.setTint(0xDDDDDD);
+            this.historyText.setTint(0xFFFFFF);
+        })
+
+        this.historyText.on("pointerout", () => {
+            this.historyButton.clearTint();
+            this.historyText.clearTint();
+        })
 
         this.endlessText.on("pointerover", () => {
             this.endlessButton.setTint(0xDDDDDD);
@@ -84,6 +97,14 @@ class MainMenu extends Phaser.Scene {
     startLevel(){
 		this.game.scene.stop('MainMenu');
 		this.game.scene.start('OnlineSelector');
+        activeScene = 'OnlineSelector';
+    }
+
+    selectLevelHistory(){
+        this.game.scene.stop('MainMenu');
+		this.game.scene.start('OnlineSelector');
+        mode = false;
+        activeScene = 'OnlineSelector';
     }
 
     chatScene() {

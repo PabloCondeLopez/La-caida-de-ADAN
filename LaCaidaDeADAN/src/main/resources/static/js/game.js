@@ -27,11 +27,12 @@ const config = {
 let game = new Phaser.Game(config);
 
 // - - - - - - - - SCENES - - - - - - - - - -
-let mainMenu = new MainMenu(gameWidth, gameHeight, game);
-let controls = new Controls(gameWidth, gameHeight, game);
-let resources = new Resources(gameWidth, gameHeight, game);
+let mainMenu = new MainMenu(gameWidth, gameHeight);
+let controls = new Controls(gameWidth, gameHeight);
+let resources = new Resources(gameWidth, gameHeight);
 let onlineSelector = new OnlineSelector(gameWidth, gameHeight);
-let selectLevel = new SelectLevel(gameWidth, gameHeight, game);
+let selectLevel = new SelectLevel(gameWidth, gameHeight);
+let onlineLevel = new OnlineLevel(gameWidth, gameHeight);
 let level = new LevelPath(gameWidth, gameHeight, game);
 let level1 = new Level1(gameWidth, gameHeight, game);
 let pauseMenu = new PauseMenu(gameWidth, gameHeight);
@@ -46,6 +47,7 @@ game.scene.add('MainMenu', mainMenu);
 game.scene.add('Controls', controls);
 game.scene.add('Resources', resources);
 game.scene.add('SelectLevel', selectLevel);
+game.scene.add('OnlineLevel', onlineLevel);
 game.scene.add('Level', level);
 game.scene.add('Level1', level1);
 game.scene.add('Pause', pauseMenu);

@@ -42,13 +42,13 @@ class PauseMenu extends Phaser.Scene {
     update() {
         if(quitGame) {
             quitGame = false;
-            this.scene.stop('Level');
+            this.scene.stop(activeScene);
             this.scene.start('MainMenu');
         }
 
         if(!gamePaused) {
             gamePaused = true;
-            this.scene.resume('Level');
+            this.scene.resume(activeScene);
             this.scene.sleep();
         }
     }

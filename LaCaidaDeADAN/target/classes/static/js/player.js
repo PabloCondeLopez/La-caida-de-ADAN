@@ -26,6 +26,7 @@ class Player {
     setHP(hp){
         this.currentHp = hp;
     }
+    
     getCurrentHP() {
         return this.currentHp;
     }
