@@ -159,6 +159,7 @@ class Level2 extends Phaser.Scene {
         this.load.audio('defeat', 'assets/defeat.wav');
         this.load.audio('victory', 'assets/Victoria.mp3');
         this.load.audio('drill', 'assets/Enemigo esqueleto.mp3');
+        this.load.audio('upgrade', 'assets/Upgrade.mp3');
 
         this.load.image('energy', 'assets/energy.png');
         this.load.image('coin', 'assets/coin.png');
