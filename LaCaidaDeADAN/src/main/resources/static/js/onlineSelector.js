@@ -16,6 +16,8 @@ class OnlineSelector extends Phaser.Scene {
 	preload() {
 		this.load.image('background', 'assets/menu_principal.png');
 		this.load.image('button', 'assets/boton_menu_principal.png');
+
+		this.load.audio('click', 'assets/click.wav');
 	}
 	
 	create() {
@@ -83,6 +85,18 @@ class OnlineSelector extends Phaser.Scene {
 				return;
 			} 
 			
+		}
+	}
+	
+	onOnlineButton() {
+		this.sound.play('click', {volume: 0.2});
+		try {
+			echoHandler.send("registrar");
+		} catch (e) {
+			self.connectingText.setVisible(true);
+		}
+		
+		echoHandler.onmessage = function(message) {
 			const msg = JSON.parse(message.data);
 			
 			if (msg.estado === 'lobby') {
@@ -114,6 +128,7 @@ class OnlineSelector extends Phaser.Scene {
 	}
 
 	onOfflineButton(){
+		this.sound.play('click', {volume: 0.2});
 		this.game.scene.stop('OnlineSelector');
 		this.game.scene.start('SelectLevel');
 		online = false;
@@ -140,6 +155,9 @@ class OnlineSelector extends Phaser.Scene {
 	}
 	
 	onBackButton() {
+		this.sound.play('click', {volume: 0.2});
+		this.fullText.setVisible(false);
+		
 		this.scene.stop('OnlineSelector');
 		this.scene.start('MainMenu');
 	}

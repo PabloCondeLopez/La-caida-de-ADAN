@@ -12,6 +12,8 @@ class MainMenu extends Phaser.Scene {
         this.load.image('background', 'assets/mainMenuImage.png');
         this.load.image('button', 'assets/boton_menu_principal.png');
         this.load.image('question', 'assets/interrogation.png');
+
+        this.load.audio('click', 'assets/click.wav');
     }
 
     create() {
@@ -20,7 +22,7 @@ class MainMenu extends Phaser.Scene {
         this.historyButton = this.add.image(this.screenWidth / 2 + 600, this.screenHeight / 2 - 250, 'button').setScale(3.5);
         this.competitiveButton = this.add.image(this.screenWidth / 2 + 600, this.screenHeight / 2 - 50, 'button').setScale(3.5).setTint(0x808080);
         this.endlessButton = this.add.image(this.screenWidth / 2 + 600, this.screenHeight / 2 + 150, 'button').setScale(3.5);
-        this.controlsButton = this.add.image(this.screenWidth / 2 + 730, this.screenHeight / 2 + 370, 'button').setScale(3.5);
+        //this.controlsButton = this.add.image(this.screenWidth / 2 + 730, this.screenHeight / 2 + 370, 'button').setScale(3.5);
         this.chatButton = this.add.image(150, this.screenHeight - 50, 'button').setScale(2);
 
         this.historyText = this.add.text(this.screenWidth / 2 + 605, this.screenHeight / 2 - 255, 'Historia', {fontSize: '40px', fill: '#fff', fontFamily: 'Pixeled'}).setStroke("#000", 4).setOrigin(0.5, 0.5);
@@ -33,9 +35,11 @@ class MainMenu extends Phaser.Scene {
         this.endlessText.setInteractive();
         this.endlessText.on('pointerdown', this.startLevel, this);
 
+        /*
         this.controlsText = this.add.text(this.screenWidth / 2 + 735, this.screenHeight / 2 + 370, 'Controles', {fontSize: '30px', fill: '#fff', fontFamily: 'Pixeled'}).setStroke('#000', 4).setOrigin(0.5, 0.5);
         this.controlsText.setInteractive();
         this.controlsText.on('pointerdown', this.openControls, this);
+        */
 
         this.resourcesButton = this.add.image(this.screenWidth / 2 + 865, this.screenHeight / 2 - 390, 'question').setScale(0.6);
         this.resourcesButton.setInteractive();
@@ -65,16 +69,6 @@ class MainMenu extends Phaser.Scene {
             this.endlessText.clearTint();
         })
 
-        this.controlsText.on("pointerover", () => {
-            this.controlsButton.setTint(0xDDDDDD);
-            this.controlsText.setTint(0xFFFFFF);
-        })
-
-        this.controlsText.on("pointerout", () => {
-            this.controlsButton.clearTint();
-            this.controlsText.clearTint();
-        })
-
         this.resourcesButton.on("pointerover", () => {
             this.resourcesButton.setTint(0xDDDDDD);
         })
@@ -95,30 +89,31 @@ class MainMenu extends Phaser.Scene {
     }
 
     startLevel(){
+        this.sound.play('click', {volume: 1});
 		this.game.scene.stop('MainMenu');
 		this.game.scene.start('OnlineSelector');
+        
         mode = true;
         activeScene = 'OnlineSelector';
     }
 
     selectLevelHistory(){
+        this.sound.play('click', {volume: 1});
         this.game.scene.stop('MainMenu');
 		this.game.scene.start('OnlineSelector');
+        
         mode = false;
         activeScene = 'OnlineSelector';
     }
 
     chatScene() {
+        this.sound.play('click', {volume: 1});
         this.scene.stop('MainMenu');
         this.scene.start('ChatMenu');
     }
 
-    openControls(){
-        this.scene.stop('MainMenu');
-        this.scene.start('Controls');
-    }
-
     openResources(){
+        this.sound.play('click', {volume: 1});
         this.scene.stop('MainMenu');
         this.scene.start('Resources');
     }
