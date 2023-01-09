@@ -862,8 +862,10 @@ function PlaceLaserTurret(isKeyOrClick) {
 
 function updateCostsRight(){
     let t = turrets.get();
+    let lT = laserTurrets.get();
     let eT = energyTurrets.get();
     let ts = turrets.getChildren();
+    let lTs = laserTurrets.getChildren();
     let eTs = energyTurrets.getChildren();
 
     if(buyMenuRightOpen){ 
@@ -881,6 +883,9 @@ function updateCostsRight(){
         if(eT.getCost() > secondPlayer.money){ bulletWeapon1Button.setTint(0x808080); }
         else{ bulletWeapon1Button.clearTint(); }
 
+        if(lT.getCost() > secondPlayer.money){ energyWeapon1Button.setTint(0x808080); }
+        else{ energyWeapon1Button.clearTint(); }
+
         // MENU DE MEJORA Y DE VENTA
         if(rightMap[menuRightOpenX][menuRightOpenY]!==1) {
             sellButton.setTint(0x808080);
@@ -894,6 +899,7 @@ function updateCostsRight(){
             console.log("UPGRADE UPGRADE BUTTON");
             let turret;
             let energyTurret;
+            let laserTurret;
             for (let i = 0; i < ts.length; i++) {
                 if (ts[i].getCoordX() === menuRightOpenX && ts[i].getCoordY() === menuRightOpenY) {
                     turret = ts[i];
@@ -905,13 +911,22 @@ function updateCostsRight(){
                     energyTurret = eTs[i];
                 }
             }
+            for (let i = 0; i < lTs.length; i++) {
+                if (lTs[i].getCoordX() === menuRightOpenX && lTs[i].getCoordY() === menuRightOpenY) {
+                    laserTurret = lTs[i];
+                }
+            }
             if(turret!=undefined){
                 console.log("Level:" + turret.getLevel());
                 if(turret.getUpgradeCost() > secondPlayer.money || turret.getMaxLevel() <= turret.getLevel()) { upgradeButton.setTint(0x808080); }
                 else { upgradeButton.clearTint(); }
             }
             if(energyTurret!=undefined){
-                if(energyTurret.getUpgradeCost() > secondPlayer.money) { upgradeButton.setTint(0x808080); }
+                if(energyTurret.getUpgradeCost() > secondPlayer.money || energyTurret.getMaxLevel() <= energyTurret.getLevel()) { upgradeButton.setTint(0x808080); }
+                else { upgradeButton.clearTint(); }
+            }
+            if(laserTurret!=undefined){
+                if(laserTurret.getUpgradeCost() > secondPlayer.money || laserTurret.getMaxLevel() <= laserTurret.getLevel()) { upgradeButton.setTint(0x808080); }
                 else { upgradeButton.clearTint(); }
             }
 
@@ -923,8 +938,10 @@ function updateCostsRight(){
 
 function updateCostsLeft(){
     let t = turrets.get();
+    let lT = laserTurrets.get();
     let eT = energyTurrets.get();
     let ts = turrets.getChildren();
+    let lTs = laserTurrets.getChildren();
     let eTs = energyTurrets.getChildren();
 
     if(buyMenuLeftOpen){ 
@@ -941,6 +958,9 @@ function updateCostsLeft(){
         if(eT.getCost() > firstPlayer.money){ bulletWeapon1Button1.setTint(0x808080); }
         else{ bulletWeapon1Button1.clearTint(); }
 
+        if(lT.getCost() > firstPlayer.money){ energyWeapon1Button1.setTint(0x808080); }
+        else{ energyWeapon1Button1.clearTint(); }
+
         // MENU DE MEJORA Y DE VENTA
         if(leftMap[menuLeftOpenX][menuLeftOpenY]!==1) {
             sellButton1.setTint(0x808080);
@@ -954,6 +974,7 @@ function updateCostsLeft(){
             console.log("UPGRADE UPGRADE BUTTON");
             let turret;
             let energyTurret;
+            let laserTurret;
             for (let i = 0; i < ts.length; i++) {
                 if (ts[i].getCoordX() === menuLeftOpenX && ts[i].getCoordY() === menuLeftOpenY) {
                     turret = ts[i];
@@ -964,12 +985,21 @@ function updateCostsLeft(){
                     energyTurret = eTs[i];
                 }
             }
+            for (let i = 0; i < lTs.length; i++) {
+                if (lTs[i].getCoordX() === menuLeftOpenX && lTs[i].getCoordY() === menuLeftOpenY) {
+                    laserTurret = lTs[i];
+                }
+            }
             if(turret!=undefined){
                 if(turret.getUpgradeCost() > firstPlayer.money || turret.getMaxLevel() <= turret.getLevel()) { upgradeButton1.setTint(0x808080); }
                 else { upgradeButton1.clearTint(); }
             }
             if(energyTurret!=undefined){
-                if(energyTurret.getUpgradeCost() > firstPlayer.money) { upgradeButton1.setTint(0x808080); }
+                if(energyTurret.getUpgradeCost() > firstPlayer.money || energyTurret.getMaxLevel() <= energyTurret.getLevel()) { upgradeButton1.setTint(0x808080); }
+                else { upgradeButton1.clearTint(); }
+            }
+            if(laserTurret!=undefined){
+                if(laserTurret.getUpgradeCost() > firstPlayer.money || laserTurret.getMaxLevel() <= laserTurret.getLevel()) { upgradeButton1.setTint(0x808080); }
                 else { upgradeButton1.clearTint(); }
             }
 
