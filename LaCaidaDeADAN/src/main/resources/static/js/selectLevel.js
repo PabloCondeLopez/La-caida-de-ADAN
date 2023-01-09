@@ -119,12 +119,12 @@ class SelectLevel extends Phaser.Scene {
                 activeScene = 'Level1';
             } else{
                 this.scene.start('Lobby');
-                activeScene = 'InfiniteOnlineLevel1';
+                //activeScene = 'InfiniteOnlineLevel1';
             }
         } else {
             if(online===false){
-                this.scene.start('Level');
-                activeScene = 'Level';
+                this.scene.start('InfiniteLevel1');
+                activeScene = 'InfiniteLevel1';
             } else{
                 this.scene.start('Lobby');
                 activeScene = 'InfiniteOnlineLevel1';
@@ -133,11 +133,47 @@ class SelectLevel extends Phaser.Scene {
     }    
 
     startLevel2(){
-
+        this.scene.stop('SelectLevel');
+       
+        if(mode===false) {
+            if(online===false){
+                this.scene.start('Level2');
+                activeScene = 'Level2';
+            } else{
+                this.scene.start('Lobby');
+                //activeScene = 'InfiniteOnlineLevel2';
+            }
+        } else {
+            if(online===false){
+                this.scene.start('InfiniteLevel2');
+                activeScene = 'InfiniteLevel2';
+            } else{
+                this.scene.start('Lobby');
+                activeScene = 'InfiniteOnlineLevel2';
+            }
+        }
     }
 
     startLevel3(){
-
+        this.scene.stop('SelectLevel');
+       
+        if(mode===false) {
+            if(online===false){
+                this.scene.start('Level3');
+                activeScene = 'Level3';
+            } else{
+                this.scene.start('Lobby');
+                //activeScene = 'InfiniteOnlineLevel3';
+            }
+        } else {
+            if(online===false){
+                this.scene.start('InfiniteLevel3');
+                activeScene = 'InfiniteLevel3';
+            } else{
+                this.scene.start('Lobby');
+                activeScene = 'InfiniteOnlineLevel3';
+            }
+        }
     }
 
     exitLevels(){

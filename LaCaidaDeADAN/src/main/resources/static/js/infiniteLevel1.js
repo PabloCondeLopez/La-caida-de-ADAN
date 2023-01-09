@@ -107,11 +107,11 @@ let cellSize = 64;
 
 
 
-class LevelPath extends Phaser.Scene {
+class InfiniteLevel1 extends Phaser.Scene {
     constructor(screenWidth, screenHeight, game) {
         super();
 
-        Phaser.Scene.call(this, { key: 'Level' })
+        Phaser.Scene.call(this, { key: 'InfiniteLevel1' })
 
         this.game = game;
         this.screenWidth = screenWidth;
@@ -1134,4 +1134,4 @@ function sellTurret(menu) {
     }
 }
 
-export default LevelPath;
+export default InfiniteLevel1;
